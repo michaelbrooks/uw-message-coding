@@ -1,5 +1,8 @@
-message_coding
+UW Message Coding
 =========
+
+Currently in very early development!
+
 
 Development Setup
 -----------------
@@ -43,9 +46,7 @@ Instead, follow these steps:
 You will need to have the following packages installed:
 
 - Python 2.7
-
 - MySQL 5.5
-
 - pip
 - Node.js with npm
 - [Bower](http://bower.io/)
@@ -191,3 +192,10 @@ update everything with:
 ```bash
 $ fab dependencies
 ```
+
+
+### Update the database
+
+If someone has added migrations, you can
+run `fab update_app` to run the migrations and update your
+development database.
