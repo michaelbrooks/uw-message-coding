@@ -27,7 +27,7 @@ fab dependencies update_app
 if grep -q 'workon' /home/vagrant/.bashrc; then
     echo "workon already in bashrc"
 else
-    echo "workon coding_tool" >> /home/vagrant/.bashrc
+    echo "workon message_coding" >> /home/vagrant/.bashrc
     echo "added workon to bashrc"
 fi
 
