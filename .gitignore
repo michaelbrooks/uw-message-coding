@@ -1,0 +1,56 @@
+# Python bytecode:
+*.py[co]
+
+# Packaging files:
+*.egg*
+
+# Sphinx docs:
+build
+
+# SQLite3 database files:
+*.db
+
+# Logs:
+*.log
+
+# Eclipse
+.project
+.pydevproject
+.settings
+
+# Linux Editors
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+.elc
+auto-save-list
+tramp
+.\#*
+*.swp
+*.swo
+
+# Mac
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Intellij Modules
+*.iml
+/.idea
+
+# Node
+/node_modules
+
+# Dist settings
+/.env
+/compiled
+
+/.fabricrc
+/.vagrant
+/message_coding/static/bower
+/message_coding/static/CACHE
+

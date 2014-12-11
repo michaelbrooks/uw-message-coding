@@ -1,0 +1,11 @@
+{
+  "name": "message_coding",
+  "version": "0.0.1",
+  "authors": [
+    "Michael Brooks <mjbrooks@uw.edu>"
+  ],
+  "dependencies": {
+    "coffee-script": "^1.8.0",
+    "less": "^2.1.1"
+  }
+}

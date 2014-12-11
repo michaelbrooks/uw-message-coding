@@ -1,0 +1,6 @@
+from __future__ import absolute_import
+
+from .base import *
+
+COMPRESS_OFFLINE = True
+
