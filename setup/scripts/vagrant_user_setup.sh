@@ -21,7 +21,7 @@ mkvirtualenv message_coding -a $PROJECT_ROOT || true
 pip install -r requirements/local.txt
 
 # Bring everything up to date
-fab dependencies update_app
+fab dependencies migrate
 
 # Add the workon command to the bashrc
 if grep -q 'workon' /home/vagrant/.bashrc; then
