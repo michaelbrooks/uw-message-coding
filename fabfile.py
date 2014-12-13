@@ -145,7 +145,13 @@ def make_test_data():
     _target_local()
 
     outfile = PROJECT_ROOT / 'setup' / 'test_data.json'
-    apps = ' '.join(['coding', 'dataset', 'project', 'auth', '--exclude=auth.Permission'])
+    apps = ' '.join(['base', 'coding', 'dataset', 'project', 'auth', '--exclude=auth.Permission'])
 
     print green("Saving test data from %s to %s" % (apps, outfile))
     _manage_py("dumpdata --indent=2 %s > %s" % (apps, outfile))
+
+def reset_db():
+    """Removes all of the tables"""
+    _target_local()
+    print red("WARNING! Deleting the database!")
+    _manage_py("reset_db")

@@ -34,3 +34,4 @@ django-debug-toolbar
 # utils
 path.py
 dj-database-url
+django-extensions

@@ -89,7 +89,7 @@ Below is the basic project file structure:
 
 ```
 .
-├── setup               # Scripts and templates for setting up running machines
+├── setup                 # Scripts and templates for setting up running machines
 │
 ├── requirements          # Python dependency lists for pip
 │   ├── base.txt         # Requirements for all setups
@@ -98,8 +98,13 @@ Below is the basic project file structure:
 │   └── requirements     # Additional requirements for running tests
 │
 ├── message_coding
-│   ├── message_coding # The Django project files (settings, wsgi.py, main urls.py)
-│   ├── base               # The main Django application for the site (models, views, urls)
+│   ├── message_coding     # The Django project files (settings, wsgi.py, main urls.py)
+│   ├── base               # Global Django application containing cross-cutting stuff
+│   ├── apps               # Site modules
+│   │   ├── project       # App for high-level project stuff
+│   │   ├── dataset       # App for dataset-related stuff
+│   │   └── coding        # App for code schemes and coding stuff
+│   │
 │   ├── templates          # Global site templates
 │   ├── static             # Static files (javascript, css, bower components, etc.)
 │   └── manage.py          # The Django management script
@@ -111,6 +116,58 @@ Below is the basic project file structure:
 Workflow
 --------
 
+Some common tasks you might need to do...
+
+
+### Install dependencies
+
+If someone has added Python packages to one of the files in
+`requirements/*.txt`, added Bower packages to `bower.json`,
+or added NPM packages to `package.json`, you can
+update everything with:
+
+```bash
+$ fab dependencies
+```
+
+
+### Update the database
+
+If someone has added migrations, you can
+run `fab migrate` to run the migrations and update your
+development database.
+
+Should you need to reset your database,
+you can use `fab reset_db` but be CAREFUL with this.
+
+### Load the test data
+
+There is some test data contained in the file `setup/test_data.json`.
+After you run `fab migrate` to create your database structure,
+you can load the test data:
+
+```bash
+$ fab load_test_data
+```
+
+This data contains two user profiles. There is an admin
+user that can access the admin controls, as well
+as another user who owns a project. Below are their
+credentials:
+
+```
+Test user: testuser/password
+Admin user: admin/admin
+```
+
+If you change the database structure or otherwise need to update
+the test data file, you can run:
+
+```bash
+$ fab make_test_data
+```
+
+
 ### Start the webserver
 
 Change to the project directory and start the development
@@ -121,7 +178,7 @@ If you are running in a Vagrant VM, you can view the site
 at http://localhost:8080. Otherwise, use http://localhost:8000.
 
 
-### Create styles
+### Create new styles
 
 Add new CSS files to `message_coding/static/css`.
 To load these in a Django template, add the following:
@@ -180,50 +237,3 @@ and add the package to the dependencies list in `bower.json`.
 
 You will then need to add references to the appropriate files
 in your templates or wherever they need to go.
-
-
-### Update when dependencies have changed
-
-If someone has added Python packages to one of the files in
-`requirements/*.txt`, added Bower packages to `bower.json`,
-or added NPM packages to `package.json`, you can
-update everything with:
-
-```bash
-$ fab dependencies
-```
-
-
-### Update the database
-
-If someone has added migrations, you can
-run `fab migrate` to run the migrations and update your
-development database.
-
-
-### Load the test data
-
-There is some test data contained in the file `setup/test_data.json`.
-After you run `fab migrate` to create your database structure,
-you can load the test data:
-
-```bash
-$ fab load_test_data
-```
-
-This data contains two user profiles. There is an admin
-user that can access the admin controls, as well
-as another user who owns a project. Below are their
-credentials:
-
-```
-Test user: testuser/password
-Admin user: admin/admin
-```
-
-If you change the database structure or otherwise need to update
-the test data file, you can run:
-
-```bash
-$ fab make_test_data
-```

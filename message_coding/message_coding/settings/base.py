@@ -218,6 +218,7 @@ DJANGO_APPS = (
     # Admin panel and documentation:
     'django.contrib.admin',
     # 'django.contrib.admindocs',
+    'django_extensions',
 )
 
 # Apps specific for this project go here.
