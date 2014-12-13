@@ -1,11 +1,11 @@
 from django.db import models
 from django.conf import settings
 
-from base.models import NameDescriptionMixin
+from base.models import NameDescriptionMixin, CreatedAtField
 
 
 class Scheme(NameDescriptionMixin):
-    created_at = models.DateTimeField()
+    created_at = CreatedAtField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL)
     project = models.ForeignKey('project.Project', related_name="schemes")
 
@@ -14,7 +14,7 @@ class SchemeVersion(NameDescriptionMixin):
     """A version of a coding scheme"""
 
     scheme = models.ForeignKey(Scheme, related_name='versions')
-    created_at = models.DateTimeField()
+    created_at = CreatedAtField()
     number = models.PositiveIntegerField()
 
 
@@ -31,7 +31,7 @@ class Code(NameDescriptionMixin):
 
 class Task(NameDescriptionMixin):
     """Defines a coding task: a group of coders, a selection of data, and a coding scheme"""
-    created_at = models.DateTimeField()
+    created_at = CreatedAtField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="tasks_owned")
 
     selection = models.ForeignKey('dataset.Selection')

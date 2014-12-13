@@ -31,3 +31,9 @@ else
     echo "added workon to bashrc"
 fi
 
+if grep -q 'remount' /home/vagrant/.bashrc; then
+    echo "remount already in bashrc"
+else
+    echo "alias remount_vagrant='mount -o remount home_vagrant_uw-message-coding'" >> /home/vagrant/.bashrc
+    echo "added remount_vagrant to bashrc"
+fi

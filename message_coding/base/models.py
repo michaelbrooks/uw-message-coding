@@ -6,6 +6,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.conf import settings
 
+
 class NameDescriptionMixin(models.Model):
     """Inherit from this to add name/description fields"""
 
@@ -14,3 +15,11 @@ class NameDescriptionMixin(models.Model):
 
     name = models.CharField(max_length=150)
     description = models.TextField()
+
+
+class CreatedAtField(models.DateTimeField):
+    """A datetime field that auto-nows automatically"""
+
+    def __init__(self, *args, **kwargs):
+        kwargs['auto_now'] = True
+        super(CreatedAtField, self).__init__(*args, **kwargs)
