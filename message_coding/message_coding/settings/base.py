@@ -37,9 +37,13 @@ PROJECT_ROOT = SITE_ROOT.parent
 # Site name:
 SITE_NAME = DJANGO_ROOT.basename()
 
+# Id for the Sites framework
+SITE_ID = 1
+
 # Add our project to our pythonpath, this way we don't need to type our project
 # name in our dotted import paths:
 sys.path.append(DJANGO_ROOT)
+
 ########## END PATH CONFIGURATION
 
 
@@ -220,6 +224,9 @@ DJANGO_APPS = (
 LOCAL_APPS = (
     # Application base, containing global templates.
     'base',
+    'apps.coding',
+    'apps.dataset',
+    'apps.project',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
