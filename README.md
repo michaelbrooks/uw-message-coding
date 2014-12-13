@@ -18,8 +18,8 @@ There is configuration included to run this project
 inside an Ubuntu virtual machine controlled by Vagrant.
 
 This is especially recommended on Windows.
-If you go that route, you can skip the Prerequisites and Development Setup
-sections below.
+If you go this route, you can skip the Manual Setup
+section below.
 
 Instead, follow these steps:
 
