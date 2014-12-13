@@ -129,3 +129,23 @@ def runserver():
 
     print green("Running the development webserver...")
     _manage_py('runserver 0.0.0.0:8000')
+
+
+def load_test_data():
+    _target_local()
+
+    infile = PROJECT_ROOT / 'setup' / 'test_data.json'
+
+    print green("Loading test data from %s" % infile)
+    _manage_py("loaddata %s" % infile)
+
+
+def make_test_data():
+    """Updates the test_data.json file based on what is in the database"""
+    _target_local()
+
+    outfile = PROJECT_ROOT / 'setup' / 'test_data.json'
+    apps = ' '.join(['coding', 'dataset', 'project', 'auth', '--exclude=auth.Permission'])
+
+    print green("Saving test data from %s to %s" % (apps, outfile))
+    _manage_py("dumpdata --indent=2 %s > %s" % (apps, outfile))

@@ -1,0 +1,201 @@
+[
+{
+  "fields": {
+    "created_at": "2014-12-13T02:59:03Z",
+    "scheme": 1,
+    "number": 1,
+    "name": "Initial version",
+    "description": "Nothing to say here"
+  },
+  "model": "coding.schemeversion",
+  "pk": 1
+},
+{
+  "fields": {
+    "scheme_version": 1,
+    "name": "Goodness",
+    "description": "The goodness or badness"
+  },
+  "model": "coding.codegroup",
+  "pk": 1
+},
+{
+  "fields": {
+    "code_group": 1,
+    "scheme_version": 1,
+    "name": "Very good",
+    "description": "Better than good"
+  },
+  "model": "coding.code",
+  "pk": 1
+},
+{
+  "fields": {
+    "code_group": 1,
+    "scheme_version": 1,
+    "name": "Good",
+    "description": "Good but not sooo good"
+  },
+  "model": "coding.code",
+  "pk": 2
+},
+{
+  "fields": {
+    "code_group": 1,
+    "scheme_version": 1,
+    "name": "Eh",
+    "description": "Sorta ok"
+  },
+  "model": "coding.code",
+  "pk": 3
+},
+{
+  "fields": {
+    "code_group": 1,
+    "scheme_version": 1,
+    "name": "Bad",
+    "description": "Not really that good at all"
+  },
+  "model": "coding.code",
+  "pk": 4
+},
+{
+  "fields": {
+    "code_group": 1,
+    "scheme_version": 1,
+    "name": "Rotten",
+    "description": "Just the WORST"
+  },
+  "model": "coding.code",
+  "pk": 5
+},
+{
+  "fields": {
+    "text": "http://40.media.tumblr.com/e33c97ce408df793ae4849a727c3cf7a/tumblr_nbr7kwO5Fe1tlnaoto1_500.jpg I just don\u2019t get why this breed is popular at all. Sure it\u2019s friendly but it\u2019s also kind of moist. Just a moist, chubby cat.",
+    "time": "2014-12-13T02:55:30Z",
+    "sender": "worstcats",
+    "dataset": 1
+  },
+  "model": "dataset.message",
+  "pk": 1
+},
+{
+  "fields": {
+    "text": "http://40.media.tumblr.com/950887e965f819ce923d01b66da48286/tumblr_nbr7peujwe1tlnaoto1_400.jpg I just don\u2019t think it\u2019s as nice looking at other cats. Other kinds of cat are a lot softer. And less shiney.",
+    "time": "2014-12-13T02:55:41Z",
+    "sender": "worstcats",
+    "dataset": 1
+  },
+  "model": "dataset.message",
+  "pk": 2
+},
+{
+  "fields": {
+    "text": "http://41.media.tumblr.com/43da98048bba77087cef4a2fe3cf7da0/tumblr_nbr7z2p7VE1tlnaoto1_500.jpg\r\nwhy is it so MOIST though. This is a terrible cat",
+    "time": "2014-12-13T02:56:31Z",
+    "sender": "worstcats",
+    "dataset": 1
+  },
+  "model": "dataset.message",
+  "pk": 3
+},
+{
+  "fields": {
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "is_active": true,
+    "is_superuser": true,
+    "is_staff": true,
+    "last_login": "2014-12-13T03:02:38Z",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$12000$Za8vqXJIHGFS$t8UNR9LpBDGaIZ4LiL26NqFr5QNt0udWVec/Ig7opQg=",
+    "email": "",
+    "date_joined": "2014-12-13T01:36:27Z"
+  },
+  "model": "auth.user",
+  "pk": 1
+},
+{
+  "fields": {
+    "username": "testuser",
+    "first_name": "Test",
+    "last_name": "User",
+    "is_active": true,
+    "is_superuser": false,
+    "is_staff": false,
+    "last_login": "2014-12-13T02:47:52Z",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$12000$fB80DT5wNaD4$bMgj7H8H1Q1kuKkhenaclg6ONcwEAsNpcbtYVXHh8LI=",
+    "email": "test@example.com",
+    "date_joined": "2014-12-13T02:47:52Z"
+  },
+  "model": "auth.user",
+  "pk": 2
+},
+{
+  "fields": {
+    "selection": 1,
+    "name": "Test Task",
+    "created_at": "2014-12-13T03:01:56Z",
+    "assigned_coders": [
+      1,
+      2
+    ],
+    "scheme_version": 1,
+    "owner": 2,
+    "description": "A simple coding task"
+  },
+  "model": "project.task",
+  "pk": 1
+},
+{
+  "fields": {
+    "owner": 2,
+    "created_at": "2014-12-13T02:53:01Z",
+    "name": "Test Project",
+    "members": [
+      1,
+      2
+    ],
+    "description": "This is the most bestest project ever!\r\n\r\nhttp://bit.ly/1Gwm5bQ"
+  },
+  "model": "project.project",
+  "pk": 1
+},
+{
+  "fields": {
+    "owner": 2,
+    "created_at": "2014-12-13T02:57:55Z",
+    "selection": "",
+    "type": "ALL",
+    "dataset": 1
+  },
+  "model": "dataset.selection",
+  "pk": 1
+},
+{
+  "fields": {
+    "owner": 2,
+    "project": 1,
+    "created_at": "2014-12-13T02:53:29Z",
+    "name": "Test Dataset",
+    "description": "An awesome dataset full of cats."
+  },
+  "model": "dataset.dataset",
+  "pk": 1
+},
+{
+  "fields": {
+    "owner": 2,
+    "project": 1,
+    "created_at": "2014-12-13T02:58:38Z",
+    "name": "Goodness",
+    "description": "A basic scheme"
+  },
+  "model": "coding.scheme",
+  "pk": 1
+}
+]

@@ -199,3 +199,31 @@ $ fab dependencies
 If someone has added migrations, you can
 run `fab migrate` to run the migrations and update your
 development database.
+
+
+### Load the test data
+
+There is some test data contained in the file `setup/test_data.json`.
+After you run `fab migrate` to create your database structure,
+you can load the test data:
+
+```bash
+$ fab load_test_data
+```
+
+This data contains two user profiles. There is an admin
+user that can access the admin controls, as well
+as another user who owns a project. Below are their
+credentials:
+
+```
+Test user: testuser/password
+Admin user: admin/admin
+```
+
+If you change the database structure or otherwise need to update
+the test data file, you can run:
+
+```bash
+$ fab make_test_data
+```

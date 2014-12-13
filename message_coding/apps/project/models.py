@@ -4,7 +4,7 @@ from django.conf import settings
 from base.models import NameDescriptionMixin, CreatedAtField
 
 
-class Project(models.Model):
+class Project(NameDescriptionMixin):
 
     created_at = CreatedAtField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL)
