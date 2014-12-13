@@ -79,7 +79,7 @@ to set up the project:
 4. Install any additional requirements and run the database migrations:
 
    ```bash
-   $ fab dependencies update_app
+   $ fab dependencies migrate
    ```
 
 Structure
