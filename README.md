@@ -197,5 +197,5 @@ $ fab dependencies
 ### Update the database
 
 If someone has added migrations, you can
-run `fab update_app` to run the migrations and update your
+run `fab migrate` to run the migrations and update your
 development database.

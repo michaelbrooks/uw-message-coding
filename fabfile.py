@@ -86,8 +86,8 @@ def dependencies():
             local('bower prune --config.interactive=false')
 
 
-def update_app():
-    """Updates the code, database, and static files"""
+def migrate():
+    """Runs migrations"""
 
     _target_local()
 
@@ -124,4 +124,8 @@ def _target_local():
 
 def runserver():
     """Runs the Django development server"""
+
+    _target_local()
+
+    print green("Running the development webserver...")
     _manage_py('runserver 0.0.0.0:8000')

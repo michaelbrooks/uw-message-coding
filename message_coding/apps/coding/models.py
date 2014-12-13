@@ -27,13 +27,3 @@ class Code(NameDescriptionMixin):
     """Defines a single code"""
     scheme_version = models.ForeignKey(SchemeVersion, related_name="codes")
     code_group = models.ForeignKey(CodeGroup, related_name="codes")
-
-
-class Task(NameDescriptionMixin):
-    """Defines a coding task: a group of coders, a selection of data, and a coding scheme"""
-    created_at = CreatedAtField()
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="tasks_owned")
-
-    selection = models.ForeignKey('dataset.Selection')
-    scheme_version = models.ForeignKey(SchemeVersion)
-    assigned_coders = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tasks_assigned')

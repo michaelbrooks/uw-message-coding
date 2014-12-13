@@ -13,3 +13,11 @@ class Project(models.Model):
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='projects')
 
 
+class Task(NameDescriptionMixin):
+    """Defines a coding task: a group of coders, a selection of data, and a coding scheme"""
+    created_at = CreatedAtField()
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="tasks_owned")
+
+    selection = models.ForeignKey('dataset.Selection')
+    scheme_version = models.ForeignKey('coding.SchemeVersion')
+    assigned_coders = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tasks_assigned')
