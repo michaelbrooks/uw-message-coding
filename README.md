@@ -117,6 +117,7 @@ Below is the basic project file structure:
 └── Vagrantfile          # Defines an Ubuntu VM for testing
 ```
 
+
 Workflow
 --------
 
