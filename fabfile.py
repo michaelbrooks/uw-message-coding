@@ -132,6 +132,7 @@ def runserver():
 
 
 def load_test_data():
+    """Load test data from test_data.json"""
     _target_local()
 
     infile = PROJECT_ROOT / 'setup' / 'test_data.json'
