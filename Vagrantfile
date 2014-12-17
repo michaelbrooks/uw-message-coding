@@ -28,5 +28,4 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.synced_folder ".", "/home/vagrant/uw-message-coding"
 
     config.vm.provision "shell", path: "setup/scripts/vagrant_provision.sh"
-    config.vm.provision "shell", path: "setup/scripts/vagrant_user_setup.sh", privileged: false
 end

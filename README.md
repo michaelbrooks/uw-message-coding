@@ -51,36 +51,35 @@ You will need to have the following packages installed:
 - Node.js with npm
 - [Bower](http://bower.io/)
 
-Once you have the above prerequisites, follow these steps
-to set up the project:
+Once you have the above prerequisites working,
+clone this repository to your machine.
 
-1. Create a MySQL database.
+Go to the directory where you have cloned the repository
+and run the setup script, as below:
 
-2. Create a file in the main project folder
-   called `.env` with the following:
+```bash
+$ cd uw-message-coding
+$ ./setup/scripts/dev_setup.sh
+```
 
-   ```
-   DATABASE_URL=mysql://USER:PASSWORD@HOST:PORT/NAME
-   ```
+This script will perform the following steps for you:
 
-   There is an example `.env` file in `setup/templates/vagrant_dot_env`.
+1. Check that your system has the prerequisites available.
+2. Prompt you for database settings. If it can't
+   reach the database, it will give you a snippet of MySQL
+   code needed to create the database with the supplied
+   settings.
+3. Create a Python virtual environment.
+   This keeps Python packages needed for this project
+   from interfering with any other packages you already
+   have installed on your system.
+4. Creates a `.env` file in your project directory
+   that sets environment variables for Django, most importantly
+   the database connection settings.
+5. Installs python packages, NPM packages, and bower
+   packages (using the `fab dependencies` command).
+6. Runs the database migrations (using `fab migrate`).
 
-3. Install additional Python dependencies.
-
-   Note: It is recommended that you create and work in
-   a [virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/).
-
-   Run this to install needed python modules:
-
-   ```bash
-   $ pip install -r requirements/local.txt
-   ```
-
-4. Install any additional requirements and run the database migrations:
-
-   ```bash
-   $ fab dependencies migrate
-   ```
 
 Structure
 ---------

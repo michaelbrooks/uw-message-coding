@@ -1,10 +1,11 @@
+#!/bin/bash
+
 # Collection of useful functions
 
 function loggy {
     # Prints a message in green with lots of space around it.
     # If the 2nd parameter is error, message is red
     # http://misc.flogisoft.com/bash/tip_colors_and_formatting
-    echo ""
 
     case "$2" in
         error)
@@ -21,7 +22,8 @@ function loggy {
             ;;
     esac
 
-    echo -e $color$1
+    echo -e "$color"
+    echo -e "$1"
     echo -e "\e[0m"
 }
 
@@ -100,6 +102,18 @@ function secure {
     failif "Failed to remove global permissions on $1"
 }
 
-function script_dir {
-    echo $(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+function generateRandomString {
+    python -c 'import random, string; print "".join([random.SystemRandom().choice(string.digits + string.letters) for i in range(100)])'
+}
+
+function buffer_fail {
+    echo "    $1"
+    output="$($1 2>&1)"
+    if [ $? -gt 0 ]; then
+        loggy "${output}" "error"
+        loggy "----------" "error"
+        loggy "$2" "error"
+        exit 1
+    fi
+    echo "    Success."
 }
