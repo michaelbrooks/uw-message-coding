@@ -34,8 +34,13 @@ Instead, follow these steps:
    $ vagrant up
    ```
 
-3. Once your Ubuntu VM is started, you can SSH into it with `vagrant ssh`
-   or SSH to `localhost:2222`.
+3. Once your Ubuntu VM is started, you can SSH into it with `vagrant ssh`.
+   This will use a key-based authentication to log you into the VM.
+
+   You can also log in using any SSH client (e.g. PuTTY), at `localhost:2222`.
+   The username and password are both `vagrant`, or you can
+   also configure key-based auth: use `vagrant ssh-config` to find
+   the private key for accessing the VM.
 
    When you log in, your terminal will automatically drop into
    a Python virtualenv and cd to `/home/vagrant/uw-message-coding`.
@@ -138,6 +143,7 @@ development database.
 
 Should you need to reset your database,
 you can use `fab reset_db` but be CAREFUL with this.
+
 
 ### Load the test data
 
