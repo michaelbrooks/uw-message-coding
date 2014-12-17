@@ -91,7 +91,7 @@
     "is_active": true,
     "is_superuser": true,
     "is_staff": true,
-    "last_login": "2014-12-17T01:55:42Z",
+    "last_login": "2014-12-17T02:05:41Z",
     "groups": [],
     "user_permissions": [],
     "password": "pbkdf2_sha256$12000$Za8vqXJIHGFS$t8UNR9LpBDGaIZ4LiL26NqFr5QNt0udWVec/Ig7opQg=",
@@ -118,6 +118,39 @@
   },
   "model": "auth.user",
   "pk": 2
+},
+{
+  "fields": {
+    "owner": 2,
+    "created_at": "2014-12-17T02:09:48Z",
+    "task": 1,
+    "message": 1,
+    "code": 2
+  },
+  "model": "project.codeinstance",
+  "pk": 1
+},
+{
+  "fields": {
+    "owner": 2,
+    "created_at": "2014-12-17T02:09:56Z",
+    "task": 1,
+    "message": 3,
+    "code": 4
+  },
+  "model": "project.codeinstance",
+  "pk": 2
+},
+{
+  "fields": {
+    "owner": 1,
+    "created_at": "2014-12-17T02:10:02Z",
+    "task": 1,
+    "message": 3,
+    "code": 5
+  },
+  "model": "project.codeinstance",
+  "pk": 3
 },
 {
   "fields": {

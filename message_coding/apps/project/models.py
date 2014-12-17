@@ -22,3 +22,13 @@ class Task(NameDescriptionMixin):
     selection = models.ForeignKey('dataset.Selection')
     scheme = models.ForeignKey('coding.Scheme')
     assigned_coders = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tasks_assigned')
+
+
+class CodeInstance(models.Model):
+    """A code applied to a data point in the context of a task"""
+    created_at = CreatedAtField()
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="code_instances")
+    task = models.ForeignKey(Task, related_name='code_instances')
+
+    message = models.ForeignKey('dataset.Message', related_name='code_instances')
+    code = models.ForeignKey('coding.Code', related_name='instances')
