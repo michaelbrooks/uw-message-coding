@@ -35,3 +35,4 @@ django-debug-toolbar
 path.py
 dj-database-url
 django-extensions
+django-widget-tweaks
