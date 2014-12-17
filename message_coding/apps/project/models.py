@@ -18,6 +18,7 @@ class Task(NameDescriptionMixin):
     created_at = CreatedAtField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="tasks_owned")
 
+    project = models.ForeignKey('project.Project')
     selection = models.ForeignKey('dataset.Selection')
     scheme_version = models.ForeignKey('coding.SchemeVersion')
     assigned_coders = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tasks_assigned')

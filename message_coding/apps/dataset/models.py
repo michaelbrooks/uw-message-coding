@@ -9,7 +9,7 @@ class Dataset(NameDescriptionMixin):
 
     created_at = CreatedAtField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL)
-    project = models.ForeignKey('project.Project', related_name='datasets')
+    projects = models.ManyToManyField('project.Project', related_name='datasets')
 
 
 class Selection(models.Model):
