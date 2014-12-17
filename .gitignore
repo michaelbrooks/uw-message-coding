@@ -53,4 +53,4 @@ Desktop.ini
 /.vagrant
 /message_coding/static/bower
 /message_coding/static/CACHE
-
+/.virtualenv

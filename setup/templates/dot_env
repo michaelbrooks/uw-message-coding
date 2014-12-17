@@ -6,9 +6,7 @@ DJANGO_SETTINGS_MODULE=message_coding.settings.local
 # https://github.com/kennethreitz/dj-database-url
 # e.g. mysql://USER:PASSWORD@HOST:PORT/NAME
 
-DATABASE_URL=mysql://dbuser:dbpass@localhost:3306/codingdb
+DATABASE_URL=mysql://{{ DATABASE_USER }}:{{ DATABASE_PASS }}@{{ DATABASE_HOST }}:{{ DATABASE_PORT }}/{{ DATABASE_NAME}}
 
-
-SECRET_KEY=od95OBdo0vp1vw8N385n56tKVocE7EtziHMHXGGv9g1fAxZ9U5
-GOOGLE_ANALYTICS_ID=
-
+SECRET_KEY={{ SECRET_KEY }}
+GOOGLE_ANALYTICS_ID={{ GOOGLE_ANALYTICS_ID }}

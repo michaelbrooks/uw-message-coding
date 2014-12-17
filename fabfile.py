@@ -71,7 +71,7 @@ def dependencies():
     with lcd(PROJECT_ROOT):
         print green("Installing python requirements...")
         for req in env.pip_requirements:
-            local('pip install -r %s' % req)
+            local('pip install -r %s | grep -vi "requirement already satisfied"' % req)
 
         if path('package.json').exists:
             print green("Installing node.js requirements...")
@@ -155,3 +155,26 @@ def reset_db():
     _target_local()
     print red("WARNING! Deleting the database!")
     _manage_py("reset_db")
+
+
+def interpolate_env(outpath=None):
+    """Writes a .env file with variables interpolated from the current environment"""
+    from django.template import Template, Context
+    from django.conf import settings
+    settings.configure()
+
+    if outpath is None:
+        outpath = PROJECT_ROOT / '.env'
+    else:
+        outpath = path(outpath)
+    if outpath.exists():
+        local('mv %s %s.bak' % (outpath, outpath))
+        print "Backed up .env file to %s.bak" % outpath
+
+    dot_env_path = PROJECT_ROOT / 'setup' / 'templates' / 'dot_env'
+
+    with open(dot_env_path, 'rb') as infile:
+        template = Template(infile.read())
+
+        with open(outpath, 'wb') as outfile:
+            outfile.write(template.render(Context(os.environ)))
