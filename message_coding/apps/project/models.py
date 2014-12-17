@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 
 from base.models import NameDescriptionMixin, CreatedAtField
-
+from django.core.urlresolvers import reverse
 
 class Project(NameDescriptionMixin):
 
@@ -22,6 +22,13 @@ class Task(NameDescriptionMixin):
     selection = models.ForeignKey('dataset.Selection')
     scheme = models.ForeignKey('coding.Scheme')
     assigned_coders = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tasks_assigned')
+
+    def get_absolute_url(self):
+        """What is the main url for this object"""
+        return reverse('project_task', kwargs={
+            'pk': self.pk,
+            'project_pk': self.project.pk,
+        })
 
 
 class CodeInstance(models.Model):

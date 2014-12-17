@@ -219,6 +219,7 @@ DJANGO_APPS = (
     'django.contrib.admin',
     # 'django.contrib.admindocs',
     'django_extensions',
+    'widget_tweaks',
 )
 
 # Apps specific for this project go here.

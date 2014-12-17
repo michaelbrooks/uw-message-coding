@@ -1,0 +1,15 @@
+{% extends "_layouts/base.html" %}
+
+{% block page_title %}Task view{% endblock %}
+{% block page_class %}project-task-view{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+    <h1>{{ task.name }}</h1>
+
+    <p>{{ task.description }}</p>
+
+    <p>In project: {{ project.name }}</p>
+    </div>
+{% endblock %}
