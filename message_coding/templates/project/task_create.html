@@ -1,0 +1,38 @@
+{% extends "_layouts/base.html" %}
+{% load widget_tweaks %}
+
+{% block page_title %}Create a task{% endblock %}
+{% block page_class %}project-task-create{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Create a task</h1>
+
+        <form class="form" method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                {{ form.name.label_tag }}
+                {% render_field form.name class+="form-control" %}
+            </div>
+
+            <div class="form-group">
+                {{ form.description.label_tag }}
+                {% render_field form.description class+="form-control" %}
+            </div>
+
+            <div class="form-group">
+                {{ form.scheme.label_tag }}
+                {% render_field form.scheme class+="form-control" %}
+            </div>
+
+            <div class="form-group">
+                {{ form.assigned_coders.label_tag }}
+                {% render_field form.assigned_coders class+="form-control" %}
+                <p class="help-block">{{ form.assigned_coders.help_text }}</p>
+            </div>
+
+            <button type="submit" class="btn btn-lg btn-primary">Create</button>
+        </form>
+    </div>
+{% endblock %}
