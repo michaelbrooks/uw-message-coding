@@ -11,6 +11,12 @@ class Project(NameDescriptionMixin):
 
     # People who belong to this project
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='projects')
+    
+    def get_absolute_url(self):
+        """What is the main url for this object"""
+        return reverse('project', kwargs={
+            'pk': self.pk,
+        })
 
 
 class Task(NameDescriptionMixin):

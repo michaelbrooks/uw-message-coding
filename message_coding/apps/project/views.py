@@ -2,11 +2,33 @@
 from django.views.generic import CreateView, DetailView
 
 
-
 import models
 from apps.dataset import models as dataset_models
 from base.views import ProjectUrlMixin
+class CreateProjectView(CreateView):
+    """View for creating new projects"""
 
+    model = models.Project
+
+    # Let Django autogenerate the form for now
+    fields = ['name', 'description', 'members']
+
+    template_name = "project/project_create.html"
+
+    def form_valid(self, form):
+        """What to do when a project is created?"""
+
+        # The user comes from the session
+        # TODO: require logging in
+        form.instance.owner = self.request.user
+
+
+        return super(CreateProjectView, self).form_valid(form)
+
+class ProjectDetailView(DetailView):
+    """View for viewing projects"""
+    model = models.Project
+    template_name = 'project/project_detail.html'
 
 class TaskDetailView(ProjectUrlMixin, DetailView):
     """View for viewing tasks"""
