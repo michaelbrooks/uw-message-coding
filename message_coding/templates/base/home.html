@@ -28,12 +28,13 @@
       <a class="navbar-brand" href="#">Project name</a>
     </div>
     <div class="navbar-collapse collapse">
-      <form class="navbar-form navbar-right">
+      <form class="navbar-form navbar-right" method="post" action="{% url 'django.contrib.auth.views.login' %}" >
+        {% csrf_token %}
         <div class="form-group">
-          <input type="text" placeholder="Email" class="form-control">
+          <input type="text" placeholder="Username" class="form-control" name="username">
         </div>
         <div class="form-group">
-          <input type="password" placeholder="Password" class="form-control">
+          <input type="password" placeholder="Password" class="form-control" name="password">
         </div>
         <button type="submit" class="btn btn-success">Sign in</button>
       </form>

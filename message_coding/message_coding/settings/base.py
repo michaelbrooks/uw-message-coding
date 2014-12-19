@@ -94,6 +94,9 @@ USE_L10N = True
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
 USE_TZ = True
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-LOGIN_REDIRECT_URL
+LOGIN_REDIRECT_URL = "/home"
 ########## END GENERAL CONFIGURATION
 
 
