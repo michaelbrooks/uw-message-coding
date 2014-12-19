@@ -100,6 +100,14 @@ if ! (exists 'virtualenvwrapper.sh' || exists 'virtualenv'); then
     exit 1
 fi
 
+if exists 'virtualenvwrapper.sh' && [ -z "$WORKON_HOME" ]; then
+    loggy "It is recommended that you load virtualenvwrapper on login.\nYou can add the following to ~/.bashrc :" "warn"
+    echo "------"
+    echo "export WORKON_HOME=$HOME/.virtualenvs"
+    echo "source \$(which virtualenvwrapper_lazy.sh)"
+    echo "------"
+fi
+
 loggy "Confirmed Python 2.7, pip, virtualenv, mysql, npm, and bower."
 
 
