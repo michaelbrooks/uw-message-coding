@@ -63,6 +63,11 @@ else
 fi
 echo "Using npm at $NPM_EXE"
 
+if ! exists 'bower'; then
+    loggy "ERROR: Bower not installed.\nPlease install Bower on your machine.\nExample: sudo npm install -g bower" "error"
+    exit 1
+fi
+
 if exists 'mysql'; then
     MYSQL_EXE=$(which mysql)
 else
@@ -81,17 +86,21 @@ else
 fi
 echo "Using python at $PYTHON_EXE"
 
-if ! exists 'bower'; then
-    loggy "ERROR: Bower not installed.\nPlease install Bower on your machine.\nExample: sudo npm install -g bower" "error"
+if exists 'pip2.7'; then
+    PIP_EXE=$(which pip2.7)
+elif exists 'pip' && [[ $(python --version) == *"2.7"* ]]; then
+    PIP_EXE=$(which pip)
+else
+    loggy "ERROR: pip not available.\nPlease add pip to your python distribution.\nExample: sudo easy_install pip." "error"
     exit 1
 fi
 
 if ! (exists 'virtualenvwrapper.sh' || exists 'virtualenv'); then
-    loggy "ERROR: Virtualenv (and optionally virtualenvwrapper) must be installed.\nPlease install virtualenv on you machine.\nExample: sudo pip2.7 install virtualenv virtualenvwrapper" "error"
+    loggy "ERROR: Virtualenv (and optionally virtualenvwrapper) must be installed.\nPlease install virtualenv on you machine.\nExample: sudo $PIP_EXE install virtualenv virtualenvwrapper" "error"
     exit 1
 fi
 
-loggy "Confirmed Python 2.7, virtualenv, mysql, npm, and bower."
+loggy "Confirmed Python 2.7, pip, virtualenv, mysql, npm, and bower."
 
 
 
