@@ -50,10 +50,11 @@ Instead, follow these steps:
 
 You will need to have the following packages installed:
 
-- Python 2.7
 - MySQL 5.5
-- pip
-- Node.js with npm
+- Python 2.7 and [pip](https://pip.pypa.io/en/latest/installing.html)
+- [virtualenv](http://virtualenv.readthedocs.org/en/latest/virtualenv.html)
+- [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/install.html) (recommended)
+- [Node.js](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager)
 - [Bower](http://bower.io/)
 
 Once you have the above prerequisites working,
