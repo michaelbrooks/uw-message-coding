@@ -10,21 +10,20 @@ function loggy {
     case "$2" in
         error)
             # Red text
-            color="\e[1m\e[31m"
+            echo -e $'\e[1m\e[31m'
             ;;
         warn)
             # Red text
-            color="\e[33m"
+            echo -e $'\e[33m'
             ;;
         *)
             # Green text
-            color="\e[32m"
+            echo -e $'\e[32m'
             ;;
     esac
 
-    echo -e "$color"
-    echo -e "$1"
-    echo -e "\e[0m"
+    echo -e $1
+    echo -e $'\e[0m'
 }
 
 function exists {
