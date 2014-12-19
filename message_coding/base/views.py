@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.utils.translation import ugettext as _
 from django.apps import apps
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     """ Default view for the root """
@@ -36,3 +37,11 @@ class ProjectUrlMixin(object):
     def get_context_data(self, **kwargs):
         kwargs['project'] = self.get_project()
         return super(ProjectUrlMixin, self).get_context_data(**kwargs)
+
+
+
+class LoginRequiredMixin(object):
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
+        return login_required(view)

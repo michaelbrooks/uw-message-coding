@@ -4,8 +4,9 @@ from django.views.generic import CreateView, DetailView
 
 import models
 from apps.dataset import models as dataset_models
-from base.views import ProjectUrlMixin
-class CreateProjectView(CreateView):
+from base.views import ProjectUrlMixin, LoginRequiredMixin
+
+class CreateProjectView(LoginRequiredMixin,CreateView):
     """View for creating new projects"""
 
     model = models.Project
@@ -25,18 +26,18 @@ class CreateProjectView(CreateView):
 
         return super(CreateProjectView, self).form_valid(form)
 
-class ProjectDetailView(DetailView):
+class ProjectDetailView(LoginRequiredMixin,DetailView):
     """View for viewing projects"""
     model = models.Project
     template_name = 'project/project_detail.html'
 
-class TaskDetailView(ProjectUrlMixin, DetailView):
+class TaskDetailView(LoginRequiredMixin, ProjectUrlMixin, DetailView):
     """View for viewing tasks"""
     model = models.Task
     template_name = 'project/task_detail.html'
 
 
-class CreateTaskView(ProjectUrlMixin, CreateView):
+class CreateTaskView(LoginRequiredMixin, ProjectUrlMixin, CreateView):
     """View for creating new tasks"""
 
     model = models.Task
