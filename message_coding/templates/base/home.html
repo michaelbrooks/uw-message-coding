@@ -28,6 +28,7 @@
       <a class="navbar-brand" href="#">Project name</a>
     </div>
     <div class="navbar-collapse collapse">
+      {% if user.is_anonymous %}
       <form class="navbar-form navbar-right" method="post" action="{% url 'django.contrib.auth.views.login' %}" >
         {% csrf_token %}
         <div class="form-group">
@@ -38,6 +39,12 @@
         </div>
         <button type="submit" class="btn btn-success">Sign in</button>
       </form>
+      {% else %}
+         <ul class="nav navbar-nav navbar-right">
+          <li><p class="navbar-text">Welcome {{user.username}}!</p></li>
+          <li><a href="/accounts/logout">Logout</a></li>
+         </ul>
+      {% endif %}
     </div>
     <!--/.navbar-collapse -->
   </div>
