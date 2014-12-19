@@ -1,12 +1,24 @@
 
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView,TemplateView
 
 
 import models
+from django.apps import apps
 from apps.dataset import models as dataset_models
-from base.views import ProjectUrlMixin, LoginRequiredMixin
+from django.http import HttpResponse
+from base.views import ProjectUrlMixin
+from django.template import Context,loader
+from django.shortcuts import get_object_or_404
 
-class CreateProjectView(LoginRequiredMixin,CreateView):
+def index(request):
+    Project = apps.get_model('project.Project')
+    project = Project.objects.get(owner_id = request.user)
+    t = loader.get_template('project/dash_detail.html')
+    c = Context({'project':project,})
+    return HttpResponse(t.render(c))
+
+
+class CreateProjectView(CreateView):
     """View for creating new projects"""
 
     model = models.Project
@@ -25,19 +37,19 @@ class CreateProjectView(LoginRequiredMixin,CreateView):
 
 
         return super(CreateProjectView, self).form_valid(form)
-
-class ProjectDetailView(LoginRequiredMixin,DetailView):
+    
+class ProjectDetailView(DetailView):
     """View for viewing projects"""
     model = models.Project
     template_name = 'project/project_detail.html'
 
-class TaskDetailView(LoginRequiredMixin, ProjectUrlMixin, DetailView):
+class TaskDetailView(ProjectUrlMixin, DetailView):
     """View for viewing tasks"""
     model = models.Task
     template_name = 'project/task_detail.html'
 
 
-class CreateTaskView(LoginRequiredMixin, ProjectUrlMixin, CreateView):
+class CreateTaskView(ProjectUrlMixin, CreateView):
     """View for creating new tasks"""
 
     model = models.Task

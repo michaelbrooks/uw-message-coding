@@ -12,7 +12,7 @@ urlpatterns = patterns('',
                        # Examples:
                        # url(r'^$', 'messageCoding.views.home', name='home'),
                        # url(r'^blog/', include('blog.urls')),
-
+                       url(r'^user_dash/','apps.project.views.index'),
 
                        url(r'^project/', include('apps.project.urls')),
 
