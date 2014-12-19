@@ -1,0 +1,13 @@
+{% extends "_layouts/base.html" %}
+
+{% block page_title %}Dashboard view{% endblock %}
+{% block page_class %}dash_detail{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+    <h1>Dashboard of : {{project.owner_id }}</h1>
+
+    <p>Assigned Projects: {{ project.name }}</p>
+    </div>
+{% endblock %}
