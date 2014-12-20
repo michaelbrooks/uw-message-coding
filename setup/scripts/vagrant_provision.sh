@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Expects 1 argument, the full path to the project files
+
 set -e
-source /vagrant/setup/scripts/functions.sh
+PROJECT_ROOT=$1
+source ${PROJECT_ROOT}/setup/scripts/functions.sh
 set +e
 
 
@@ -40,25 +43,25 @@ echo "    DATABASE_URL=mysql://$DBUSER:$DBPASS@$DBHOST:$DBPORT/$DBNAME"
 
 loggy "Running development setup script...\n-----------------------------------"
 
-PROJECT_ROOT=/home/vagrant/uw-message-coding
 VENV_NAME=$(basename $PROJECT_ROOT)
-su --login -c "/vagrant/setup/scripts/dev_setup.sh $PROJECT_ROOT $DBHOST $DBPORT $DBNAME $DBUSER $DBPASS" vagrant
+su --login -c "${PROJECT_ROOT}/setup/scripts/dev_setup.sh $PROJECT_ROOT $DBHOST $DBPORT $DBNAME $DBUSER $DBPASS" vagrant
 
 loggy "-----------------------------------"
 
 # Add the workon command to the bashrc
 loggy "Augmenting user's bashrc file..."
 
-if grep -q 'workon' /home/vagrant/.bashrc; then
+VAGRANT_HOME=/home/vagrant
+if grep -q 'workon' ${VAGRANT_HOME}/.bashrc; then
     echo "workon already in bashrc"
 else
-    echo "workon $VENV_NAME" >> /home/vagrant/.bashrc
+    echo "workon $VENV_NAME" >> ${VAGRANT_HOME}/.bashrc
     echo "added workon to bashrc"
 fi
 
-if grep -q 'remount' /home/vagrant/.bashrc; then
+if grep -q 'remount' ${VAGRANT_HOME}/.bashrc; then
     echo "remount already in bashrc"
 else
-    echo "alias remount_vagrant='sudo mount -o remount home_vagrant_uw-message-coding'" >> /home/vagrant/.bashrc
+    echo "alias remount_vagrant='sudo mount -o remount home_vagrant_uw-message-coding'" >> ${VAGRANT_HOME}/.bashrc
     echo "added remount_vagrant to bashrc"
 fi

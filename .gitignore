@@ -46,7 +46,7 @@ Desktop.ini
 /node_modules
 
 # Dist settings
-/.env
+/.env*
 /compiled
 
 /.fabricrc

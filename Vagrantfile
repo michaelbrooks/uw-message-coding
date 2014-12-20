@@ -27,5 +27,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # argument is a set of non-required options.
     config.vm.synced_folder ".", "/home/vagrant/uw-message-coding"
 
-    config.vm.provision "shell", path: "setup/scripts/vagrant_provision.sh"
+    config.vm.provision "shell" do |s|
+        s.path = "setup/scripts/vagrant_provision.sh"
+        s.args = "/home/vagrant/uw-message-coding"
+    end
 end
