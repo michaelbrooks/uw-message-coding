@@ -11,5 +11,30 @@
     <p>{{ task.description }}</p>
 
     <p>In project: {{ project.name }}</p>
+    
+    <h3>Selection ({{ task.selection.dataset.messages.count }})</h3>
+    <ul>
+        {% for message in task.selection.dataset.messages.all %}
+        <li>{{ message.text }}</li>
+    {% endfor %}
+    </ul>
+    
+    <h3>Scheme</h3>
+    {% for code_group in task.scheme.code_groups.all %}
+    <h4>{{ code_group.name }} ({{ code_group.codes.count }})</h4>
+    <ul>
+        {% for code in code_group.codes.all %}
+        <li>{{ code.name }}</li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
+
+    <h3>Assigned Coders ({{ task.assigned_coders.count }})</h3>
+    <ul>
+        {% for coder in task.assigned_coders.all %}
+        <li>{{ coder }}</li>
+    {% endfor %}
+    </ul>
+
     </div>
 {% endblock %}
