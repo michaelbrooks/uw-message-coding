@@ -1,7 +1,6 @@
 
 from django.views.generic import CreateView, DetailView
 
-
 import models
 from django.apps import apps
 from apps.dataset import models as dataset_models

@@ -9,6 +9,34 @@
     <h1>{{ project.name }}</h1>
 
     <p>{{ project.description }}</p>
+    <h3>Members ({{ project.members.count }})</h3>
+    <ul>
+        {% for member in project.members.all %}
+        <li>{{ member }}</li>
+    {% endfor %}
+    </ul>
+    
+    <h3>Datesets ({{ project.datasets.count }})</h3>
+    <ul>
+        {% for dataset in project.datasets.all %}
+        <li>{{ dataset.name }} ({{  dataset.messages.count  }} messages)</li>
+    {% endfor %}
+    </ul>
+    
+    <h3>Schemes ({{ project.schemes.count }})</h3>
+    <ul>
+    {% for scheme in project.schemes.all %}
+        <li>{{ scheme.name }}</li>
+    {% endfor %}
+    </ul>
+    
+    <h3>Tasks ({{ project.tasks.count }})</h3>
+    <ul>
+    {% for task in project.tasks.all %}
+    <li><a href=task/{{ task.id }}>{{ task.name }}</a></li>
+    {% endfor %}
+    </ul>
+
 
     
     </div>

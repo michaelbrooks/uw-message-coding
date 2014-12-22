@@ -26,7 +26,7 @@ class Selection(models.Model):
 class Message(models.Model):
     """A single message in a dataset"""
 
-    dataset = models.ForeignKey(Dataset)
+    dataset = models.ForeignKey(Dataset, related_name='messages')
 
     sender = models.CharField(max_length=250)
     time = models.DateTimeField()
