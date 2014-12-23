@@ -21,7 +21,11 @@
         {% for project in dataset.projects.all %}
         <tr>
             <td>{{ project.name }}</td>
-            <td> <a href='../../project/{{ project.id }}/task/create'><button class='btn' type='button'>Create a task for this project</button></a></td>
+            <td>
+                <a class='btn btn-default' href='../../project/{{ project.id }}/task/create'>
+                    Create a task for this project
+                </a>
+            </td>
         </tr>    
         {% endfor %}
     </table>
