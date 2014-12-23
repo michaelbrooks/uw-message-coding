@@ -9,25 +9,40 @@
 
         <p>{{ project.description }}</p>
 
+    <p>{{ project.description }}</p>
+    <h3>Members ({{ project.members.count }})</h3>
+    <ul>
+        {% for member in project.members.all %}
+        <li>{{ member }}</li>
+    {% endfor %}
+    </ul>
+    
+    <h3>Datesets ({{ project.datasets.count }})</h3>
+    <a href="{% url 'dataset_import' project_pk=project.id %}" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span>Import</a>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Data sets
-                    <a href="{% url 'dataset_import' project_pk=project.id %}" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-plus-sign"></span>Import</a>
-                </h3>
-            </div>
-            <div class="panel-body">
-                {% if project.datasets %}
-                    {% for dataset in project.datasets.all %}
-                    <p>
-                        <a href="{% url 'dataset_details' project_pk=project.id dataset_pk=dataset.pk %}">{{dataset.name}}</a>
-                    </p>
-                    {% endfor %}
-                {% else %}
-                    <p>No Datasets</p>
-                {% endif %}
-            </div>
-        </div>
+    {% if project.datasets %}
+        <ul>
+            {% for dataset in project.datasets.all %}
+            <li><a href="{% url 'dataset_details' project_pk=project.id dataset_pk=dataset.pk %}">{{dataset.name}}</a> ({{  dataset.messages.count  }} messages)</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No datasets</p>
+    {% endif %}
+    
+    <h3>Schemes ({{ project.schemes.count }})</h3>
+    <ul>
+    {% for scheme in project.schemes.all %}
+        <li>{{ scheme.name }}</li>
+    {% endfor %}
+    </ul>
+    
+    <h3>Tasks ({{ project.tasks.count }})</h3>
+    <ul>
+    {% for task in project.tasks.all %}
+    <li><a href=task/{{ task.id }}>{{ task.name }}</a></li>
+    {% endfor %}
+    </ul>
+
     </div>
 {% endblock %}

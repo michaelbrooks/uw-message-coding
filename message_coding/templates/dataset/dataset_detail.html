@@ -1,0 +1,35 @@
+{% extends "_layouts/base.html" %}
+
+{% block page_title %}Dataset view{% endblock %}
+{% block page_class %}dataset-view{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+    <h1>{{ dataset.name }}</h1>
+
+    <p>{{ dataset.description }}</p>
+    <p>Owner: {{ dataset.owner }}</p>
+    <h3>Messages</h3>
+    <ul>
+    {% for message in dataset.messages.all %}
+        <li>{{ message.text }}</li>
+    {% endfor %}
+    </ul>
+    <h3>Projects</h3>
+    <table>
+        {% for project in dataset.projects.all %}
+        <tr>
+            <td>{{ project.name }}</td>
+            <td>
+                <a class='btn btn-default' href='../../project/{{ project.id }}/task/create'>
+                    Create a task for this project
+                </a>
+            </td>
+        </tr>    
+        {% endfor %}
+    </table>
+
+    
+    </div>
+{% endblock %}
