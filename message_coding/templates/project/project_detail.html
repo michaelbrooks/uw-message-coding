@@ -4,12 +4,30 @@
 {% block page_class %}project-view{% endblock %}
 
 {% block content %}
-
     <div class="container">
-    <h1>{{ project.name }}</h1>
+        <h1>{{ project.name }}</h1>
 
-    <p>{{ project.description }}</p>
+        <p>{{ project.description }}</p>
 
-    
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Data sets
+                    <a href="{% url 'dataset_import' project_pk=project.id %}" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-plus-sign"></span>Import</a>
+                </h3>
+            </div>
+            <div class="panel-body">
+                {% if project.datasets %}
+                    {% for dataset in project.datasets.all %}
+                    <p>
+                        <a href="{% url 'dataset_details' project_pk=project.id dataset_pk=dataset.pk %}">{{dataset.name}}</a>
+                    </p>
+                    {% endfor %}
+                {% else %}
+                    <p>No Datasets</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock %}

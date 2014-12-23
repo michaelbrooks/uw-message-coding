@@ -8,6 +8,7 @@ from apps.dataset import models as dataset_models
 from django.http import HttpResponse
 from django.template import Context,loader
 from base.views import ProjectUrlMixin, LoginRequiredMixin
+from django.core.urlresolvers import reverse 
 
 def index(request):
     Project = apps.get_model('project.Project')
@@ -41,6 +42,8 @@ class ProjectDetailView(LoginRequiredMixin,DetailView):
     """View for viewing projects"""
     model = models.Project
     template_name = 'project/project_detail.html'
+    prefetch_related = ['datasets']
+
 
 class TaskDetailView(LoginRequiredMixin, ProjectUrlMixin, DetailView):
     """View for viewing tasks"""
@@ -62,7 +65,6 @@ class CreateTaskView(LoginRequiredMixin, ProjectUrlMixin, CreateView):
         """What to do when a task is created?"""
 
         # The user comes from the session
-        # TODO: require logging in
         form.instance.owner = self.request.user
 
         # This comes from the URL
@@ -80,4 +82,44 @@ class CreateTaskView(LoginRequiredMixin, ProjectUrlMixin, CreateView):
         form.instance.selection = selection
 
         return super(CreateTaskView, self).form_valid(form)
+
+
+class DatasetImport(LoginRequiredMixin, ProjectUrlMixin, CreateView):
+    """ View for importing a dataset """
+
+    model = dataset_models.Dataset
+    fields = ['name', 'description' ]
+    template_name = "project/dataset_import.html"
+
+    def get_success_url(self):
+        return reverse('dataset_details', kwargs={ 'project_pk': self.get_project().id, 'dataset_pk': self.object.id})
+
+
+    def form_valid(self, form):
+        # The user comes from the session
+        form.instance.owner = self.request.user
+
+        # This comes from the URL
+        project = self.get_project()
+        form.instance.save()
+        form.instance.projects.add(project)
+
+
+        return super(DatasetImport, self).form_valid(form)
+
+
+
+
+class DatasetDetails(LoginRequiredMixin, ProjectUrlMixin, DetailView):
+    """ View for dataset details """
+
+    model = dataset_models.Dataset
+    fields = ['name', 'description']
+    template_name = "project/dataset_detail.html"
+
+    slug_field = 'id'
+    slug_url_kwarg = 'dataset_pk'
+
+
+
 

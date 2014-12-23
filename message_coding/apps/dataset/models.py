@@ -11,6 +11,12 @@ class Dataset(NameDescriptionMixin):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL)
     projects = models.ManyToManyField('project.Project', related_name='datasets')
 
+    def get_absolute_url(self):
+        """What is the main url for this object"""
+        return reverse('dataset_details', kwargs={
+            'dataset_pk': self.pk,
+        })    
+
 
 class Selection(models.Model):
     """Defines a subset of a dataset"""
