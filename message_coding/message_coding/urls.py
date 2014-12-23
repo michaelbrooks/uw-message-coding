@@ -15,6 +15,7 @@ urlpatterns = patterns('',
                        url(r'^user_dash/','apps.project.views.index'),
 
                        url(r'^project/', include('apps.project.urls')),
+                       url(r'^dataset/', include('apps.dataset.urls')),
 
                        # Load the admin urls
                        url(r'^admin/', include(admin.site.urls)),
