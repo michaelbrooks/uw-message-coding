@@ -5,8 +5,11 @@
 set -e
 PROJECT_ROOT=$1
 source ${PROJECT_ROOT}/setup/scripts/functions.sh
+export DEBIAN_FRONTEND=noninteractive
 set +e
 
+PHPMYADMIN_PW=phpmyadmin
+DBROOTPASS=root
 
 # Make sure the machine is updated
 loggy "Updating system..."
@@ -17,8 +20,29 @@ loggy "Installing global npm packages..."
 buffer_fail "npm install -g bower grunt-cli" "ERROR: Error installing NPM packages."
 
 # Make sure the mysql service is started
-loggy "Starting MySQL service..."
+loggy "Configuring MySQL..."
+
 service mysql start
+echo "Service started"
+# Set a root password
+mysql -u root -p$DBROOTPASS || mysqladmin -u root password $DBROOTPASS
+echo "MySQL root user now has password: $DBROOTPASS"
+
+# Install phpmyadmin for convenience
+loggy "Installing PHP and phpmyadmin..."
+buffer_fail "apt-get install -y php5" "ERROR: Error installing php5."
+echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf-set-selections
+echo 'phpmyadmin phpmyadmin/mysql/app-pass password $PHPMYADMIN_PW' | debconf-set-selections
+echo 'phpmyadmin phpmyadmin/app-password-confirm password $PHPMYADMIN_PW' | debconf-set-selections
+echo 'phpmyadmin phpmyadmin/mysql/admin-pass password $DBROOTPASS' | debconf-set-selections
+echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections
+buffer_fail "apt-get install -y phpmyadmin" "ERROR: Error installing phpmyadmin."
+
+# make sure it is linked to phpmyadmin
+if ! [ -e /etc/apache2/conf.d/phpmyadmin.conf ]; then
+    ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf.d/phpmyadmin.conf
+fi
+service apache2 restart
 
 # Fail if error after this
 set -e
@@ -33,7 +57,7 @@ DBPASS=dbpass
 loggy "Creating database..."
 
 # Create a database just for the project
-cat <<EOF | mysql -u root -h $DBHOST
+cat <<EOF | mysql -u root -p$DBROOTPASS -h $DBHOST
 CREATE DATABASE IF NOT EXISTS \`$DBNAME\` CHARACTER SET utf8 COLLATE utf8_general_ci;
 GRANT ALL PRIVILEGES ON \`$DBNAME\`.* TO '$DBUSER'@'$DBHOST' IDENTIFIED BY '$DBPASS';
 GRANT USAGE ON *.* TO '$DBUSER'@'$DBHOST';
@@ -65,3 +89,6 @@ else
     echo "alias remount_vagrant='sudo mount -o remount home_vagrant_uw-message-coding'" >> ${VAGRANT_HOME}/.bashrc
     echo "added remount_vagrant to bashrc"
 fi
+
+loggy "Access the database at http://localhost:8000/phpmyadmin"
+loggy "SSH into localhost:2222 (vagrant/vagrant) and run 'fab runserver'\n  then try http://localhost:8080"
