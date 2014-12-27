@@ -10,7 +10,7 @@
 
     <p>{{ task.description }}</p>
 
-    <p>In project: <a href='../../'>{{ project.name }}</a></p>
+    <p>In project: <a href='{% url 'project' project_slug=project.slug %}'>{{ project.name }}</a></p>
     
     <h3>Selection ({{ task.selection.dataset.messages.count }})</h3>
     <ul>

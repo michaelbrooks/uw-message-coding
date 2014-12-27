@@ -18,6 +18,15 @@
             </div>
 
             <div class="form-group">
+                {{ form.slug.label_tag }}
+                {% render_field form.slug class+="form-control" %}
+                <p class="help-block">{{ form.slug.help_text }}</p>
+                {% if form.slug.errors %}
+                    <p class="alert alert-danger">{{ form.slug.errors|striptags }}</p>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
                 {{ form.description.label_tag }}
                 {% render_field form.description class+="form-control" %}
             </div>
