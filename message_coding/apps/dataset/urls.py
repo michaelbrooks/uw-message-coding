@@ -4,12 +4,14 @@ from django.conf.urls import url, patterns
 
 import views
 
-urlpatterns = patterns('apps.dataset.views',
+urlpatterns = patterns('',
 
-                    # All project-related-urls should start with the project code: ^(?P<project_pk>\d+)/
-                       url(r'^(?P<pk>\d+)/$',
+                       url(r'^import/$',
+                           views.DatasetImportView.as_view(),
+                           name='dataset_import'),
+
+                       url(r'^(?P<dataset_slug>[\w-]+)/$',
                            views.DatasetDetailView.as_view(),
                            name='dataset'),
 
-                       
 )

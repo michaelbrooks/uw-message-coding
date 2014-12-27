@@ -1,29 +1,24 @@
-
 from django.views.generic import CreateView, DetailView
-
-import models
 from django.apps import apps
-from apps.dataset import models as dataset_models
 from django.http import HttpResponse
-from django.template import Context,loader
-from base.views import ProjectUrlMixin, LoginRequiredMixin
-from django.core.urlresolvers import reverse 
+from django.template import Context, loader
+from apps.project import forms, models
+from apps.dataset import models as dataset_models
+from base.views import ProjectViewMixin, LoginRequiredMixin
+
 
 def index(request):
     Project = apps.get_model('project.Project')
-    project = Project.objects.get(owner_id = request.user)
+    project = Project.objects.get(owner_id=request.user)
     t = loader.get_template('project/dash_detail.html')
-    c = Context({'project':project,})
+    c = Context({'project': project, })
     return HttpResponse(t.render(c))
 
 
-class CreateProjectView(LoginRequiredMixin,CreateView):
+class CreateProjectView(LoginRequiredMixin, CreateView):
     """View for creating new projects"""
 
-    model = models.Project
-
-    # Let Django autogenerate the form for now
-    fields = ['name', 'description', 'members']
+    form_class = forms.ProjectCreateForm
 
     template_name = "project/project_create.html"
 
@@ -31,26 +26,30 @@ class CreateProjectView(LoginRequiredMixin,CreateView):
         """What to do when a project is created?"""
 
         # The user comes from the session
-        # TODO: require logging in
         form.instance.owner = self.request.user
 
-
         return super(CreateProjectView, self).form_valid(form)
-    
-class ProjectDetailView(LoginRequiredMixin,DetailView):
+
+
+
+class ProjectDetailView(LoginRequiredMixin, DetailView):
     """View for viewing projects"""
     model = models.Project
     template_name = 'project/project_detail.html'
     prefetch_related = ['datasets']
 
+    slug_url_kwarg = 'project_slug'
 
-class TaskDetailView(LoginRequiredMixin, ProjectUrlMixin, DetailView):
+
+class TaskDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     """View for viewing tasks"""
     model = models.Task
     template_name = 'project/task_detail.html'
 
+    pk_url_kwarg = 'task_pk'
 
-class CreateTaskView(LoginRequiredMixin, ProjectUrlMixin, CreateView):
+
+class CreateTaskView(LoginRequiredMixin, ProjectViewMixin, CreateView):
     """View for creating new tasks"""
 
     model = models.Task
@@ -83,41 +82,8 @@ class CreateTaskView(LoginRequiredMixin, ProjectUrlMixin, CreateView):
         return super(CreateTaskView, self).form_valid(form)
 
 
-class DatasetImport(LoginRequiredMixin, ProjectUrlMixin, CreateView):
-    """ View for importing a dataset """
-
-    model = dataset_models.Dataset
-    fields = ['name', 'description' ]
-    template_name = "project/dataset_import.html"
-
-    def get_success_url(self):
-        return reverse('dataset_details', kwargs={ 'project_pk': self.get_project().id, 'dataset_pk': self.object.id})
 
 
-    def form_valid(self, form):
-        # The user comes from the session
-        form.instance.owner = self.request.user
-
-        # This comes from the URL
-        project = self.get_project()
-        form.instance.save()
-        form.instance.projects.add(project)
-
-
-        return super(DatasetImport, self).form_valid(form)
-
-
-
-
-class DatasetDetails(LoginRequiredMixin, ProjectUrlMixin, DetailView):
-    """ View for dataset details """
-
-    model = dataset_models.Dataset
-    fields = ['name', 'description']
-    template_name = "project/dataset_detail.html"
-
-    slug_field = 'id'
-    slug_url_kwarg = 'dataset_pk'
 
 
 

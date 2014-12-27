@@ -22,7 +22,7 @@
         <tr>
             <td>{{ project.name }}</td>
             <td>
-                <a class='btn btn-default' href='../../project/{{ project.id }}/task/create'>
+                <a class='btn btn-default' href='{% url 'task_create' project_slug=project.slug %}'>
                     Create a task for this project
                 </a>
             </td>
