@@ -9,11 +9,6 @@ from django.contrib import admin
 urlpatterns = patterns('',
                        url(r'', include('base.urls')),
 
-                       # Examples:
-                       # url(r'^$', 'messageCoding.views.home', name='home'),
-                       # url(r'^blog/', include('blog.urls')),
-                       url(r'^user_dash/','base.views.user_dash'),
-
                        url(r'^project/', include('apps.project.urls')),
                        url(r'^dataset/', include('apps.dataset.urls')),
 
