@@ -1,0 +1,19 @@
+{% extends "_layouts/base.html" %}
+{% load staticfiles %}
+
+{% block page_title %}Coding view{% endblock %}
+{% block page_class %}project-coding-view{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1>{{ task.name }}</h1>
+
+        <p>{{ task.description }}</p>
+
+        <div class="message">
+
+        </div>
+    </div>
+
+{% endblock %}

@@ -41,6 +41,29 @@ class ProjectViewMixin(object):
         return super(ProjectViewMixin, self).get_context_data(**kwargs)
 
 
+class TaskViewMixin(object):
+    """A mixin that looks in the url
+      for a task_pk, adds the associated
+      task to the template context, and adds a
+      self.task attribute to the view."""
+
+    def get_project(self):
+        if not hasattr(self, 'task'):
+            Task = apps.get_model('project.Task')
+
+            try:
+                if 'task_pk' in self.kwargs:
+                    self.task = Task.objects.get(pk=self.kwargs['task_pk'])
+            except ObjectDoesNotExist:
+                raise Http404(_("No %(verbose_name)s found") %
+                              {'verbose_name': Task._meta.verbose_name})
+
+        return self.task
+
+    def get_context_data(self, **kwargs):
+        kwargs['task'] = self.get_task()
+        return super(TaskViewMixin, self).get_context_data(**kwargs)
+
 
 class LoginRequiredMixin(object):
     """A mixin that forces a login to view the CBTemplate."""

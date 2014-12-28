@@ -2,7 +2,7 @@ from django.views.generic import CreateView, DetailView
 
 from apps.project import models, forms
 from apps.dataset import models as dataset_models
-from base.views import ProjectViewMixin, LoginRequiredMixin
+from base.views import ProjectViewMixin, LoginRequiredMixin, TaskViewMixin
 from django.core.urlresolvers import reverse 
 
 
@@ -73,9 +73,17 @@ class CreateTaskView(LoginRequiredMixin, ProjectViewMixin, CreateView):
         return super(CreateTaskView, self).form_valid(form)
 
 
+CODING_BATCH_SIZE = 1
+class CodingView(LoginRequiredMixin, ProjectViewMixin, DetailView):
+    """
+    View for working on a coding task.
+    This is implemented as a detailview for coding tasks.
+    """
+
+    model = models.Task
+    template_name = "project/coding.html"
 
 
-
-
-
+class TaskMessagesView(LoginRequiredMixin, ProjectViewMixin, TaskViewMixin, DetailView):
+    """Gets messages for a coding task."""
 
