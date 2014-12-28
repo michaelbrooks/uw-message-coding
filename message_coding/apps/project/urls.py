@@ -36,5 +36,4 @@ urlpatterns = patterns('apps.project.views',
 
                        url(r'^(?P<project_slug>[\w-]+)/', include(project_slug_urls)),
 
-
 )

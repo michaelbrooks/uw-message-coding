@@ -6,8 +6,9 @@
 {% block content %}
 
     <div class="container">
-    <h1>Dashboard of : {{project.owner}}</h1>
+    <h1>Welcome, {{ user.first_name }}</h1>
 
-    <p>Assigned Projects: {{ project.name }}</p>
+    <p>Assigned Projects: {{ user.projects.count }}</p>
+    
     </div>
 {% endblock %}
