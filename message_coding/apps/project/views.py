@@ -40,10 +40,6 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
     prefetch_related = ['datasets']
 
     slug_url_kwarg = 'project_slug'
-    def post(self, request, *args, **kwargs):
-        view = CreateTaskView.as_view()
-        return view(request, *args, **kwargs)
-
 
 class TaskDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     """View for viewing tasks"""
@@ -68,8 +64,6 @@ class CreateTaskView(LoginRequiredMixin, ProjectViewMixin, CreateView):
     fields = ['name', 'description', 'scheme', 'assigned_coders']
 
     template_name = "project/task_create.html"
-    def get(self, request, *args, **kwargs):
-        return super(CreateTaskView, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
         """What to do when a task is created?"""
