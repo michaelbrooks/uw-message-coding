@@ -46,7 +46,7 @@ class Task(NameDescriptionMixin):
 
     def get_absolute_url(self):
         """What is the main url for this object"""
-        return reverse('project_task', kwargs={
+        return reverse('task', kwargs={
             'task_pk': self.pk,
             'project_slug': self.project.slug,
         })
