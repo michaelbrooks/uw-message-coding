@@ -5,7 +5,8 @@ from django.template import Context, loader
 from apps.project import forms, models
 from apps.dataset import models as dataset_models
 from base.views import ProjectViewMixin, LoginRequiredMixin
-
+import json
+from django.db.models import Q
 
 def index(request):
     Project = apps.get_model('project.Project')
@@ -39,6 +40,9 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
     prefetch_related = ['datasets']
 
     slug_url_kwarg = 'project_slug'
+    def post(self, request, *args, **kwargs):
+        view = CreateTaskView.as_view()
+        return view(request, *args, **kwargs)
 
 
 class TaskDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
@@ -47,6 +51,12 @@ class TaskDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     template_name = 'project/task_detail.html'
 
     pk_url_kwarg = 'task_pk'
+    def get_context_data(self, **kwargs):
+        context = super(TaskDetailView, self).get_context_data(**kwargs)
+        message_ids = json.loads(context['task'].selection.selection)
+        context['msgs'] = context['task'].selection.dataset.messages.filter(reduce(lambda x, y: x | Q(id=y), message_ids, Q()))
+        return context
+    
 
 
 class CreateTaskView(LoginRequiredMixin, ProjectViewMixin, CreateView):
@@ -58,10 +68,11 @@ class CreateTaskView(LoginRequiredMixin, ProjectViewMixin, CreateView):
     fields = ['name', 'description', 'scheme', 'assigned_coders']
 
     template_name = "project/task_create.html"
+    def get(self, request, *args, **kwargs):
+        return super(CreateTaskView, self).get(request, *args, **kwargs)
 
     def form_valid(self, form):
         """What to do when a task is created?"""
-
         # The user comes from the session
         form.instance.owner = self.request.user
 
@@ -70,10 +81,13 @@ class CreateTaskView(LoginRequiredMixin, ProjectViewMixin, CreateView):
         form.instance.project = project
 
         # This selection thing is hard-coded for now
-        dataset = project.datasets.first()
+        dataset_id = self.request.GET.get('dataset')
+        dataset = project.datasets.get(id=dataset_id)
         selection = dataset_models.Selection(
             owner=self.request.user,
-            dataset=dataset
+            dataset=dataset,
+            type='json',
+            selection = json.dumps(self.request.GET.getlist('messages'))
         )
         selection.save()
 
