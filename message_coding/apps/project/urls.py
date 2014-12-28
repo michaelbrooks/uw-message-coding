@@ -8,9 +8,14 @@ task_pk_urls = patterns('',
                         url(r'^$',
                             views.TaskDetailView.as_view(),
                             name='task'),
+
                         url(r'^code/$',
                             views.CodingView.as_view(),
                             name='coding'),
+
+                        url(r'^code/(?P<page>\d+)/$',
+                            views.CodingView.as_view(),
+                            name='coding_page'),
 )
 
 task_urls = patterns('',
