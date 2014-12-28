@@ -6,9 +6,10 @@ from django.contrib.auth.views import login
 
 urlpatterns = patterns('base.views',
     url(r'^$', 'home', name='home'),
+    url(r'^home/$', 'user_dash', name='user_dash'),
 )
 
-urlpatterns += patterns('', 
-	url(r'^login/$', 'django.contrib.auth.views.login'),
-	url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+urlpatterns += patterns('',
+	url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+	url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
 )

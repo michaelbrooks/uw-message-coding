@@ -2,19 +2,9 @@
 from django.views.generic import CreateView, DetailView
 
 import models
-from django.apps import apps
 from apps.dataset import models as dataset_models
-from django.http import HttpResponse
-from django.template import Context,loader
 from base.views import ProjectUrlMixin, LoginRequiredMixin
 from django.core.urlresolvers import reverse 
-
-def index(request):
-    Project = apps.get_model('project.Project')
-    project = Project.objects.get(owner_id = request.user)
-    t = loader.get_template('project/dash_detail.html')
-    c = Context({'project':project,})
-    return HttpResponse(t.render(c))
 
 
 class CreateProjectView(LoginRequiredMixin,CreateView):

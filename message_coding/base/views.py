@@ -1,6 +1,8 @@
 """ Views for the base application """
 
 from django.shortcuts import render
+from django.views.generic import DetailView
+from django.contrib.auth import get_user_model
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
@@ -47,3 +49,18 @@ class LoginRequiredMixin(object):
     def as_view(cls, **initkwargs):
         view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
         return login_required(view)
+
+
+class UserDashboard(LoginRequiredMixin, DetailView):
+    model = get_user_model()
+    template_name = 'base/dash_detail.html'
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super(UserDashboard, self).get_context_data(**kwargs)
+        # add any additional data we need -- none for now
+        return context
+
+user_dash = UserDashboard.as_view()
