@@ -7,13 +7,14 @@ from django.contrib import admin
 
 
 urlpatterns = patterns('',
-                       url(r'', include('base.urls')),
-
-                       url(r'^project/', include('apps.project.urls')),
-                       url(r'^dataset/', include('apps.dataset.urls')),
 
                        # Load the admin urls
                        url(r'^admin/', include(admin.site.urls)),
+
+                       url(r'^', include('base.urls')),
+
+                       # Project urls
+                       url(r'^', include('apps.project.urls')),
 )
 
 if settings.DEBUG:

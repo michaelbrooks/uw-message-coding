@@ -1,7 +1,7 @@
 {% extends "_layouts/base.html" %}
 
 {% block page_title %}Project view{% endblock %}
-{% block page_class %}project-view{% endblock %}
+{% block body_class %}project-view{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -16,31 +16,31 @@
         <li>{{ member }}</li>
     {% endfor %}
     </ul>
-    
+
     <h3>Datesets ({{ project.datasets.count }})</h3>
-    <a href="{% url 'dataset_import' project_pk=project.id %}" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span>Import</a>
+    <a href="{% url 'dataset_import' project_slug=project.slug %}" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span>Import</a>
 
     {% if project.datasets %}
         <ul>
             {% for dataset in project.datasets.all %}
-            <li><a href="{% url 'dataset_details' project_pk=project.id dataset_pk=dataset.pk %}">{{dataset.name}}</a> ({{  dataset.messages.count  }} messages)</li>
+            <li><a href="{% url 'dataset' project_slug=project.slug dataset_slug=dataset.slug %}">{{ dataset.name }}</a> ({{  dataset.messages.count  }} messages)</li>
         {% endfor %}
         </ul>
     {% else %}
         <p>No datasets</p>
     {% endif %}
-    
+
     <h3>Schemes ({{ project.schemes.count }})</h3>
     <ul>
     {% for scheme in project.schemes.all %}
         <li>{{ scheme.name }}</li>
     {% endfor %}
     </ul>
-    
+
     <h3>Tasks ({{ project.tasks.count }})</h3>
     <ul>
     {% for task in project.tasks.all %}
-    <li><a href=task/{{ task.id }}>{{ task.name }}</a></li>
+    <li><a href={% url 'task' project_slug=project.slug task_pk=task.pk %}>{{ task.name }}</a></li>
     {% endfor %}
     </ul>
 

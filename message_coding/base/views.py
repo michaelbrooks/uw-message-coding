@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views.generic import DetailView
 from django.contrib.auth import get_user_model
 
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.http import Http404
 from django.utils.translation import ugettext as _
 from django.apps import apps
@@ -15,9 +15,9 @@ def home(request):
     return render(request, 'base/home.html')
 
 
-class ProjectUrlMixin(object):
+class ProjectViewMixin(object):
     """A mixin that looks in the url
-      for a project_pk value, adds the associated
+      for a project_pk or project_slug value, adds the associated
       project to the template context, and adds a
       self.project attribute to the view."""
 
@@ -25,21 +25,54 @@ class ProjectUrlMixin(object):
         if not hasattr(self, 'project'):
             Project = apps.get_model('project.Project')
 
-            project_pk = self.kwargs['project_pk']
-
             try:
-                project = Project.objects.get(pk=project_pk)
+                if 'project_pk' in self.kwargs:
+                    self.project = Project.objects.get(pk=self.kwargs['project_pk'])
+                elif 'project_slug' in self.kwargs:
+                    self.project = Project.objects.get(slug=self.kwargs['project_slug'])
+
+                # Make sure the user is part of this project
+                if not self.project.has_member(self.request.user):
+                    raise PermissionDenied("You are not a member of that project.")
+
             except ObjectDoesNotExist:
                 raise Http404(_("No %(verbose_name)s found") %
                               {'verbose_name': Project._meta.verbose_name})
 
-            self.project = project
         return self.project
 
     def get_context_data(self, **kwargs):
         kwargs['project'] = self.get_project()
-        return super(ProjectUrlMixin, self).get_context_data(**kwargs)
+        return super(ProjectViewMixin, self).get_context_data(**kwargs)
 
+
+class TaskViewMixin(ProjectViewMixin):
+    """A mixin that looks in the url
+      for a task_pk, adds the associated
+      task to the template context, and adds a
+      self.task attribute to the view.
+      Also includes functionality of ProjectViewMixin."""
+
+    def get_task(self):
+        if not hasattr(self, 'task'):
+            Task = apps.get_model('project.Task')
+
+            try:
+                if 'task_pk' in self.kwargs:
+                    self.task = Task.objects.get(pk=self.kwargs['task_pk'])
+
+                    if self.task.project != self.get_project():
+                        raise Http404(_("That task is not in that project"))
+
+            except ObjectDoesNotExist:
+                raise Http404(_("No %(verbose_name)s found") %
+                              {'verbose_name': Task._meta.verbose_name})
+
+        return self.task
+
+    def get_context_data(self, **kwargs):
+        kwargs['task'] = self.get_task()
+        return super(TaskViewMixin, self).get_context_data(**kwargs)
 
 
 class LoginRequiredMixin(object):
@@ -63,4 +96,3 @@ class UserDashboard(LoginRequiredMixin, DetailView):
         # add any additional data we need -- none for now
         return context
 
-user_dash = UserDashboard.as_view()

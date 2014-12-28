@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 
 {% block page_title %}Create a project{% endblock %}
-{% block page_class %}project-create{% endblock %}
+{% block body_class %}project-create{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -15,6 +15,13 @@
             <div class="form-group">
                 {{ form.name.label_tag }}
                 {% render_field form.name class+="form-control" %}
+            </div>
+
+            <div class="form-group">
+                {{ form.slug.label_tag }}
+                {% render_field form.slug class+="form-control" %}
+                <p class="help-block">{{ form.slug.help_text }}</p>
+                <p class="alert alert-danger">{{ form.slug.errors|striptags }}</p>
             </div>
 
             <div class="form-group">

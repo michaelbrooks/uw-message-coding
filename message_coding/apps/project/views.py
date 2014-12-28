@@ -1,19 +1,22 @@
+import json
 
 from django.views.generic import CreateView, DetailView
+from django import http
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import redirect
+from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 
-import models
+from apps.project import models, forms
 from apps.dataset import models as dataset_models
-from base.views import ProjectUrlMixin, LoginRequiredMixin
-from django.core.urlresolvers import reverse 
+from apps.coding import models as coding_models
+from base.views import ProjectViewMixin, LoginRequiredMixin
 
 
-class CreateProjectView(LoginRequiredMixin,CreateView):
+class CreateProjectView(LoginRequiredMixin, CreateView):
     """View for creating new projects"""
 
-    model = models.Project
-
-    # Let Django autogenerate the form for now
-    fields = ['name', 'description', 'members']
+    form_class = forms.ProjectCreateForm
 
     template_name = "project/project_create.html"
 
@@ -21,26 +24,34 @@ class CreateProjectView(LoginRequiredMixin,CreateView):
         """What to do when a project is created?"""
 
         # The user comes from the session
-        # TODO: require logging in
         form.instance.owner = self.request.user
 
-
         return super(CreateProjectView, self).form_valid(form)
-    
-class ProjectDetailView(LoginRequiredMixin,DetailView):
+
+
+class ProjectDetailView(LoginRequiredMixin, DetailView):
     """View for viewing projects"""
     model = models.Project
     template_name = 'project/project_detail.html'
     prefetch_related = ['datasets']
 
+    slug_url_kwarg = 'project_slug'
 
-class TaskDetailView(LoginRequiredMixin, ProjectUrlMixin, DetailView):
+class TaskDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     """View for viewing tasks"""
     model = models.Task
     template_name = 'project/task_detail.html'
 
+    pk_url_kwarg = 'task_pk'
+    def get_context_data(self, **kwargs):
+        context = super(TaskDetailView, self).get_context_data(**kwargs)
+        message_ids = json.loads(context['task'].selection.selection)
+        context['msgs'] = context['task'].selection.dataset.messages.filter(reduce(lambda x, y: x | Q(id=y), message_ids, Q()))
+        return context
+    
 
-class CreateTaskView(LoginRequiredMixin, ProjectUrlMixin, CreateView):
+
+class CreateTaskView(LoginRequiredMixin, ProjectViewMixin, CreateView):
     """View for creating new tasks"""
 
     model = models.Task
@@ -52,7 +63,6 @@ class CreateTaskView(LoginRequiredMixin, ProjectUrlMixin, CreateView):
 
     def form_valid(self, form):
         """What to do when a task is created?"""
-
         # The user comes from the session
         form.instance.owner = self.request.user
 
@@ -61,10 +71,13 @@ class CreateTaskView(LoginRequiredMixin, ProjectUrlMixin, CreateView):
         form.instance.project = project
 
         # This selection thing is hard-coded for now
-        dataset = project.datasets.first()
+        dataset_id = self.request.GET.get('dataset')
+        dataset = project.datasets.get(id=dataset_id)
         selection = dataset_models.Selection(
             owner=self.request.user,
-            dataset=dataset
+            dataset=dataset,
+            type='json',
+            selection = json.dumps(self.request.GET.getlist('messages'))
         )
         selection.save()
 
@@ -73,42 +86,143 @@ class CreateTaskView(LoginRequiredMixin, ProjectUrlMixin, CreateView):
         return super(CreateTaskView, self).form_valid(form)
 
 
-class DatasetImport(LoginRequiredMixin, ProjectUrlMixin, CreateView):
-    """ View for importing a dataset """
-
-    model = dataset_models.Dataset
-    fields = ['name', 'description' ]
-    template_name = "project/dataset_import.html"
-
-    def get_success_url(self):
-        return reverse('dataset_details', kwargs={ 'project_pk': self.get_project().id, 'dataset_pk': self.object.id})
+CODING_BATCH_SIZE = 1
 
 
-    def form_valid(self, form):
-        # The user comes from the session
-        form.instance.owner = self.request.user
+class CodingView(LoginRequiredMixin, ProjectViewMixin, DetailView):
+    """
+    View for working on a coding task.
+    This is implemented as a detailview for coding tasks.
+    """
 
-        # This comes from the URL
-        project = self.get_project()
-        form.instance.save()
-        form.instance.projects.add(project)
+    model = models.Task
+    template_name = "project/coding.html"
+    pk_url_kwarg = 'task_pk'
 
+    def get_object(self, queryset=None):
+        obj = super(CodingView, self).get_object(queryset)
 
-        return super(DatasetImport, self).form_valid(form)
+        # Ensure the user is assigned to code this
+        if not obj.is_assigned_to(self.request.user):
+            raise PermissionDenied("You are not assigned to that task.")
 
+        return obj
 
+    def get_messages(self):
+        task = self.object
+        user = self.request.user
 
+        # Ensure the user is assigned to code this
+        if not task.is_assigned_to(user):
+            raise PermissionDenied("You are not assigned to that task.")
 
-class DatasetDetails(LoginRequiredMixin, ProjectUrlMixin, DetailView):
-    """ View for dataset details """
+        try:
+            self.page = int(self.kwargs.get('page', 1))
+        except ValueError:
+            self.page = 1
 
-    model = dataset_models.Dataset
-    fields = ['name', 'description']
-    template_name = "project/dataset_detail.html"
+        # Get the messages to code
+        self.paginator = Paginator(task.selection.get_messages(), CODING_BATCH_SIZE)
 
-    slug_field = 'id'
-    slug_url_kwarg = 'dataset_pk'
+        try:
+            self.page = self.paginator.validate_number(self.page)
 
+        except PageNotAnInteger:
+            # If page is not an integer, go to the first page.
+            self.page = 1
 
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            self.page = self.paginator.num_pages
 
+        return self.paginator.page(self.page)
 
+    def get_context_data(self, **kwargs):
+        context = super(CodingView, self).get_context_data(**kwargs)
+
+        msgs = self.get_messages()
+
+        context['msgs'] = msgs
+        context['page'] = self.page
+        context['num_pages'] = self.paginator.num_pages
+
+        # Go through and flag each message/code as coded or not
+        task = self.object
+        instances = models.CodeInstance.objects \
+            .filter(owner=self.request.user,
+                    task=task,
+                    message__in=msgs) \
+            .values('pk', 'message_id', 'code_id')
+
+        context['preload'] = json.dumps({
+            'instances': list(instances)
+        })
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        task = self.object
+
+        # The messages we expect to be coding
+        msgs = self.get_messages()
+
+        # Get all the legal code ids for this task's scheme
+        all_code_ids = coding_models.Code.objects \
+            .filter(code_group__in=task.scheme.code_groups.all()) \
+            .values_list('pk', flat=True)
+        all_code_ids = set(all_code_ids)  # for fast lookup
+
+        # Extract all the new code ids for each message from the POST params
+        message_code_ids = {}
+        for msg in msgs:
+            key = "messages[%d]" % msg.pk
+            message_code_ids[msg.pk] = set()
+            for code_id in self.request.POST.getlist(key):
+                code_id = int(code_id)  # convert str to int
+
+                if code_id not in all_code_ids:
+                    return http.HttpResponseBadRequest("Code id %d not allowed" % code_id)
+
+                message_code_ids[msg.pk].add(code_id)
+
+        # Make sure all the messages match up
+        if not message_code_ids or len(message_code_ids) != len(msgs):
+            return http.HttpResponseBadRequest("Invalid set of messages coded")
+
+        # Now create/delete instances as needed
+        to_create = []
+        to_delete = []
+        for msg in msgs:
+            current_instances = models.CodeInstance.objects \
+                .filter(owner=self.request.user,
+                        task=task,
+                        message=msg) \
+                .only('pk', 'code_id')
+
+            new_code_ids = message_code_ids[msg.pk]
+
+            for inst in current_instances:
+                if inst.code_id not in new_code_ids:
+                    # it has been un-checked
+                    to_delete.append(inst)
+                else:
+                    # it is in both
+                    new_code_ids.remove(inst.code_id)
+
+            for code_id in new_code_ids:
+                # any left over must be created
+                to_create.append(models.CodeInstance(owner=self.request.user,
+                                                     task=task,
+                                                     message=msg,
+                                                     code_id=code_id))
+
+        models.CodeInstance.objects \
+            .filter(pk__in=[inst.pk for inst in to_delete]) \
+            .delete()
+
+        models.CodeInstance.objects.bulk_create(to_create)
+
+        next_page = self.page + 1
+        return redirect('coding_page', project_slug=task.project.slug, task_pk=task.pk, page=next_page)

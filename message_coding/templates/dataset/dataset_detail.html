@@ -1,35 +1,35 @@
 {% extends "_layouts/base.html" %}
 
 {% block page_title %}Dataset view{% endblock %}
-{% block page_class %}dataset-view{% endblock %}
+{% block body_class %}dataset-view{% endblock %}
 
 {% block content %}
 
     <div class="container">
     <h1>{{ dataset.name }}</h1>
+    <p>In project: <a href='{% url 'project' project_slug=project.slug %}'>{{ project.name }}</a></p>
+    
 
     <p>{{ dataset.description }}</p>
     <p>Owner: {{ dataset.owner }}</p>
     <h3>Messages</h3>
+    <form action='{% url 'task_create' project_slug=project.slug %}' method='get'>{% csrf_token %}
     <ul>
     {% for message in dataset.messages.all %}
-        <li>{{ message.text }}</li>
+    <li><input type='checkbox' id='message' value={{ message.id }} name='messages' checked=checked /> {{ message.text }}</li>
     {% endfor %}
     </ul>
-    <h3>Projects</h3>
-    <table>
-        {% for project in dataset.projects.all %}
-        <tr>
-            <td>{{ project.name }}</td>
-            <td>
-                <a class='btn btn-default' href='../../project/{{ project.id }}/task/create'>
-                    Create a task for this project
-                </a>
-            </td>
-        </tr>    
-        {% endfor %}
-    </table>
+    <input type='hidden' name=dataset value={{ dataset.id }} />
+    <input type='submit' value='Create a task for this project' />
+    </form>
 
     
     </div>
+{% endblock %}
+{% block page_js %}
+<script type='text/javascript'>
+    $(function(){
+            console.log($('#message:checked'));
+    });
+</script>
 {% endblock %}

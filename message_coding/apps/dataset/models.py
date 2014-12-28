@@ -3,26 +3,26 @@ from django.conf import settings
 
 from base.models import NameDescriptionMixin, CreatedAtField
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ValidationError
+
+# These strings cannot be dataset slugs
+illegal_dataset_slugs = (
+    'import',
+)
+
+
+def slug_validator(value):
+    if value in illegal_dataset_slugs:
+        raise ValidationError("%s cannot be used as a dataset code" % value)
 
 
 class Dataset(NameDescriptionMixin):
     """Defines a dataset imported into a project by a user."""
 
+    slug = models.SlugField(unique=True, validators=[slug_validator])
     created_at = CreatedAtField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL)
     projects = models.ManyToManyField('project.Project', related_name='datasets')
-    def get_absolute_url(self):
-        """What is the main url for this object"""
-        return reverse('dataset', kwargs={
-            'pk': self.pk,
-        })
-
-
-    def get_absolute_url(self):
-        """What is the main url for this object"""
-        return reverse('dataset_details', kwargs={
-            'dataset_pk': self.pk,
-        })    
 
 
 class Selection(models.Model):
@@ -35,6 +35,13 @@ class Selection(models.Model):
     type = models.CharField(max_length=150)
     selection = models.BinaryField()
 
+    def get_messages(self):
+        if type == 'json':
+            import json
+            ids = json.loads(self.selection)
+            return self.dataset.messages.filter(pk__in=ids)
+        else:
+            return self.dataset.messages.all()
 
 class Message(models.Model):
     """A single message in a dataset"""
@@ -45,3 +52,23 @@ class Message(models.Model):
     time = models.DateTimeField()
     text = models.TextField()
 
+    def has_image(self):
+        return self.image_src() is not None
+
+    def image_src(self):
+        import re
+        m = re.search(r'(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})[\/\w\.-]*\.(jpg|png|gif)?', self.text)
+        if m:
+            print m.groups()
+            return m.group(0)
+        return None
+
+    def text_without_image(self):
+        src = self.image_src()
+        text = self.text
+
+        if src:
+            start = text.find(src)
+            text = text[0:start] + text[start+len(src):]
+
+        return text
