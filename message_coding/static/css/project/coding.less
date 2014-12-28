@@ -1,0 +1,23 @@
+@import '../theme/mixins.less';
+
+.project-coding-view {
+
+    .message {
+        margin-bottom: 20px;
+    }
+
+    .text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .message.has-image {
+        img {
+            float: left;
+            width: 200px;
+        }
+        .text {
+            margin-left: 210px;
+        }
+    }
+}

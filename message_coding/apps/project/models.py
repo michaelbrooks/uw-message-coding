@@ -33,6 +33,9 @@ class Project(NameDescriptionMixin):
             'project_slug': self.slug,
         })
 
+    def has_member(self, user):
+        return self.members.filter(pk=user.pk)
+
 
 class Task(NameDescriptionMixin):
     """Defines a coding task: a group of coders, a selection of data, and a coding scheme"""
@@ -50,6 +53,9 @@ class Task(NameDescriptionMixin):
             'task_pk': self.pk,
             'project_slug': self.project.slug,
         })
+
+    def is_assigned_to(self, user):
+        return self.assigned_coders.filter(pk=user.pk)
 
 
 class CodeInstance(models.Model):
