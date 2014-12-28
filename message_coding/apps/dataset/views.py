@@ -13,7 +13,7 @@ class DatasetDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
 
 
 class DatasetImportView(LoginRequiredMixin, ProjectViewMixin, CreateView):
-    """ View for importing a dataset """
+    """View for importing a dataset """
 
     form_class = forms.DatasetImportForm
     template_name = "dataset/dataset_import.html"
