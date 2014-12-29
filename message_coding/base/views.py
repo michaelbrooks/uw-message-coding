@@ -1,8 +1,6 @@
 """ Views for the base application """
 
 from django.shortcuts import render
-from django.views.generic import DetailView
-from django.contrib.auth import get_user_model
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
@@ -15,9 +13,9 @@ def home(request):
     return render(request, 'base/home.html')
 
 
-class ProjectUrlMixin(object):
+class ProjectViewMixin(object):
     """A mixin that looks in the url
-      for a project_pk value, adds the associated
+      for a project_pk or project_slug value, adds the associated
       project to the template context, and adds a
       self.project attribute to the view."""
 
@@ -25,40 +23,27 @@ class ProjectUrlMixin(object):
         if not hasattr(self, 'project'):
             Project = apps.get_model('project.Project')
 
-            project_pk = self.kwargs['project_pk']
-
             try:
-                project = Project.objects.get(pk=project_pk)
+                if 'project_pk' in self.kwargs:
+                    self.project = Project.objects.get(pk=self.kwargs['project_pk'])
+                elif 'project_slug' in self.kwargs:
+                    self.project = Project.objects.get(slug=self.kwargs['project_slug'])
             except ObjectDoesNotExist:
                 raise Http404(_("No %(verbose_name)s found") %
                               {'verbose_name': Project._meta.verbose_name})
 
-            self.project = project
         return self.project
 
     def get_context_data(self, **kwargs):
         kwargs['project'] = self.get_project()
-        return super(ProjectUrlMixin, self).get_context_data(**kwargs)
+        return super(ProjectViewMixin, self).get_context_data(**kwargs)
 
 
 
 class LoginRequiredMixin(object):
+    """A mixin that forces a login to view the CBTemplate."""
+    
     @classmethod
     def as_view(cls, **initkwargs):
         view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
         return login_required(view)
-
-
-class UserDashboard(LoginRequiredMixin, DetailView):
-    model = get_user_model()
-    template_name = 'base/dash_detail.html'
-
-    def get_object(self, queryset=None):
-        return self.request.user
-
-    def get_context_data(self, **kwargs):
-        context = super(UserDashboard, self).get_context_data(**kwargs)
-        # add any additional data we need -- none for now
-        return context
-
-user_dash = UserDashboard.as_view()

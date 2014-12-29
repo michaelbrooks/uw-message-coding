@@ -91,7 +91,7 @@
     "is_active": true,
     "is_superuser": true,
     "is_staff": true,
-    "last_login": "2014-12-17T02:05:41Z",
+    "last_login": "2014-12-27T19:46:49Z",
     "groups": [],
     "user_permissions": [],
     "password": "pbkdf2_sha256$12000$Za8vqXJIHGFS$t8UNR9LpBDGaIZ4LiL26NqFr5QNt0udWVec/Ig7opQg=",
@@ -109,7 +109,7 @@
     "is_active": true,
     "is_superuser": false,
     "is_staff": false,
-    "last_login": "2014-12-13T02:47:52Z",
+    "last_login": "2014-12-23T21:25:23Z",
     "groups": [],
     "user_permissions": [],
     "password": "pbkdf2_sha256$12000$fB80DT5wNaD4$bMgj7H8H1Q1kuKkhenaclg6ONcwEAsNpcbtYVXHh8LI=",
@@ -171,13 +171,14 @@
 },
 {
   "fields": {
-    "owner": 2,
-    "created_at": "2014-12-13T02:53:01Z",
     "name": "Test Project",
+    "created_at": "2014-12-27T19:36:21Z",
     "members": [
       1,
       2
     ],
+    "owner": 2,
+    "slug": "test-project",
     "description": "This is the most bestest project ever!\r\n\r\nhttp://bit.ly/1Gwm5bQ"
   },
   "model": "project.project",
@@ -196,9 +197,10 @@
 },
 {
   "fields": {
-    "owner": 2,
-    "created_at": "2014-12-17T01:24:54Z",
     "name": "Test Dataset",
+    "created_at": "2014-12-27T19:35:31Z",
+    "owner": 2,
+    "slug": "test-dataset",
     "projects": [
       1
     ],

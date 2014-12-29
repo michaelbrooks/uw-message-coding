@@ -42,7 +42,7 @@
       {% else %}
          <ul class="nav navbar-nav navbar-right">
           <li><p class="navbar-text">Welcome {{user.username}}!</p></li>
-          <li><a href="/accounts/logout">Logout</a></li>
+          <li><a href="{% url 'django.contrib.auth.views.logout' %}">Logout</a></li>
          </ul>
       {% endif %}
     </div>

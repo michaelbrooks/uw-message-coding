@@ -1,25 +1,40 @@
 """urlconf for the projects application"""
 
-from django.conf.urls import url, patterns
+from django.conf.urls import url, patterns, include
 
 import views
 
+task_urls = patterns('',
+
+                     url(r'^create/$',
+                         views.CreateTaskView.as_view(),
+                         name='task_create'),
+
+                     url(r'^(?P<task_pk>\d+)/$',
+                         views.TaskDetailView.as_view(),
+                         name='task'),
+)
+
+project_slug_urls = patterns('',
+
+                             url(r'^tasks/',
+                                 include(task_urls)),
+
+                             url(r'^datasets/',
+                                 include('apps.dataset.urls')),
+
+                             url(r'^$',
+                                 views.ProjectDetailView.as_view(),
+                                 name='project'),
+)
+
 urlpatterns = patterns('apps.project.views',
 
-                       # All project-related-urls should start with the project code: ^(?P<project_pk>\d+)/
-                       url(r'^(?P<pk>\d+)/$',
-                           views.ProjectDetailView.as_view(),
-                           name='project'),
-
-                       url(r'^create/$',
+                       url(r'^project/create/$',
                            views.CreateProjectView.as_view(),
                            name='project_create'),
 
-                       url(r'^(?P<project_pk>\d+)/task/(?P<pk>\d+)/$',
-                           views.TaskDetailView.as_view(),
-                           name='project_task'),
+                       url(r'^(?P<project_slug>[\w-]+)/', include(project_slug_urls)),
 
-                       url(r'^(?P<project_pk>\d+)/task/create/$',
-                           views.CreateTaskView.as_view(),
-                           name='project_task_create'),
+
 )
