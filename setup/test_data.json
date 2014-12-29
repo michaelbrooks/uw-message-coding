@@ -188,8 +188,8 @@
   "fields": {
     "owner": 2,
     "created_at": "2014-12-13T02:57:55Z",
-    "selection": "",
-    "type": "ALL",
+    "selection": "WyIxIiwgIjIiXQ==",
+    "type": "json",
     "dataset": 1
   },
   "model": "dataset.selection",

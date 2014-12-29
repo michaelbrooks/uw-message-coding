@@ -2,13 +2,10 @@
 
 from django.conf.urls import url, patterns, include
 
+from base import views
 
-urlpatterns = patterns('base.views',
-                       url(r'^$', 'home', name='home'),
-)
-
-urlpatterns += patterns('',
-                        url(r'^accounts/', include('django.contrib.auth.urls')),
-                        # url(r'^login/$', 'django.contrib.auth.views.login'),
-                        # url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+urlpatterns = patterns('',
+    url(r'^$', views.home, name='home'),
+    url(r'^home/$', views.UserDashboard.as_view(), name='user_dash'),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
 )

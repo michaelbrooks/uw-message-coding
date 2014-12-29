@@ -1,0 +1,67 @@
+{% extends "_layouts/base.html" %}
+{% load staticfiles %}
+
+{% block page_title %}Coding view{% endblock %}
+{% block body_class %}project-coding-view{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/project/coding.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/less" href="{% static 'css/project/coding.less' %}">
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <h1>{{ task.name }}</h1>
+
+        <p>{{ task.description }}</p>
+
+        <div class="messages">
+            <form method="post">
+                {% csrf_token %}
+                {% for msg in msgs %}
+                    <div class="message {% if msg.has_image %}has-image{% endif %} row">
+                        <div class="col-lg-8">
+                            {% if msg.has_image %}
+                                <img src="{{ msg.image_src|safe }}"/>
+                            {% endif %}
+                            <p class="text">{{ msg.text_without_image }}</p>
+                        </div>
+                        <div class="col-lg-4">
+                            <ul class="code-groups">
+                                {% for code_group in task.scheme.code_groups.all %}
+                                    <li>
+                                        <h4>{{ code_group.name }}</h4>
+                                        <ul class="codes">
+                                            {% for code in code_group.codes.all %}
+                                                <li>
+                                                    <label>
+                                                        <input type="checkbox"
+                                                               name="messages[{{ msg.pk }}]" value="{{ code.pk }}"/>
+                                                        {{ code.name }}
+                                                    </label>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
+        </div>
+    </div>
+    <script type="text/javascript">
+        window.preload = window.preload || {};
+        window.preload.coding = {{ preload|safe }};
+    </script>
+{% endblock %}

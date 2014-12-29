@@ -35,6 +35,13 @@ class Selection(models.Model):
     type = models.CharField(max_length=150)
     selection = models.BinaryField()
 
+    def get_messages(self):
+        if type == 'json':
+            import json
+            ids = json.loads(self.selection)
+            return self.dataset.messages.filter(pk__in=ids)
+        else:
+            return self.dataset.messages.all()
 
 class Message(models.Model):
     """A single message in a dataset"""
@@ -45,3 +52,23 @@ class Message(models.Model):
     time = models.DateTimeField()
     text = models.TextField()
 
+    def has_image(self):
+        return self.image_src() is not None
+
+    def image_src(self):
+        import re
+        m = re.search(r'(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})[\/\w\.-]*\.(jpg|png|gif)?', self.text)
+        if m:
+            print m.groups()
+            return m.group(0)
+        return None
+
+    def text_without_image(self):
+        src = self.image_src()
+        text = self.text
+
+        if src:
+            start = text.find(src)
+            text = text[0:start] + text[start+len(src):]
+
+        return text
