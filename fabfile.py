@@ -56,6 +56,7 @@ def _get_settings():
 
     return settings
 
+
 def _symlink_supported():
     with quiet():
         if local('ln -s __linktest_target __linktest__source').succeeded:
@@ -63,27 +64,30 @@ def _symlink_supported():
             return True
         return False
 
+
 def dependencies():
     """Installs Python, NPM, and Bower packages"""
 
     _target_local()
 
+    print green("Updating dependencies...")
     with lcd(PROJECT_ROOT):
-        print green("Installing python requirements...")
+        print "Installing python requirements..."
         for req in env.pip_requirements:
             local('pip install -r %s | grep -vi "requirement already satisfied"' % req)
 
         if path('package.json').exists:
-            print green("Installing node.js requirements...")
+            print "Installing node.js requirements..."
             if _symlink_supported():
                 local('npm install')
             else:
                 local('npm install --no-bin-link')
 
         if path('bower.json').exists:
-            print green("Installing bower requirements...")
+            print "Installing bower requirements..."
             local('bower install --config.interactive=false')
             local('bower prune --config.interactive=false')
+    print "Dependency update successful."
 
 
 def migrate():
@@ -93,7 +97,7 @@ def migrate():
 
     print green("Running migrations...")
     _manage_py('migrate')
-
+    print "Migrations successful."
 
 def _manage_py(args):
     with lcd(SITE_ROOT):
@@ -139,7 +143,7 @@ def load_test_data():
 
     print green("Loading test data from %s" % infile)
     _manage_py("loaddata %s" % infile)
-
+    print "Load test data successful."
 
 def make_test_data():
     """Updates the test_data.json file based on what is in the database"""
@@ -150,6 +154,7 @@ def make_test_data():
 
     print green("Saving test data from %s to %s" % (apps, outfile))
     _manage_py("dumpdata --indent=2 %s > %s" % (apps, outfile))
+    print "Make test data successful."
 
 def reset_db():
     """Removes all of the tables"""
@@ -158,10 +163,58 @@ def reset_db():
     _manage_py("reset_db")
 
 
+def clear_cache():
+    """Deletes the cached static files"""
+    _target_local()
+
+    from django.conf import settings
+    cache_dir = settings.COMPRESS_ROOT / settings.COMPRESS_OUTPUT_DIR
+
+    # a safety check
+    if cache_dir.endswith("CACHE"):
+        print green("Removing %s" % cache_dir)
+        cache_dir.rmdir_p()
+        print "Clear cache successful."
+
+def pull():
+    """Just runs git pull"""
+    _target_local()
+    print green("Pulling latest code...")
+    local('git pull')
+    print "Git pull successful."
+
+def reset_dev(no_pull=None):
+    """
+    Fully update the development environment.
+    This is useful after a major update.
+
+    Runs reset_db, git pulls, installs dependencies, migrate, load_test_data, and clear_cache.
+    """
+    print "\n"
+    reset_db()
+
+    if no_pull is None:
+        print "\n"
+        pull()
+
+    print "\n"
+    dependencies()
+
+    print "\n"
+    migrate()
+
+    print "\n"
+    load_test_data()
+
+    print "\n"
+    clear_cache()
+
+
 def interpolate_env(outpath=None):
     """Writes a .env file with variables interpolated from the current environment"""
     from django.template import Template, Context
     from django.conf import settings
+
     settings.configure()
 
     if outpath is None:
