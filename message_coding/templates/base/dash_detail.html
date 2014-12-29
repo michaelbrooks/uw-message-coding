@@ -8,7 +8,17 @@
     <div class="container">
     <h1>Welcome, {{ user.first_name }}</h1>
 
-    <p>Assigned Projects: {{ user.projects.count }}</p>
-    
+    <p>Assigned project-list: [{{ user.projects.count }}]</p>
+    <ul>
+		{% for project in user.projects.all %}
+   		 <li>{{ project.name}}</li>
+		{% endfor %}
+    </ul>
+    <p>Assigned task-list: [{{ user.tasks_assigned.count}}]</p>
+    <ul>
+		{% for task in user.tasks_assigned.all %}
+   		 <li>{{ task.name}}</li>
+		{% endfor %}
+    </ul>
     </div>
 {% endblock %}
