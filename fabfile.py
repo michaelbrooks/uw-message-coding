@@ -196,6 +196,8 @@ def reset_dev(no_pull=None):
     if no_pull is None:
         print "\n"
         pull()
+    else:
+        print yellow("\nSkipping git pull")
 
     print "\n"
     dependencies()
