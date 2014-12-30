@@ -11,14 +11,14 @@
     <p>Assigned project-list: [{{ user.projects.count }}]</p>
     <ul>
 		{% for project in user.projects.all %}
-   		 <li>{{ project.name}}</li>
+   		 <li><a href='{% url 'project' project_slug=project.slug %}'>{{ project.name}}</a></li>
 		{% endfor %}
     </ul>
     <p>Assigned task-list: [{{ user.tasks_assigned.count}}]</p>
     <ul>
-		{% for task in user.tasks_assigned.all %}
-   		 <li>{{ task.name}}</li>
-		{% endfor %}
+        {% for task in user.tasks_assigned.all %}
+        <li><a href='{% url 'coding' project_slug=task.project.slug task_pk=task.pk %}'>{{ task.name }}</a></li>
+        {% endfor %}
     </ul>
     </div>
 {% endblock %}
