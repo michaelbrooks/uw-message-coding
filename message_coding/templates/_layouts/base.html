@@ -35,6 +35,15 @@
         padding-top: 55px;
         padding-bottom: 20px;
       }
+      #sign-in-area {
+        position: relative;
+       
+      }
+      #sign-in-btn {
+        position: absolute;
+        top: 8px;
+        right: 100px;
+      }
     </style>
     {% endblock %}
     {% endcompress %}
@@ -95,6 +104,7 @@
             </ul>
 
           {% if user.is_anonymous %}
+          <!--
           <form class="navbar-form navbar-right" method="post" action="{% url 'django.contrib.auth.views.login' %}" >
             {% csrf_token %}
             <div class="form-group">
@@ -105,6 +115,11 @@
             </div>
             <button type="submit" class="btn btn-success">Sign in</button>
           </form>
+          -->
+          <div id='sign-in-wrap'>
+          <a id='sign-in-btn' class="btn btn-success" role="button" href="{% url 'user_dash' %}" >Sign in</a>
+          </div>
+          
           {% else %}
              <ul class="nav navbar-nav navbar-right">
               <li><p class="navbar-text">Welcome {{user.username}}!</p></li>
