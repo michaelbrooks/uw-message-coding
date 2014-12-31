@@ -1,7 +1,9 @@
 from django import forms
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from apps.dataset import models
+
 
 
 class DatasetImportForm(forms.ModelForm):
@@ -9,6 +11,8 @@ class DatasetImportForm(forms.ModelForm):
     Form for importing a new dataset.
     Handles validating and saving the new Dataset automatically.
     """
+
+    import_file = forms.FileField()
 
     class Meta:
         model = models.Dataset
