@@ -183,7 +183,7 @@ def pull():
     local('git pull')
     print "Git pull successful."
 
-def reset_dev(no_pull=None):
+def reset_dev(pull=None):
     """
     Fully update the development environment.
     This is useful after a major update.
@@ -193,7 +193,7 @@ def reset_dev(no_pull=None):
     print "\n"
     reset_db()
 
-    if no_pull is None:
+    if pull is not None:
         print "\n"
         pull()
     else:
