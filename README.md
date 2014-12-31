@@ -124,6 +124,13 @@ Workflow
 
 Some common tasks you might need to do...
 
+### Reset the dev environment
+
+If you want to update your code, database,
+and dependencies all in one go, just
+run `fab reset_dev`. This just runs a series
+of the commands below in succession.
+
 
 ### Install dependencies
 
