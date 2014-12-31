@@ -325,11 +325,17 @@ def find_node_bin(package_name='less', bin_name='lessc'):
     return bin_name # global install
 
 BIN_COFFEE = find_node_bin('coffee-script', 'coffee')
+BIN_COFFEE_COMMAND = '%s --compile --stdio' % BIN_COFFEE
+
 BIN_LESSC = find_node_bin('less', 'lessc')
+# The relative-urls flag is necessary since we are moving less files around.
+BIN_LESSC_COMMAND = '%s --relative-urls {infile} {outfile}' % BIN_LESSC
 
 COMPRESS_PRECOMPILERS = (
-    ('text/coffeescript', '%s --compile --stdio' % BIN_COFFEE),
-    ('text/less', '%s {infile} {outfile}' % BIN_LESSC),
+    ('text/coffeescript', BIN_COFFEE_COMMAND),
+
+    # this adds the CssAbsoluteFilter to the less filter
+    ('text/less', BIN_LESSC_COMMAND),
 )
 
 COMPRESS_ROOT = (SITE_ROOT / 'static').normpath()
