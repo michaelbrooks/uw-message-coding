@@ -36,3 +36,8 @@ path.py
 dj-database-url
 django-extensions
 django-widget-tweaks
+
+# rest api
+djangorestframework
+markdown
+django-filter
