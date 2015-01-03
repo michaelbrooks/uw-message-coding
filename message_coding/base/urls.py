@@ -5,7 +5,14 @@ from django.conf.urls import url, patterns, include
 from base import views
 
 urlpatterns = patterns('',
-    url(r'^$', views.home, name='home'),
-    url(r'^home/$', views.UserDashboard.as_view(), name='user_dash'),
-    url(r'^accounts/', include('django.contrib.auth.urls')),
+                       url(r'^$', views.home, name='home'),
+                       url(r'^home/$', views.UserDashboard.as_view(), name='user_dash'),
+                       url(r'^accounts/', include('django.contrib.auth.urls')),
+
+                       # REST Api urls
+                       url(r'^api/', include('base.api')),
+
+                       # Project urls
+                       url(r'^', include('apps.project.urls')),
+
 )
