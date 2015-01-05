@@ -95,4 +95,3 @@ class UserDashboard(LoginRequiredMixin, DetailView):
         context = super(UserDashboard, self).get_context_data(**kwargs)
         # add any additional data we need -- none for now
         return context
-

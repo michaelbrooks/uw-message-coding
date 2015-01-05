@@ -169,6 +169,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'base.context_processors.google_analytics',
+    
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
@@ -228,6 +229,7 @@ DJANGO_APPS = (
 # Apps specific for this project go here.
 LOCAL_APPS = (
     # Application base, containing global templates.
+    'apps.lib',
     'base',
     'apps.coding',
     'apps.dataset',

@@ -28,7 +28,11 @@
     {% compress css %}
         <link rel="stylesheet" href="{% static 'css/theme/bootstrap.less' %}" type="text/less">
         <link rel="stylesheet" href="{% static 'css/base.less' %}" type="text/less">
-    {% block css %}{% endblock %}
+    {% block css %}
+    <style type='text/css'>
+      
+    </style>
+    {% endblock %}
     {% endcompress %}
     <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
 
@@ -53,6 +57,68 @@
     </header>
 
     <div role="main">
+        {% block navigation_bar %}
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'home' %}">Message Coding</a>
+        </div>
+        
+        {% load tags %}    
+        {% url 'user_dash' as user_dash %}
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="{% active request user_dash %}"><a href="{% url 'user_dash' %}">Dashboard</a></li>
+              <li class="{% active request '/#' %}"><a href="#">(Place holder)</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li>
+                </ul>
+              </li>
+            </ul>
+
+          {% if user.is_anonymous %}
+          <!--
+          <form class="navbar-form navbar-right" method="post" action="{% url 'django.contrib.auth.views.login' %}" >
+            {% csrf_token %}
+            <div class="form-group">
+              <input type="text" placeholder="Username" class="form-control" name="username">
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" class="form-control" name="password">
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+          </form>
+          -->
+          <div id='sign-in-wrap'>
+          <a id='sign-in-btn' class="btn btn-success" role="button" href="{% url 'user_dash' %}" >Sign in</a>
+          </div>
+          
+          {% else %}
+             <ul class="nav navbar-nav navbar-right">
+              <li><p class="navbar-text">Welcome {{user.username}}!</p></li>
+              <li><a href="{% url 'django.contrib.auth.views.logout' %}">Logout</a></li>
+             </ul>
+          {% endif %}
+        </div>
+        <!--/.navbar-collapse -->
+        </div>
+        </div>
+        {% endblock %}
+        
         {% block content %}{% endblock %}
     </div>
 
@@ -60,7 +126,7 @@
         {% block footer %}
             <div class="container">
                 <hr>
-                <p>&copy; Company 2014</p>
+                <p>&copy; University of Washington 2014</p>
             </div>
         {% endblock footer %}
     </footer>
