@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 
 from base.models import NameDescriptionMixin, CreatedAtField
-from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 
 # These strings cannot be dataset slugs
@@ -42,6 +41,10 @@ class Selection(models.Model):
             return self.dataset.messages.filter(pk__in=ids)
         else:
             return self.dataset.messages.all()
+
+    def size(self):
+        return self.get_messages().count()
+
 
 class Message(models.Model):
     """A single message in a dataset"""

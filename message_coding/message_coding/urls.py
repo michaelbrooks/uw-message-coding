@@ -6,6 +6,8 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 
 
+# NOTE: new url segments at the top level
+# should be added to the blacklist for project.Project model slugs.
 urlpatterns = patterns('',
 
                        # Load the admin urls
@@ -13,8 +15,6 @@ urlpatterns = patterns('',
 
                        url(r'^', include('base.urls')),
 
-                       # Project urls
-                       url(r'^', include('apps.project.urls')),
 )
 
 if settings.DEBUG:

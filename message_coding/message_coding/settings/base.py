@@ -361,3 +361,18 @@ INSTALLED_APPS += (
 # BROKER_VHOST = 'django'
 # CELERY_RESULT_BACKEND = 'amqp'
 ########## END SOUTH CONFIGURATION
+
+
+######### REST FRAMEWORK
+INSTALLED_APPS += (
+    'rest_framework',
+)
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissions'
+    ]
+}
+######### END REST FRAMEWORK
+

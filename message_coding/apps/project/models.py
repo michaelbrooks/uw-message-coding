@@ -1,9 +1,10 @@
 from django.db import models
 from django.conf import settings
-
-from base.models import NameDescriptionMixin, CreatedAtField
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
+
+from base.models import NameDescriptionMixin, CreatedAtField
+
 
 # These strings cannot be project slugs
 illegal_project_slugs = (
@@ -11,6 +12,7 @@ illegal_project_slugs = (
     'project',
     'accounts',
     'user_dash',
+    'api',
 )
 
 
@@ -22,7 +24,7 @@ def slug_validator(value):
 class Project(NameDescriptionMixin):
     slug = models.SlugField(unique=True, validators=[slug_validator])
     created_at = CreatedAtField()
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='projects_owned')
 
     # People who belong to this project
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='projects')
