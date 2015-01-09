@@ -5,15 +5,12 @@
 {% block body_class %}project-create{% endblock %}
 
 {% block content %}
-    <div class="container">
-	
-        <h1>Create a project</h1>
-
-        <form class="form" method="post">
-            {% csrf_token %}
-            {{ form.media }}
-
-            {% if form.errors %}
+{% comment %}borrowed from http://wisercoder.com/django-forms-bootstrap/{% endcomment %}
+<div class="container">
+    <form class="form" action="" method="POST" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+        {% csrf_token %}
+        {{ form.media }}
+        {% if form.errors %}
             <div class="alert alert-error">
                 <ul>
                     {% for error in form.non_field_errors %}
@@ -21,33 +18,32 @@
                     {% endfor %}
                 </ul>
             </div>
-            {% endif %}
-
-            <div class="form-group">
-                {{ form.name.label_tag }}{% if field.field.required %} *{% endif %}
-                {% render_field form.name class+="form-control" %}
+        {% endif %}
+        {% for field in form.visible_fields %}
+            <div class="form-group {{ field.html_name }} {% if field.errors %}error{% endif %}">
+                <label class="control-label">{{ field.label }}{% if field.field.required %} *{% endif %}</label>
+                <div class="controls">
+                    {% render_field field class+="form-control" %}
+                    {% if field.help_text %}<span class="help-inline">{{ field.help_text }}</span>{% endif %}
+                    {% if field.errors %}<div class="alert alert-danger" role="alert">{{ field.errors.as_text }}</div>{% endif %}
+                </div>
             </div>
+        {% endfor %}
+        {% for field in form.hidden_fields %}
+            {{ field }}
+        {% endfor %}
 
-            <div class="form-group">
-                {{ form.slug.label_tag }}{% if field.field.required %} *{% endif %}
-                {% render_field form.slug class+="form-control" %}
-                <p class="help-block">{{ form.slug.help_text }}</p>
-                <p class="alert alert-danger">{{ form.slug.errors|striptags }}</p>
-            </div>
+        {% block formsets %}
+            {% for formset in inlines %}
+                {% include "inline_formset.html" with formset=formset %}
+            {% endfor %}        
+        {% endblock formsets %}
 
-            <div class="form-group">
-                {{ form.description.label_tag }}{% if field.field.required %} *{% endif %}
-                {% render_field form.description class+="form-control" %}
-            </div>
-
-
-            <div class="form-group">
-                {{ form.members.label_tag }}{% if field.field.required %} *{% endif %}
-                {% render_field form.members class+="form-control" %}
-                <p class="help-block">{{ form.members.help_text }}</p>
-            </div>
-
-            <button type="submit" class="btn btn-lg btn-primary">Create</button>
-        </form>
-    </div>
+        <div class="form-actions">
+            <input class="btn btn-primary btn-large" type="submit" value="Submit"/>
+            {% block extra_buttons %}
+            {% endblock extra_buttons %}
+        </div>
+    </form>
+</div>
 {% endblock %}
