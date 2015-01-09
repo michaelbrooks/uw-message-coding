@@ -7,6 +7,7 @@
 {% block content %}
 {% comment %}borrowed from http://wisercoder.com/django-forms-bootstrap/{% endcomment %}
 <div class="container">
+    <h1>Create a project</h1>
     <form class="form" action="" method="POST" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
         {% csrf_token %}
         {{ form.media }}
