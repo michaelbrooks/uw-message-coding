@@ -11,27 +11,38 @@
 
         <form class="form" method="post">
             {% csrf_token %}
+            {{ form.media }}
+
+            {% if form.errors %}
+            <div class="alert alert-error">
+                <ul>
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
 
             <div class="form-group">
-                {{ form.name.label_tag }}
+                {{ form.name.label_tag }}{% if field.field.required %} *{% endif %}
                 {% render_field form.name class+="form-control" %}
             </div>
 
             <div class="form-group">
-                {{ form.slug.label_tag }}
+                {{ form.slug.label_tag }}{% if field.field.required %} *{% endif %}
                 {% render_field form.slug class+="form-control" %}
                 <p class="help-block">{{ form.slug.help_text }}</p>
                 <p class="alert alert-danger">{{ form.slug.errors|striptags }}</p>
             </div>
 
             <div class="form-group">
-                {{ form.description.label_tag }}
+                {{ form.description.label_tag }}{% if field.field.required %} *{% endif %}
                 {% render_field form.description class+="form-control" %}
             </div>
 
 
             <div class="form-group">
-                {{ form.members.label_tag }}
+                {{ form.members.label_tag }}{% if field.field.required %} *{% endif %}
                 {% render_field form.members class+="form-control" %}
                 <p class="help-block">{{ form.members.help_text }}</p>
             </div>
