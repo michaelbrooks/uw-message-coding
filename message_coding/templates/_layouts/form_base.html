@@ -14,11 +14,11 @@
                 </div>
             {% endif %}
             {% for field in form.visible_fields %}
-                <div class="form-group {{ field.html_name }} {% if field.errors %}error{% endif %}">
-                    <label class="control-label">{{ field.label }}{% if field.field.required %} *{% endif %}</label>
+                <div class="form-group {{ field.html_name }} {% if field.errors %}has-error{% endif %}">
+                    <label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} *{% endif %}</label>
                     <div class="controls">
                         {% render_field field class+="form-control" %}
-                        {% if field.help_text %}<span class="help-inline">{{ field.help_text }}</span>{% endif %}
+                        {% if field.help_text %}<p class="help-block">{{ field.help_text }}</p>{% endif %}
                         {% if field.errors %}<div class="alert alert-danger" role="alert">{{ field.errors.as_text }}</div>{% endif %}
                     </div>
                 </div>
