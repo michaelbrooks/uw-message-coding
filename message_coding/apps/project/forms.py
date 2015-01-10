@@ -13,7 +13,7 @@ class ProjectCreateForm(forms.ModelForm):
         model = models.Project
 
         # Choose which fields to show on the form
-        fields = ['name', 'description', 'members', 'slug']
+        fields = ['name', 'slug', 'description', 'members']
 
         # Customize label text and add help messages
         labels = {
