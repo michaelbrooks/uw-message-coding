@@ -27,14 +27,6 @@
                 {{ field }}
             {% endfor %}
 
-            {% comment %}
-            {% block formsets %}
-                {% for formset in inlines %}
-                    {% include "inline_formset.html" with formset=formset %}
-                {% endfor %}        
-            {% endblock formsets %}
-            {% endcomment %}
-
             <div class="form-actions">
                 <input class="btn btn-primary btn-large" type="submit" value="Submit"/>
                 {% block extra_buttons %}
