@@ -1,42 +1,14 @@
 {% extends "_layouts/base.html" %}
-{% load widget_tweaks %}
+{% load bsform %}
 
 {% block page_title %}Create a project{% endblock %}
 {% block body_class %}project-create{% endblock %}
 
 {% block content %}
-    <div class="container">
-	
-        <h1>Create a project</h1>
+<div class="container">
+    <h1>Create a project</h1>
 
-        <form class="form" method="post">
-            {% csrf_token %}
+    {% bsform form %}
 
-            <div class="form-group">
-                {{ form.name.label_tag }}
-                {% render_field form.name class+="form-control" %}
-            </div>
-
-            <div class="form-group">
-                {{ form.slug.label_tag }}
-                {% render_field form.slug class+="form-control" %}
-                <p class="help-block">{{ form.slug.help_text }}</p>
-                <p class="alert alert-danger">{{ form.slug.errors|striptags }}</p>
-            </div>
-
-            <div class="form-group">
-                {{ form.description.label_tag }}
-                {% render_field form.description class+="form-control" %}
-            </div>
-
-
-            <div class="form-group">
-                {{ form.members.label_tag }}
-                {% render_field form.members class+="form-control" %}
-                <p class="help-block">{{ form.members.help_text }}</p>
-            </div>
-
-            <button type="submit" class="btn btn-lg btn-primary">Create</button>
-        </form>
-    </div>
+</div>
 {% endblock %}
