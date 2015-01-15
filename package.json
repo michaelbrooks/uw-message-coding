@@ -4,8 +4,15 @@
   "authors": [
     "Michael Brooks <mjbrooks@uw.edu>"
   ],
-  "dependencies": {
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/npm/npm.git"
+  },
+  "devDependencies": {
     "coffee-script": "^1.8.0",
-    "less": "^2.1.1"
+    "less": "^2.1.1",
+    "karma": "~0.10",
+    "protractor": "^1.1.1",
+    "karma-junit-reporter": "^0.2.2"
   }
 }

@@ -41,3 +41,6 @@ django-widget-tweaks
 djangorestframework
 markdown
 django-filter
+
+# angular
+django-angular

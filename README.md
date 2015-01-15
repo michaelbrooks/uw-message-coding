@@ -30,6 +30,8 @@ Instead, follow these steps:
    This will download a basic Ubuntu image, install
    some additional software on it, and perform the initial project setup.
 
+   > **If you are on windows**: You should run this command in an Administrator cmd.exe or Powershell.
+
    ```bash
    $ vagrant up
    ```
