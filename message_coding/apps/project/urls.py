@@ -4,10 +4,14 @@ from django.conf.urls import url, patterns, include
 
 import views
 
-task_pk_urls = patterns('',
+task_urls = patterns('',
                         url(r'^$',
                             views.TaskDetailView.as_view(),
                             name='task'),
+
+                        url(r'edit/$',
+                            views.EditTaskView.as_view(),
+                            name='task_edit'),
 
                         url(r'^code/$',
                             views.CodingView.as_view(),
@@ -18,19 +22,8 @@ task_pk_urls = patterns('',
                             name='coding_page'),
 )
 
-task_urls = patterns('',
-
-                     url(r'^create/$',
-                         views.CreateTaskView.as_view(),
-                         name='task_create'),
-
-                     url(r'^(?P<task_pk>\d+)/',
-                         include(task_pk_urls)),
-)
-
 project_slug_urls = patterns('',
-
-                             url(r'^tasks/',
+                             url(r'^tasks/(?P<task_pk>\d+)/',
                                  include(task_urls)),
 
                              url(r'^datasets/',

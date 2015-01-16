@@ -1,6 +1,6 @@
 import json
 
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, UpdateView
 from django import http
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect
@@ -37,6 +37,7 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
 
     slug_url_kwarg = 'project_slug'
 
+
 class TaskDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     """View for viewing tasks"""
     model = models.Task
@@ -45,45 +46,21 @@ class TaskDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     pk_url_kwarg = 'task_pk'
     def get_context_data(self, **kwargs):
         context = super(TaskDetailView, self).get_context_data(**kwargs)
-        message_ids = json.loads(context['task'].selection.selection)
-        context['msgs'] = context['task'].selection.dataset.messages.filter(reduce(lambda x, y: x | Q(id=y), message_ids, Q()))
+        context['msgs'] = context['task'].selection.get_messages()
         return context
     
 
 
-class CreateTaskView(LoginRequiredMixin, ProjectViewMixin, CreateView):
-    """View for creating new tasks"""
+class EditTaskView(LoginRequiredMixin, ProjectViewMixin, UpdateView):
+    """View for editing new tasks"""
 
     model = models.Task
+    pk_url_kwarg = 'task_pk'
 
     # Let Django autogenerate the form for now
     fields = ['name', 'description', 'scheme', 'assigned_coders']
 
-    template_name = "project/task_create.html"
-
-    def form_valid(self, form):
-        """What to do when a task is created?"""
-        # The user comes from the session
-        form.instance.owner = self.request.user
-
-        # This comes from the URL
-        project = self.get_project()
-        form.instance.project = project
-
-        # This selection thing is hard-coded for now
-        dataset_id = self.request.GET.get('dataset')
-        dataset = project.datasets.get(id=dataset_id)
-        selection = dataset_models.Selection(
-            owner=self.request.user,
-            dataset=dataset,
-            type='json',
-            selection = json.dumps(self.request.GET.getlist('messages'))
-        )
-        selection.save()
-
-        form.instance.selection = selection
-
-        return super(CreateTaskView, self).form_valid(form)
+    template_name = "project/task_edit.html"
 
 
 CODING_BATCH_SIZE = 1

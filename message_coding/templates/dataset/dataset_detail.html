@@ -36,27 +36,6 @@
 {% block content %}
 
     <div class="container" ng-app="message_coding.dataBrowser">
-        <h1>{{ dataset.name }}</h1>
-
-        <p>In project: <a href='{% url 'project' project_slug=project.slug %}'>{{ project.name }}</a></p>
-
-
-        <p>{{ dataset.description }}</p>
-
-        <p>Owner: {{ dataset.owner }}</p>
-
-        <h3>Messages</h3>
-
-        <form action='{% url 'task_create' project_slug=project.slug %}' method='get'>{% csrf_token %}
-            <ul>
-                {% for message in dataset.messages.all %}
-                    <li><input type='checkbox' id='message' value={{ message.id }} name='messages'
-                               checked=checked/> {{ message.text }}</li>
-                {% endfor %}
-            </ul>
-            <input type='hidden' name=dataset value={{ dataset.id }}/>
-            <input type='submit' value='Create a task for this project'/>
-        </form>
 
         <div ng-view></div>
 

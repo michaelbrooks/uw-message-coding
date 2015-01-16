@@ -6,10 +6,13 @@
         'ng.django.urls'
     ]);
 
-    var BrowserController = function ($scope, Project, Dataset, Message, Selection, djangoUrl) {
+    var requires = ['$scope', 'Project', 'Dataset', 'Message', 'Task', 'djangoUrl'];
+    var BrowserController = function ($scope, Project, Dataset, Message, Task, djangoUrl) {
         var dataset_id = 1;
         var project_id = 1;
         var user_id = 1;
+
+        $scope.selection = {};
 
         $scope.project = Project.get({pk: project_id});
         $scope.dataset = Dataset.get({pk: dataset_id});
@@ -21,11 +24,13 @@
         });
 
         var loadMessages = function (page) {
+            var selection = angular.extend({
+                dataset_id: dataset_id,
+                page: page
+            }, $scope.selection);
+
             Message
-                .get({
-                    dataset_id: dataset_id,
-                    page: page
-                })
+                .get(selection)
                 .$promise.then(function (result) {
                     $scope.messages = result;
                     $scope.page = page;
@@ -45,24 +50,26 @@
         };
 
         $scope.createTask = function () {
-            var selection = new Selection({
-                dataset: dataset_id,
-                type: 'json',
-                selection: {'text__like': 'cat'}
+            var task = new Task({
+                project: project_id,
+                selection: {
+                    dataset: dataset_id,
+                    type: 'json',
+                    selection: $scope.selection
+                }
             });
 
-            selection
-                .$save()
+            task.$save()
                 .then(function () {
-                    document.location.href = djangoUrl.reverse('task_create', {
+                    document.location.href = djangoUrl.reverse('task_edit', {
                         project_slug: $scope.project.slug,
-                        selection_pk: selection.id
+                        task_pk: task.id
                     });
                 });
         };
     };
 
-    BrowserController.$inject = ['$scope', 'Project', 'Dataset', 'Message', 'Selection', 'djangoUrl'];
+    BrowserController.$inject = requires;
 
     module.controller('BrowserController', BrowserController);
 })();

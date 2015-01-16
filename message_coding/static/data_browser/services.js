@@ -29,4 +29,8 @@
     module.service('Selection', ['$resource', function($resource) {
         return $resource('/api/selections/:pk/');
     }]);
+
+    module.service('Task', ['$resource', function($resource) {
+        return $resource('/api/tasks/:pk/');
+    }])
 })();

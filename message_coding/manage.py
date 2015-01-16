@@ -3,8 +3,6 @@ import os
 import sys
 
 if __name__ == "__main__":
-    import pydevd
-    pydevd.settrace('localhost', port=8080, stdoutToServer=True, stderrToServer=True)
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "message_coding.settings.local")
 

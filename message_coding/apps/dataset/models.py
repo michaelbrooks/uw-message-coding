@@ -3,6 +3,7 @@ from django.conf import settings
 
 from base.models import NameDescriptionMixin, CreatedAtField
 from django.core.exceptions import ValidationError
+import json
 
 # These strings cannot be dataset slugs
 illegal_dataset_slugs = (
@@ -35,10 +36,9 @@ class Selection(models.Model):
     selection = models.BinaryField()
 
     def get_messages(self):
-        if type == 'json':
-            import json
-            ids = json.loads(self.selection)
-            return self.dataset.messages.filter(pk__in=ids)
+        if self.type == 'json':
+            selection = json.loads(self.selection)
+            return self.dataset.messages.filter(**selection)
         else:
             return self.dataset.messages.all()
 

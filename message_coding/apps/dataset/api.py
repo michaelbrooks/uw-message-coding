@@ -1,6 +1,8 @@
 from apps.dataset.models import Dataset, Selection, Message
 from rest_framework import routers, serializers, viewsets
+from base.views import OwnedViewSetMixin
 import json
+
 
 # Serializers define the API representation.
 class DatasetSerializer(serializers.ModelSerializer):
@@ -11,12 +13,42 @@ class DatasetSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_at',)
 
 
-class JSONBinaryField(serializers.Field):
-    def to_internal_value(self, obj):
-        return json.dumps(obj)
+class TypedBlobField(serializers.Field):
+    """
+    This field translates binary descriptions in the database for the REST api.
+    It uses a second field on the model, the 'type' field,
+    to determine how to encode and decode the blob field.
+    """
+
+    def __init__(self,
+                 type_field='type',
+                 default_type='json',
+                 **kwargs):
+        self.type_field = type_field
+        self.default_type = default_type
+        self.value_type = default_type
+
+        super(TypedBlobField, self).__init__(**kwargs)
 
     def to_representation(self, value):
-        return json.loads(value)
+        if self.value_type == 'json':
+            return json.loads(value)
+        else:
+            return value
+
+    def to_internal_value(self, data):
+        if self.value_type == 'json':
+            return json.dumps(data)
+        else:
+            return data
+
+    def get_value(self, dictionary):
+        self.value_type = dictionary.get(self.type_field, self.default_type)
+        return super(TypedBlobField, self).get_value(dictionary)
+
+    def get_attribute(self, instance):
+        self.value_type = getattr(instance, self.type_field, self.default_type)
+        return super(TypedBlobField, self).get_attribute(instance)
 
 
 class SelectionSerializer(serializers.ModelSerializer):
@@ -25,7 +57,8 @@ class SelectionSerializer(serializers.ModelSerializer):
         fields = ('id', 'created_at', 'owner', 'dataset', 'type', 'selection', 'size')
         read_only_fields = ('created_at', 'owner', 'size',)
 
-    selection = JSONBinaryField
+    selection = TypedBlobField(type_field='type', default_type='json')
+
 
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,13 +73,10 @@ class DatasetViewSet(viewsets.ModelViewSet):
     paginate_by = 10
 
 
-class SelectionViewSet(viewsets.ModelViewSet):
+class SelectionViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
     queryset = Selection.objects.all()
     serializer_class = SelectionSerializer
     paginate_by = 10
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
 
 
 class MessageViewSet(viewsets.ModelViewSet):
