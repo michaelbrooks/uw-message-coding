@@ -21,6 +21,7 @@ loggy "Installing global npm packages..."
 buffer_fail "npm install -g bower grunt-cli" "ERROR: Error installing NPM packages."
 
 # Make a fake node_modules folder
+mkdir ${VAGRANT_HOME}/node_modules
 ln -s ${VAGRANT_HOME}/node_modules ${PROJECT_ROOT}/node_modules
 
 # Make sure the mysql service is started
