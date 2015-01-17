@@ -82,7 +82,7 @@ class SelectionViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    paginate_by = 1
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = Message.objects.all()

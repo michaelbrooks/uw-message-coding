@@ -1,4 +1,4 @@
-from rest_framework import routers, serializers, permissions
+from rest_framework import routers, serializers, permissions, pagination
 
 class SuperRouterMixin(object):
 
@@ -14,7 +14,7 @@ class SuperSimpleRouter(SuperRouterMixin, routers.SimpleRouter):
 
 
 # http://stackoverflow.com/questions/24852555/how-to-exclude-parent-when-serializer-is-nested-when-using-django-rest-framework
-class ExclusiveHyperlinkedModelSerializer(serializers.HyperlinkedModelSerializer):
+class ExclusiveModelSerializer(serializers.ModelSerializer):
     """
     A HyperlinkedModelSerializer that takes an additional `fields` argument that
     controls which fields should be displayed.
@@ -25,7 +25,7 @@ class ExclusiveHyperlinkedModelSerializer(serializers.HyperlinkedModelSerializer
         fields = kwargs.pop('fields', None)
         exclude = kwargs.pop('exclude', None)
         # Instantiate the superclass normally
-        super(ExclusiveHyperlinkedModelSerializer, self).__init__(*args, **kwargs)
+        super(ExclusiveModelSerializer, self).__init__(*args, **kwargs)
 
         if fields:
             # Drop any fields that are not specified in the `fields` argument.
@@ -60,3 +60,11 @@ class IsStaffOrOwner(permissions.BasePermission):
 
         return obj.owner == request.user
 
+
+class CustomPaginationSerializer(pagination.BasePaginationSerializer):
+    """API pagination serializer that adds num_pages and per_page"""
+    count = serializers.ReadOnlyField(source='paginator.count')
+    next = pagination.NextPageField(source='*')
+    previous = pagination.PreviousPageField(source='*')
+    page_count = serializers.ReadOnlyField(source='paginator.num_pages')
+    per_page = serializers.ReadOnlyField(source='paginator.per_page')

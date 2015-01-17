@@ -372,7 +372,9 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissions'
-    ]
+    ],
+    'DEFAULT_PAGINATION_SERIALIZER_CLASS':
+        'base.api_utils.CustomPaginationSerializer',
 }
 ######### END REST FRAMEWORK
 
