@@ -7,7 +7,10 @@ from base.views import LoginRequiredMixin, ProjectViewMixin
 import csv
 import codecs
 
-
+from apps.dataset.api import DatasetSerializer
+from apps.project.api import ProjectSerializer
+from base.api import UserSerializer
+from rest_framework.renderers import JSONRenderer
 
 class DatasetDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     """View for viewing datasets"""
@@ -15,6 +18,14 @@ class DatasetDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     template_name = 'dataset/dataset_detail.html'
     slug_url_kwarg = 'dataset_slug'
 
+    def get_context_data(self, **kwargs):
+        # Add some serialized json for bootstrapping the client-side app
+        renderer = JSONRenderer()
+        kwargs['project_json'] = renderer.render(ProjectSerializer(self.get_project()).data)
+        kwargs['dataset_json'] = renderer.render(DatasetSerializer(self.object).data)
+        kwargs['user_json'] = renderer.render(UserSerializer(self.request.user).data)
+
+        return super(DatasetDetailView, self).get_context_data(**kwargs)
 
 
 class DatasetImportView(LoginRequiredMixin, ProjectViewMixin, CreateView):

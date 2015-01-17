@@ -3,13 +3,13 @@ from rest_framework import routers, serializers, viewsets
 from base import api_utils
 
 
-class CodeSerializer(api_utils.ExclusiveHyperlinkedModelSerializer):
+class CodeSerializer(api_utils.ExclusiveModelSerializer):
     class Meta:
         model = models.Code
         fields = ('id', 'name', 'description', 'code_group')
 
 
-class CodeGroupSerializer(api_utils.ExclusiveHyperlinkedModelSerializer):
+class CodeGroupSerializer(api_utils.ExclusiveModelSerializer):
     class Meta:
         model = models.CodeGroup
         fields = ('id', 'name', 'description', 'codes', 'scheme')
@@ -18,7 +18,7 @@ class CodeGroupSerializer(api_utils.ExclusiveHyperlinkedModelSerializer):
 
 
 # Serializers define the API representation.
-class SchemeSerializer(serializers.HyperlinkedModelSerializer):
+class SchemeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Scheme
         fields = ('id', 'name', 'description',

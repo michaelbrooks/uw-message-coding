@@ -15,6 +15,7 @@
     <script src="{% static 'data_browser/data_browser.js' %}"></script>
     <script src="{% static 'data_browser/controllers.js' %}"></script>
     <script src="{% static 'data_browser/services.js' %}"></script>
+    <script src="{% static 'data_browser/models.js' %}"></script>
 {% endblock %}
 
 {% block bootstrapping %}
@@ -26,18 +27,59 @@
         angular.module('message_coding.dataBrowser')
                 .constant('django_config', {
                     'STATIC_URL': '{% static '' %}'
-                })
-                .constant('project_pk', {{ project.pk }})
-                .constant('dataset_pk', {{ dataset.pk }});
+                });
+
+        angular.module('message_coding.dataBrowser.bootstrap')
+                .constant('message_coding.dataBrowser.bootstrap.initial_data', {
+                    project: {{ project_json|safe }},
+                    dataset: {{ dataset_json|safe }},
+                    user: {{ user_json|safe }}
+                });
     </script>
 {% endblock %}
 
 
 {% block content %}
 
-    <div class="container" ng-app="message_coding.dataBrowser">
+<div class="container" ng-app="message_coding.dataBrowser">
 
-        <div ng-view></div>
+    <div ng-controller="message_coding.dataBrowser.controllers.BrowserController">
 
+        <h1 ng-bind="dataset.name">{{ dataset.name }}</h1>
+
+        <p ng-bind="dataset.description">{{ dataset.description }}</p>
+
+        <div class="ng-cloak">
+            <h3>Messages</h3>
+            <ul>
+                <li ng-repeat="message in model.messages">
+                    <span ng-bind="message.text"></span>
+                </li>
+            </ul>
+            <p>
+                <button class="btn btn-default btn-sm"
+                        ng-disabled="!model.hasPrevious"
+                        ng-click="model.previousPage()">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    Previous
+                </button>
+
+                Page <span ng-bind="model.page"></span> of <span ng-bind="model.pageCount"></span>
+
+                <button class="btn btn-default btn-sm"
+                        ng-disabled="!model.hasNext"
+                        ng-click="model.nextPage()">
+                    Next
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </button>
+            </p>
+            <p>
+                <button class="btn btn-primary"
+                        ng-click="createTask()">
+                    Create Task from Selection
+                </button>
+            </p>
+        </div>
     </div>
+</div>
 {% endblock %}
