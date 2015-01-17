@@ -46,8 +46,8 @@ class Task(NameDescriptionMixin):
 
     project = models.ForeignKey('project.Project', related_name="tasks")
     selection = models.ForeignKey('dataset.Selection')
-    scheme = models.ForeignKey('coding.Scheme')
-    assigned_coders = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tasks_assigned')
+    scheme = models.ForeignKey('coding.Scheme', default=None, null=True)
+    assigned_coders = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tasks_assigned', default=None, null=True)
 
     def get_absolute_url(self):
         """What is the main url for this object"""

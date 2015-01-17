@@ -13,8 +13,8 @@ class NameDescriptionMixin(models.Model):
     class Meta:
         abstract = True
 
-    name = models.CharField(max_length=150)
-    description = models.TextField()
+    name = models.CharField(max_length=150, default='')
+    description = models.TextField(default='')
 
 
 class CreatedAtField(models.DateTimeField):

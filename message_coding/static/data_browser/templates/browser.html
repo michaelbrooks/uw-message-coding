@@ -1,0 +1,33 @@
+<h1>{{ dataset.name }}</h1>
+
+<p>{{ dataset.description }}</p>
+
+<p>Owner: {{ dataset.owner }}</p>
+
+<h3>Messages</h3>
+<ul>
+    <li ng-repeat="message in messages.results">{{ message.text }}</li>
+</ul>
+<p>
+    <button class="btn btn-default btn-sm"
+            ng-disabled="!messages.previous"
+            ng-click="previousMessages()">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+        Previous
+    </button>
+
+    Page {{ page }} of {{ messages.count }}
+
+    <button class="btn btn-default btn-sm"
+            ng-disabled="!messages.next"
+            ng-click="nextMessages()">
+        Next
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </button>
+</p>
+<p>
+    <button class="btn btn-primary"
+            ng-click="createTask()">
+        Create Task from Selection
+    </button>
+</p>

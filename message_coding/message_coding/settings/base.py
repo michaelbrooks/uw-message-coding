@@ -376,3 +376,10 @@ REST_FRAMEWORK = {
 }
 ######### END REST FRAMEWORK
 
+
+######### ANGULAR JS CONFIG
+INSTALLED_APPS += (
+    'djangular',
+)
+
+######### END ANGULAR CONFIG

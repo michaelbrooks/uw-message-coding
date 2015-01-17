@@ -10,6 +10,7 @@ set +e
 
 PHPMYADMIN_PW=phpmyadmin
 DBROOTPASS=root
+VAGRANT_HOME=/home/vagrant
 
 # Make sure the machine is updated
 loggy "Updating system..."
@@ -18,6 +19,9 @@ buffer_fail "apt-get update" "ERROR: Could not update system."
 # Install some global NPM modules we might need
 loggy "Installing global npm packages..."
 buffer_fail "npm install -g bower grunt-cli" "ERROR: Error installing NPM packages."
+
+# Make a fake node_modules folder
+ln -s ${VAGRANT_HOME}/node_modules ${PROJECT_ROOT}/node_modules
 
 # Make sure the mysql service is started
 loggy "Configuring MySQL..."
@@ -75,7 +79,6 @@ loggy "-----------------------------------"
 # Add the workon command to the bashrc
 loggy "Augmenting user's bashrc file..."
 
-VAGRANT_HOME=/home/vagrant
 if grep -q 'workon' ${VAGRANT_HOME}/.bashrc; then
     echo "workon already in bashrc"
 else

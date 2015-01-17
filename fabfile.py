@@ -59,10 +59,9 @@ def _get_settings():
 
 def _symlink_supported():
     with quiet():
-        if local('ln -s __linktest_target __linktest__source').succeeded:
-            local('rm -f __linktest_source')
-            return True
-        return False
+        result = local('ln -s __linktest__target __linktest__source').succeeded
+        local('rm -f __linktest__source __linktest__target')
+        return result
 
 
 def dependencies():

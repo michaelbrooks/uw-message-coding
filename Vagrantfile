@@ -28,6 +28,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # argument is a set of non-required options.
     config.vm.synced_folder ".", "/home/vagrant/uw-message-coding"
 
+    # Enable symlinks!
+    # http://blog.rudylee.com/2014/10/27/symbolic-links-with-vagrant-windows/
+    config.vm.provider "virtualbox" do |v|
+        v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
+    end
+
     config.vm.provision "shell" do |s|
         s.path = "setup/scripts/vagrant_provision.sh"
         s.args = "/home/vagrant/uw-message-coding"
