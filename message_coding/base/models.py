@@ -17,6 +17,13 @@ class NameDescriptionMixin(models.Model):
     description = models.TextField(default='')
 
 
+    def __str__(self):
+    	return name
+
+    def __unicode__(self):
+    	return name
+
+
 class CreatedAtField(models.DateTimeField):
     """A datetime field that auto-nows automatically"""
 
