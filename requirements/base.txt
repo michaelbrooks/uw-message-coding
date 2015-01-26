@@ -4,7 +4,7 @@ MySQL-python
 
 
 # Django stuff
-Django
+Django>=1.7.2
 
 # Templates
 django_compressor
