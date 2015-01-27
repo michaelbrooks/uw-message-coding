@@ -6,10 +6,12 @@ import json
 
 # Serializers define the API representation.
 class DatasetSerializer(serializers.ModelSerializer):
+    min_time = serializers.DateTimeField()
+    max_time = serializers.DateTimeField()
     class Meta:
         model = Dataset
         fields = ('id', 'name', 'description', 'slug', 'created_at',
-                  'owner', 'projects')
+                  'owner', 'projects', 'min_time', 'max_time')
         read_only_fields = ('created_at',)
 
 

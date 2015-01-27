@@ -16,19 +16,9 @@
     <script src="{% static 'data_browser/controllers.js' %}"></script>
     <script src="{% static 'data_browser/services.js' %}"></script>
     <script src="{% static 'data_browser/models.js' %}"></script>
-    <script type="text/javascript">
-            
-        $(function () {
-            $('#start_time').datetimepicker();
-            $('#end_time').datetimepicker();
-            $("#start_time").on("dp.change",function (e) {
-            $('#end_time').data("DateTimePicker").minDate(e.date);
-            });
-            $("#end_time").on("dp.change",function (e) {
-                $('#start_time').data("DateTimePicker").maxDate(e.date);
-            });
-        });
-    </script>
+    <script src="{% static 'bower/moment/moment.js' %}" type="text/javascript"></script>
+    <script src="{% static 'bower/angular-bootstrap-datetimepicker/src/js/datetimepicker.js' %}" type="text/javascript"></script>
+
 {% endblock %}
 
 {% block bootstrapping %}
@@ -52,10 +42,11 @@
 {% endblock %}
 {% block css %}
     {{ block.super }}
+    
     <style type='text/css'>
         .datetimepicker{
             display: inline-block;
-            width: 200px;
+            width: 300px;
             vertical-align: top;
         }
     </style>
@@ -74,25 +65,36 @@
         <div class="ng-cloak">
             <h3>Messages</h3>
             
-            {{ model.filters }}
+            <pre ng-bind="model.filters | json: 3"></pre>
             Start time:
-            <div class="form-group datetimepicker">
-                
-                <div class='input-group date' id='start_time'>
-                    <input type='text' class="form-control" ng-bind="model.filters.time__gte" />
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+            <div class='datetimepicker'>
+                <div class="dropdown">
+                    <a class="dropdown-toggle" id="start_time" role="button" data-toggle="dropdown" data-target="#" href="#">
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-ng-model="model.filters.time__gte">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <datetimepicker data-ng-model="model.filters.time__gte" data-datetimepicker-config="{ dropdownSelector: '#start_time' }"/>
+                    </ul>
                 </div>
             </div>
             End time:
-            <div class="form-group datetimepicker">
-                <div class='input-group date' id='end_time'>
-                
-                    <input type='text' class="form-control" ng-model="model.filters.time__lte" />
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+            <div class='datetimepicker'>
+                <div class="dropdown">
+                    <a class="dropdown-toggle" id="end_time" role="button" data-toggle="dropdown" data-target="#" href="#">
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-ng-model="model.filters.time__lte">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <datetimepicker data-ng-model="model.filters.time__gte" data-datetimepicker-config="{ dropdownSelector: '#end_time' }"/>
+                    </ul>
                 </div>
             </div>
+
             
             
             <ul>

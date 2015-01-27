@@ -13,7 +13,7 @@
     "angular-mocks": "~1.3.9",
     "angular-resource": "~1.3.9",
     "angular-cookies": "~1.3.9",
-    "eonasdan-bootstrap-datetimepicker": "~4.0.0"
+    "angular-bootstrap-datetimepicker": "latest"
   },
   "private": true
 }
