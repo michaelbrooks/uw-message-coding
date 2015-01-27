@@ -27,8 +27,10 @@
     {% endblock cdn_css %}
 
     {% compress css %}
+        <link rel="stylesheet" href="{% static 'bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css' %}" type="text/css">
         <link rel="stylesheet" href="{% static 'css/theme/bootstrap.less' %}" type="text/less">
         <link rel="stylesheet" href="{% static 'css/base.less' %}" type="text/less">
+        
         {% block css %}
             <style type='text/css'>
 
@@ -151,6 +153,8 @@
             <script src="{% static 'bower/components-bootstrap/js/bootstrap.js' %}" type="text/javascript"></script>
             <script src="{% static 'js/plugins.js' %}" type="text/javascript"></script>
             <script src="{% static 'js/main.js' %}" type="text/javascript"></script>
+            <script src="{% static 'bower/moment/moment.js' %}" type="text/javascript"></script>
+            <script src="{% static 'bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js' %}" type="text/javascript"></script>
         {% endblock js %}
     {% endcompress %}
     <!-- end scripts -->

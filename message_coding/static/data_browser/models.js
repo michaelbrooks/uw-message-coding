@@ -11,7 +11,9 @@
         // Default page model state
         var default_init = {
             initial_page: 1,
-            filters: {}
+            filters: {
+                "time__gte": "2014-12-13T02:55:30"
+            }
         };
 
         // Model constructor
@@ -59,7 +61,7 @@
             }
         });
 
-        //Privde data loading method
+        //Provide data loading method
         var loadMessages = function (page, filters) {
             if (page instanceof Object) {
                 filters = page;

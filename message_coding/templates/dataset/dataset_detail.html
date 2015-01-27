@@ -16,6 +16,19 @@
     <script src="{% static 'data_browser/controllers.js' %}"></script>
     <script src="{% static 'data_browser/services.js' %}"></script>
     <script src="{% static 'data_browser/models.js' %}"></script>
+    <script type="text/javascript">
+            
+        $(function () {
+            $('#start_time').datetimepicker();
+            $('#end_time').datetimepicker();
+            $("#start_time").on("dp.change",function (e) {
+            $('#end_time').data("DateTimePicker").minDate(e.date);
+            });
+            $("#end_time").on("dp.change",function (e) {
+                $('#start_time').data("DateTimePicker").maxDate(e.date);
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block bootstrapping %}
@@ -37,7 +50,16 @@
                 });
     </script>
 {% endblock %}
-
+{% block css %}
+    {{ block.super }}
+    <style type='text/css'>
+        .datetimepicker{
+            display: inline-block;
+            width: 200px;
+            vertical-align: top;
+        }
+    </style>
+{% endblock %}
 
 {% block content %}
 
@@ -51,6 +73,28 @@
 
         <div class="ng-cloak">
             <h3>Messages</h3>
+            
+            {{ model.filters }}
+            Start time:
+            <div class="form-group datetimepicker">
+                
+                <div class='input-group date' id='start_time'>
+                    <input type='text' class="form-control" ng-bind="model.filters.time__gte" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            End time:
+            <div class="form-group datetimepicker">
+                <div class='input-group date' id='end_time'>
+                
+                    <input type='text' class="form-control" ng-model="model.filters.time__lte" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            
+            
             <ul>
                 <li ng-repeat="message in model.messages">
                     <span ng-bind="message.text"></span>
