@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from apps.project import models
 
 
-class ProjectCreateForm(forms.ModelForm):
+class ProjectForm(forms.ModelForm):
     """
     Form for creating new projects.
     """

@@ -16,7 +16,7 @@ from base.views import ProjectViewMixin, LoginRequiredMixin
 class CreateProjectView(LoginRequiredMixin, CreateView):
     """View for creating new projects"""
 
-    form_class = forms.ProjectCreateForm
+    form_class = forms.ProjectForm
 
     template_name = "project/project_create.html"
 
@@ -33,7 +33,7 @@ class UpdateProjectView(LoginRequiredMixin, UpdateView):
     """View for editing projects"""
 
     model = models.Project
-    form_class = forms.ProjectCreateForm
+    form_class = forms.ProjectForm
     slug_url_kwarg = 'project_slug'
 
     template_name = "project/project_create.html"
