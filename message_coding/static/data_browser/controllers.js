@@ -10,10 +10,10 @@
     ]);
 
     var requires = ['$scope', 'djangoUrl',
-        'message_coding.dataBrowser.services.Project',
-        'message_coding.dataBrowser.services.Dataset',
-        'message_coding.dataBrowser.services.Task',
-        'message_coding.dataBrowser.models.MessagePageModel',
+        'message_coding.base.services.Project',
+        'message_coding.base.services.Dataset',
+        'message_coding.base.services.Task',
+        'message_coding.base.models.MessagePageModel',
         'message_coding.dataBrowser.bootstrap.initial_data'];
     var BrowserController = function ($scope, djangoUrl,
                                       Project, Dataset, Task,
