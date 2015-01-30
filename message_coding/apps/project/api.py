@@ -3,11 +3,11 @@ from base.views import OwnedViewSetMixin
 
 from apps.project.models import Project, Task
 from apps.dataset import models as dataset_models
-from apps.dataset.api import SelectionSerializer
+from apps.dataset.api import serializers as dataset_serializers
 
 # Serializers define the API representation.
 class TaskSerializer(serializers.ModelSerializer):
-    selection = SelectionSerializer()
+    selection = dataset_serializers.SelectionSerializer()
 
     class Meta:
         model = Task

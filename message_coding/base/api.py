@@ -3,7 +3,7 @@ from rest_framework import routers, serializers, viewsets, permissions
 from base import api_utils
 
 from apps.project import api as project_api
-from apps.dataset import api as dataset_api
+from apps.dataset.api import urls as dataset_urls
 from apps.coding import api as coding_api
 
 
@@ -27,7 +27,7 @@ class UserViewSet(viewsets.ModelViewSet):
 router = api_utils.SuperRouter()
 router.register('users', UserViewSet)
 router.extend(project_api.router)
-router.extend(dataset_api.router)
+router.extend(dataset_urls.router)
 router.extend(coding_api.router)
 
 urlpatterns = router.urls
