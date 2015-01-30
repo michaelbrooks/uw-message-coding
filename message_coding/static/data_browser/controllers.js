@@ -61,6 +61,25 @@
         };
     };
 
+    
     BrowserController.$inject = requires;
     module.controller('message_coding.dataBrowser.controllers.BrowserController', BrowserController);
+    module.directive('datetimeFormat', function() {
+      return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModelController) {
+          ngModelController.$parsers.push(function(data) {
+            //convert data from view format to model format
+            debugger
+            return data; //converted
+          });
+
+          ngModelController.$formatters.push(function(data) {
+            //convert data from model format to view format
+            return data; //converted
+          });
+        }
+      }
+    });
+    
 })();

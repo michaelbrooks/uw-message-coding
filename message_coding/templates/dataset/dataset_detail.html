@@ -39,12 +39,14 @@
                     user: {{ user_json|safe }}
                 });
     </script>
+
 {% endblock %}
 {% block css %}
+    <link rel="stylesheet" href="{% static 'bower/angular-bootstrap-datetimepicker/src/css/datetimepicker.css' %}"/>
     {{ block.super }}
     
     <style type='text/css'>
-        .datetimepicker{
+        .datetimepickerWrap{
             display: inline-block;
             width: 300px;
             vertical-align: top;
@@ -67,11 +69,11 @@
             
             <pre ng-bind="model.filters | json: 3"></pre>
             Start time:
-            <div class='datetimepicker'>
+            <div class='datetimepickerWrap'>
                 <div class="dropdown">
                     <a class="dropdown-toggle" id="start_time" role="button" data-toggle="dropdown" data-target="#" href="#">
                         <div class="input-group">
-                            <input type="text" class="form-control" data-ng-model="model.filters.time__gte">
+                            <input type="text" class="form-control" data-ng-model="model.filters.time__gte" datetime-format>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                         </div>
                     </a>
@@ -81,7 +83,7 @@
                 </div>
             </div>
             End time:
-            <div class='datetimepicker'>
+            <div class='datetimepickerWrap'>
                 <div class="dropdown">
                     <a class="dropdown-toggle" id="end_time" role="button" data-toggle="dropdown" data-target="#" href="#">
                         <div class="input-group">
@@ -90,7 +92,7 @@
                         </div>
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                        <datetimepicker data-ng-model="model.filters.time__gte" data-datetimepicker-config="{ dropdownSelector: '#end_time' }"/>
+                        <datetimepicker data-ng-model="model.filters.time__lte" data-datetimepicker-config="{ dropdownSelector: '#end_time' }"/>
                     </ul>
                 </div>
             </div>
