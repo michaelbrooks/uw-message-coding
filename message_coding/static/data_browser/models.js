@@ -6,7 +6,7 @@
     ]);
 
     module.factory('message_coding.dataBrowser.models.MessagePageModel',
-        ['message_coding.dataBrowser.services.Message', function(Message) {
+        ['message_coding.base.services.Message', function(Message) {
 
         // Default page model state
         var default_init = {
