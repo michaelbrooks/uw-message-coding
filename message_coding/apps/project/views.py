@@ -36,7 +36,7 @@ class UpdateProjectView(LoginRequiredMixin, UpdateView):
     form_class = forms.ProjectForm
     slug_url_kwarg = 'project_slug'
 
-    template_name = "project/project_create.html"
+    template_name = "project/project_update.html"
 
 
 
