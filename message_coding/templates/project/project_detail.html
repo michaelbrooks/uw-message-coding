@@ -8,7 +8,7 @@
         <h1>{{ project.name }}</h1>
 
         <p>{{ project.description }}</p>
-        <p><a href="{% url 'project_update' project_slug=project.slug %}" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</a></p>
+        <p><a href="{% url 'project_update' project_slug=project.slug %}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</a></p>
 
         <h3>Members ({{ project.members.count }})</h3>
     <ul>
@@ -18,7 +18,7 @@
     </ul>
 
     <h3>Datesets ({{ project.datasets.count }})</h3>
-    <a href="{% url 'dataset_import' project_slug=project.slug %}" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;Import</a>
+    <a href="{% url 'dataset_import' project_slug=project.slug %}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;Import</a>
 
     {% if project.datasets %}
         <ul>
@@ -40,7 +40,7 @@
     <h3>Tasks ({{ project.tasks.count }})</h3>
     <ul>
     {% for task in project.tasks.all %}
-    <li><a href={% url 'task' project_slug=project.slug task_pk=task.pk %}>{{ task.name }}</a></li>
+    <li><a href={% url 'task' project_slug=project.slug task_pk=task.pk %}>{{ task.name }}</a> <a href="{% url 'task_edit' project_slug=project.slug task_pk=task.pk %}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</a></li>
     {% endfor %}
     </ul>
 
