@@ -63,12 +63,13 @@
     <div ng-controller="message_coding.dataBrowser.controllers.BrowserController">
 
         <h1 ng-bind="dataset.name">{{ dataset.name }}</h1>
+        <span ng-bind="dataset.min_time | date: 'yyyy-MM-dd hh:mm:ss' : 'UTC'"> </span> ~ <span ng-bind="dataset.min_time | date: 'yyyy-MM-dd hh:mm:ss' : 'UTC'"> </span>
 
         <p ng-bind="dataset.description">{{ dataset.description }}</p>
 
         <div class="ng-cloak">
             <h3>Messages</h3>
-            
+                
             <pre ng-bind="model.filters | json: 3"></pre>
             Start time:
             <div class='filter'>
