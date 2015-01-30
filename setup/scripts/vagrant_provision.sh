@@ -22,7 +22,9 @@ buffer_fail "npm install -g bower grunt-cli" "ERROR: Error installing NPM packag
 
 # Make a fake node_modules folder
 mkdir ${VAGRANT_HOME}/node_modules
+chown vagrant:vagrant ${VAGRANT_HOME}/node_modules
 ln -s ${VAGRANT_HOME}/node_modules ${PROJECT_ROOT}/node_modules
+chown vagrang:vagrant ${PROJECT_ROOT}/node_modules
 
 # Make sure the mysql service is started
 loggy "Configuring MySQL..."
