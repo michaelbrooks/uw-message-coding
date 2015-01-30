@@ -14,6 +14,7 @@
     <script src="{% static 'djangular/js/django-angular.js' %}"></script>
 
     <script src="{% static 'base/services.js' %}"></script>
+    <script src="{% static 'base/models.js' %}"></script>
     <script src="{% static 'coding/coding.js' %}"></script>
     <script src="{% static 'coding/controllers.js' %}"></script>
     <script src="{% static 'coding/services.js' %}"></script>
@@ -48,7 +49,7 @@
 
 {% block content %}
 
-    <div class="container">
+    <div class="container" ng-app="message_coding.coding">
         <h1>{{ task.name }}</h1>
 
         <p>{{ task.description }}</p>
