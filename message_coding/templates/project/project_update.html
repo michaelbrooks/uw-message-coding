@@ -1,0 +1,14 @@
+{% extends "_layouts/base.html" %}
+{% load bsform %}
+
+{% block page_title %}{{project.name}} - Edit{% endblock %}
+{% block body_class %}project-update{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Edit Project</h1>
+
+    {% bsform form %}
+
+</div>
+{% endblock %}
