@@ -55,29 +55,32 @@
 
             <p ng-bind="task.description">{{ task.description }}</p>
 
-            <div class="messages" ng-repeat="msg in pager.messages">
-                <div class="message row">
+            <div class="messages col-md-8" ng-repeat="msg in pager.messages">
+                <div class="message">
                     @<span class="sender" ng-bind="msg.sender"></span>:
                     <span class="text" ng-bind="msg.text"></span>
                 </div>
+
+                <p>
+                    <button class="btn btn-default btn-sm"
+                            ng-disabled="!pager.hasPrevious"
+                            ng-click="pager.previousPage()">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        Previous
+                    </button>
+
+                    Page <span ng-bind="pager.page"></span> of <span ng-bind="pager.pageCount"></span>
+
+                    <button class="btn btn-default btn-sm"
+                            ng-disabled="!pager.hasNext"
+                            ng-click="pager.nextPage()">
+                        Next
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                </p>
             </div>
-            <p>
-                <button class="btn btn-default btn-sm"
-                        ng-disabled="!pager.hasPrevious"
-                        ng-click="pager.previousPage()">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
-                    Previous
-                </button>
-
-                Page <span ng-bind="pager.page"></span> of <span ng-bind="pager.pageCount"></span>
-
-                <button class="btn btn-default btn-sm"
-                        ng-disabled="!pager.hasNext"
-                        ng-click="pager.nextPage()">
-                    Next
-                    <span class="glyphicon glyphicon-chevron-right"></span>
-                </button>
-            </p>
+            
+            <div class="code-scheme col-md-4"></div>
         </div>
     </div>
 {% endblock %}
