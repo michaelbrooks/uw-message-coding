@@ -1,13 +1,12 @@
-from apps.dataset.models import Dataset, Selection, Message
-from rest_framework import routers, serializers, viewsets
-from base.views import OwnedViewSetMixin
+from apps.dataset import models
+from rest_framework import serializers
 import json
 
 
 # Serializers define the API representation.
 class DatasetSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Dataset
+        model = models.Dataset
         fields = ('id', 'name', 'description', 'slug', 'created_at',
                   'owner', 'projects')
         read_only_fields = ('created_at',)
@@ -53,7 +52,7 @@ class TypedBlobField(serializers.Field):
 
 class SelectionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Selection
+        model = models.Selection
         fields = ('id', 'created_at', 'owner', 'dataset', 'type', 'selection', 'size')
         read_only_fields = ('created_at', 'owner', 'size',)
 
@@ -62,39 +61,5 @@ class SelectionSerializer(serializers.ModelSerializer):
 
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Message
+        model = models.Message
         fields = ('id', 'sender', 'time', 'text', 'dataset')
-
-
-# ViewSets define the view behavior.
-class DatasetViewSet(viewsets.ModelViewSet):
-    queryset = Dataset.objects.all()
-    serializer_class = DatasetSerializer
-    paginate_by = 10
-
-
-class SelectionViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
-    queryset = Selection.objects.all()
-    serializer_class = SelectionSerializer
-    paginate_by = 10
-
-
-class MessageViewSet(viewsets.ModelViewSet):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
-    paginate_by = 10
-
-    def get_queryset(self):
-        queryset = Message.objects.all()
-
-        dataset_id = self.request.query_params.get('dataset_id', None)
-        if dataset_id is not None:
-            queryset = queryset.filter(dataset_id=dataset_id)
-
-        return queryset
-
-# Routers provide an easy way of automatically determining the URL conf.
-router = routers.SimpleRouter()
-router.register(r'datasets', DatasetViewSet)
-router.register(r'selections', SelectionViewSet)
-router.register(r'messages', MessageViewSet)

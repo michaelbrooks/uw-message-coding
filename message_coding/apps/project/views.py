@@ -5,13 +5,14 @@ from django import http
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect
 from django.core.exceptions import PermissionDenied
-from django.db.models import Q
 
 from apps.project import models, forms
-from apps.dataset import models as dataset_models
+from apps.project import api as project_api
+from apps.dataset.api import serializers as dataset_serializers
 from apps.coding import models as coding_models
+from base.api import UserSerializer
 from base.views import ProjectViewMixin, LoginRequiredMixin
-
+from rest_framework.renderers import JSONRenderer
 
 class CreateProjectView(LoginRequiredMixin, CreateView):
     """View for creating new projects"""
@@ -114,28 +115,18 @@ class CodingView(LoginRequiredMixin, ProjectViewMixin, DetailView):
 
         return self.paginator.page(self.page)
 
+
     def get_context_data(self, **kwargs):
-        context = super(CodingView, self).get_context_data(**kwargs)
+        # Add some serialized json for bootstrapping the client-side app
+        renderer = JSONRenderer()
 
-        msgs = self.get_messages()
-
-        context['msgs'] = msgs
-        context['page'] = self.page
-        context['num_pages'] = self.paginator.num_pages
-
-        # Go through and flag each message/code as coded or not
         task = self.object
-        instances = models.CodeInstance.objects \
-            .filter(owner=self.request.user,
-                    task=task,
-                    message__in=msgs) \
-            .values('pk', 'message_id', 'code_id')
+        kwargs['project_json'] = renderer.render(project_api.ProjectSerializer(self.get_project()).data)
+        kwargs['task_json'] = renderer.render(project_api.TaskSerializer(self.object).data)
+        kwargs['selection_json'] = renderer.render(dataset_serializers.SelectionSerializer(task.selection).data)
+        kwargs['user_json'] = renderer.render(UserSerializer(self.request.user).data)
 
-        context['preload'] = json.dumps({
-            'instances': list(instances)
-        })
-
-        return context
+        return super(CodingView, self).get_context_data(**kwargs)
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()

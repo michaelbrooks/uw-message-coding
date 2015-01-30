@@ -1,6 +1,5 @@
 {% extends "_layouts/base.html" %}
-{% load staticfiles %}
-{% load djangular_tags %}
+{% load staticfiles djangular_tags %}
 
 {% block page_title %}Dataset view{% endblock %}
 {% block body_class %}dataset-view{% endblock %}
@@ -12,6 +11,9 @@
     <script src="{% static 'bower/angular-resource/angular-resource.js' %}"></script>
     <script src="{% static 'bower/angular-cookies/angular-cookies.js' %}"></script>
     <script src="{% static 'djangular/js/django-angular.js' %}"></script>
+
+    <script src="{% static 'base/services.js' %}"></script>
+    <script src="{% static 'base/models.js' %}"></script>
     <script src="{% static 'data_browser/data_browser.js' %}"></script>
     <script src="{% static 'data_browser/controllers.js' %}"></script>
     <script src="{% static 'data_browser/services.js' %}"></script>
