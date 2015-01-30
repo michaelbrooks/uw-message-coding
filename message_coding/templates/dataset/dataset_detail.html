@@ -48,9 +48,9 @@
     {{ block.super }}
     
     <style type='text/css'>
-        .datetimepickerWrap{
+        .filter{
             display: inline-block;
-            width: 300px;
+            width: 200px;
             vertical-align: top;
         }
     </style>
@@ -71,7 +71,7 @@
             
             <pre ng-bind="model.filters | json: 3"></pre>
             Start time:
-            <div class='datetimepickerWrap'>
+            <div class='filter'>
                 <div class="dropdown">
                     <a class="dropdown-toggle" id="start_time" role="button" data-toggle="dropdown" data-target="#" href="#">
                         <div class="input-group">
@@ -85,7 +85,7 @@
                 </div>
             </div>
             End time:
-            <div class='datetimepickerWrap'>
+            <div class='filter'>
                 <div class="dropdown">
                     <a class="dropdown-toggle" id="end_time" role="button" data-toggle="dropdown" data-target="#" href="#">
                         <div class="input-group">
@@ -98,7 +98,10 @@
                     </ul>
                 </div>
             </div>
-            
+            Keyword: 
+            <div class="filter">
+                <input type='text' class="form-control" ng-model="model.filters.message__contains" />
+            </div>
             <button class="btn btn-primary"
                 ng-click="model.applyFilter()">
                 Filter
