@@ -70,13 +70,12 @@
         link: function(scope, element, attrs, ngModelController) {
           ngModelController.$parsers.push(function(data) {
             //convert data from view format to model format
-            debugger
             return data; //converted
           });
 
           ngModelController.$formatters.push(function(data) {
             //convert data from model format to view format
-            return data; //converted
+            return moment(data).utc().format("YYYY-MM-DD HH:mm:ss"); //converted
           });
         }
       }
