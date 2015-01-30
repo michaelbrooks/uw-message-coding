@@ -50,46 +50,34 @@
 {% block content %}
 
     <div class="container" ng-app="message_coding.coding">
-        <h1>{{ task.name }}</h1>
+        <div ng-controller="message_coding.coding.controllers.CodingController">
+            <h1 ng-bind="task.name">{{ task.name }}</h1>
 
-        <p>{{ task.description }}</p>
+            <p ng-bind="task.description">{{ task.description }}</p>
 
-        <div class="messages">
-            <form method="post">
-                {% csrf_token %}
-                {% for msg in msgs %}
-                    <div class="message {% if msg.has_image %}has-image{% endif %} row">
-                        <div class="col-lg-8">
-                            {% if msg.has_image %}
-                                <img src="{{ msg.image_src|safe }}"/>
-                            {% endif %}
-                            <p class="text">{{ msg.text_without_image }}</p>
-                        </div>
-                        <div class="col-lg-4">
-                            <ul class="code-groups">
-                                {% for code_group in task.scheme.code_groups.all %}
-                                    <li>
-                                        <h4>{{ code_group.name }}</h4>
-                                        <ul class="codes">
-                                            {% for code in code_group.codes.all %}
-                                                <li>
-                                                    <label>
-                                                        <input type="checkbox"
-                                                               name="messages[{{ msg.pk }}]" value="{{ code.pk }}"/>
-                                                        {{ code.name }}
-                                                    </label>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                {% endfor %}
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            <div class="messages" ng-repeat="msg in pager.messages">
+                <div class="message row">
+                    @<span class="sender" ng-bind="msg.sender"></span>:
+                    <span class="text" ng-bind="msg.text"></span>
+                </div>
+            </div>
+            <p>
+                <button class="btn btn-default btn-sm"
+                        ng-disabled="!pager.hasPrevious"
+                        ng-click="pager.previousPage()">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    Previous
+                </button>
 
+                Page <span ng-bind="pager.page"></span> of <span ng-bind="pager.pageCount"></span>
+
+                <button class="btn btn-default btn-sm"
+                        ng-disabled="!pager.hasNext"
+                        ng-click="pager.nextPage()">
+                    Next
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </button>
+            </p>
         </div>
     </div>
 {% endblock %}

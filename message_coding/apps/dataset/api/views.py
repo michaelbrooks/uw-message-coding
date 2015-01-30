@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from base.views import OwnedViewSetMixin
 from apps.dataset.api import serializers
 from apps.dataset import models
-
+from rest_framework import filters
 
 # ViewSets define the view behavior.
 class DatasetViewSet(viewsets.ModelViewSet):
@@ -21,12 +21,14 @@ class MessageViewSet(viewsets.ModelViewSet):
     queryset = models.Message.objects.all()
     serializer_class = serializers.MessageSerializer
     paginate_by = 10
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('id', 'dataset',)
 
-    def get_queryset(self):
-        queryset = models.Message.objects.all()
-
-        dataset_id = self.request.query_params.get('dataset_id', None)
-        if dataset_id is not None:
-            queryset = queryset.filter(dataset_id=dataset_id)
-
-        return queryset
+    # def get_queryset(self):
+    #     queryset = models.Message.objects.all()
+    #
+    #     dataset_id = self.request.query_params.get('dataset_id', None)
+    #     if dataset_id is not None:
+    #         queryset = queryset.filter(dataset_id=dataset_id)
+    #
+    #     return queryset
