@@ -98,6 +98,7 @@
                     </ul>
                 </div>
             </div>
+            
             <button class="btn btn-primary"
                 ng-click="model.applyFilter()">
                 Filter
@@ -106,7 +107,8 @@
             
             <ul>
                 <li ng-repeat="message in model.messages">
-                    <span ng-bind="message.text"></span>
+                    <div ng-bind="message.time | date: 'yyyy-MM-dd hh:mm:ss' : 'UTC'"></div>
+                    <div ng-bind="message.text"></div>
                 </li>
             </ul>
             <p>
