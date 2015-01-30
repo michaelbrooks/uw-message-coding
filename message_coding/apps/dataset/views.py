@@ -9,6 +9,7 @@ import codecs
 
 from apps.dataset.api import serializers
 from base.api import UserSerializer
+from apps.project import api as project_api
 from rest_framework.renderers import JSONRenderer
 
 class DatasetDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
@@ -20,7 +21,7 @@ class DatasetDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     def get_context_data(self, **kwargs):
         # Add some serialized json for bootstrapping the client-side app
         renderer = JSONRenderer()
-        kwargs['project_json'] = renderer.render(serializers.ProjectSerializer(self.get_project()).data)
+        kwargs['project_json'] = renderer.render(project_api.ProjectSerializer(self.get_project()).data)
         kwargs['dataset_json'] = renderer.render(serializers.DatasetSerializer(self.object).data)
         kwargs['user_json'] = renderer.render(UserSerializer(self.request.user).data)
 
