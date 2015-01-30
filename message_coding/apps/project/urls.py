@@ -38,6 +38,9 @@ urlpatterns = patterns('apps.project.views',
                        url(r'^project/create/$',
                            views.CreateProjectView.as_view(),
                            name='project_create'),
+                       url(r'^(?P<project_slug>[\w-]+)/edit/$',
+                            views.UpdateProjectView.as_view(),
+                            name="project_update"),
 
                        url(r'^(?P<project_slug>[\w-]+)/', include(project_slug_urls)),
 

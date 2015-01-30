@@ -29,6 +29,17 @@ class CreateProjectView(LoginRequiredMixin, CreateView):
         return super(CreateProjectView, self).form_valid(form)
 
 
+class UpdateProjectView(LoginRequiredMixin, UpdateView):
+    """View for editing projects"""
+
+    model = models.Project
+    form_class = forms.ProjectCreateForm
+    slug_url_kwarg = 'project_slug'
+
+    template_name = "project/project_create.html"
+
+
+
 class ProjectDetailView(LoginRequiredMixin, DetailView):
     """View for viewing projects"""
     model = models.Project
