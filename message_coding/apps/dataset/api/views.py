@@ -1,9 +1,8 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from base.views import OwnedViewSetMixin
 from apps.dataset.api import serializers
 from apps.dataset import models
-from rest_framework import filters
-from django.core import exceptions
+from apps.dataset.filters import SelectionFilter
 
 # ViewSets define the view behavior.
 class DatasetViewSet(viewsets.ModelViewSet):
@@ -18,10 +17,13 @@ class SelectionViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
     paginate_by = 10
 
 
+
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = models.Message.objects.all()
     serializer_class = serializers.MessageSerializer
     paginate_by = 10
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_class = SelectionFilter
     
     def get_queryset(self):
         

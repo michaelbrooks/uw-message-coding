@@ -38,6 +38,7 @@ class Selection(models.Model):
     def get_messages(self):
         if self.type == 'json':
             selection = json.loads(self.selection)
+            
             return self.dataset.messages.filter(**selection)
         else:
             return self.dataset.messages.all()
