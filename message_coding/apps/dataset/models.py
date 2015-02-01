@@ -4,6 +4,7 @@ from django.conf import settings
 from base.models import NameDescriptionMixin, CreatedAtField
 from django.core.exceptions import ValidationError
 import json
+from django.db.models import Min, Max
 from apps.dataset.filters import MessageFilter
 
 # These strings cannot be dataset slugs
@@ -24,6 +25,17 @@ class Dataset(NameDescriptionMixin):
     created_at = CreatedAtField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL)
     projects = models.ManyToManyField('project.Project', related_name='datasets')
+    @property
+    def min_time(self):
+        result = self.messages.all().aggregate(Min('time'))
+        if result:
+            return result['time__min']
+    @property
+    def max_time(self):
+        result = self.messages.all().aggregate(Max('time'))
+        if result:
+            return result['time__max']        
+        
 
 
 class Selection(models.Model):

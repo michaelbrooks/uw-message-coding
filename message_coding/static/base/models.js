@@ -119,6 +119,10 @@
                 setFilters: function (filters) {
                     this.filters = filters;
                     loadMessages.call(this, this.page);
+                },
+                
+                applyFilter: function(){
+                    loadMessages.call(this);
                 }
             });
 

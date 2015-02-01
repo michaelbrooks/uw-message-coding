@@ -5,7 +5,8 @@
         'message_coding.dataBrowser.services',
         'message_coding.dataBrowser.bootstrap',
         'message_coding.dataBrowser.models',
-        'ng.django.urls'
+        'ng.django.urls',
+        'ui.bootstrap.datetimepicker'
     ]);
 
     var requires = ['$scope', 'djangoUrl',
@@ -19,13 +20,22 @@
                                       MessagePageModel,
                                       initial_data) {
 
+        $scope.$watch(function(){
+            console.log("digest called");
+        });                                    
+                                      
         $scope.user = initial_data.user;
         $scope.project = new Project(initial_data.project);
         $scope.dataset = new Dataset(initial_data.dataset);
 
         $scope.model = new MessagePageModel({
-            dataset_id: $scope.dataset.id
+            dataset_id: $scope.dataset.id,
+            filters: {
+                time__gte: $scope.dataset.min_time,
+                time__lte: $scope.dataset.max_time,
+            }
         });
+        
 
         $scope.createTask = function () {
 
@@ -51,6 +61,24 @@
         };
     };
 
+    
     BrowserController.$inject = requires;
     module.controller('message_coding.dataBrowser.controllers.BrowserController', BrowserController);
+    module.directive('datetimeFormat', function() {
+      return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModelController) {
+          ngModelController.$parsers.push(function(data) {
+            //convert data from view format to model format
+            return data; //converted
+          });
+
+          ngModelController.$formatters.push(function(data) {
+            //convert data from model format to view format
+            return moment(data).utc().format("YYYY-MM-DD HH:mm:ss"); //converted
+          });
+        }
+      }
+    });
+    
 })();
