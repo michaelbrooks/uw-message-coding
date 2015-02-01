@@ -14,9 +14,15 @@
             'ngCookies'
         ]);
 
+    //Use XMLHttpRequest header
+    //http://django-angular.readthedocs.org/en/latest/integration.html
+    app.config(['$httpProvider', function($httpProvider) {
+        $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+    }]);
+
     //Fix CSRF
     //http://django-angular.readthedocs.org/en/latest/csrf-protection.html
     app.run(['$http', '$cookies', function ($http, $cookies) {
-        $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
+        $http.defaults.headers.common['X-CSRFToken'] = $cookies.csrftoken;
     }]);
 })();

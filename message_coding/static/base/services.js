@@ -13,7 +13,7 @@
 
     module.service('message_coding.base.services.Project',
         ['$resource', function ($resource) {
-            return $resource('/api/projects/:pk/');
+            return $resource('/api/projects/:id/');
         }]);
 
     module.service('message_coding.base.services.Dataset',
@@ -21,22 +21,33 @@
             //TODO: get urls from djangoUrl conf
             //djangoUrl.reverse('api:dataset-detail')
 
-            return $resource('/api/datasets/:pk/');
+            return $resource('/api/datasets/:id/');
         }]);
 
     module.service('message_coding.base.services.Message',
         ['$resource', function ($resource) {
-            return $resource('/api/messages/:pk/');
+            return $resource('/api/messages/:id/');
         }]);
 
     module.service('message_coding.base.services.Selection',
         ['$resource', function ($resource) {
-            return $resource('/api/selections/:pk/');
+            return $resource('/api/selections/:id/');
         }]);
 
     module.service('message_coding.base.services.Task',
         ['$resource', function ($resource) {
-            return $resource('/api/tasks/:pk/');
+            return $resource('/api/tasks/:id/');
         }]);
 
+    module.service('message_coding.base.services.CodeInstance',
+        ['$resource', function ($resource) {
+            return $resource('/api/code_instances/:id/', {
+                id: '@id'
+            });
+        }]);
+
+    module.service('message_coding.base.services.CodeScheme',
+        ['$resource', function ($resource) {
+            return $resource('/api/schemes/:id/');
+        }]);
 })();

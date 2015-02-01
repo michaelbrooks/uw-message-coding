@@ -3,21 +3,75 @@
 .project-coding-view {
 
     .message {
-        margin-bottom: 20px;
-    }
+        margin-bottom: 10px;
+        padding: 10px;
+        cursor: pointer;
 
-    .text {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .message.has-image {
-        img {
-            float: left;
-            width: 200px;
+        &:hover {
+            background: #ecf8ff;
         }
+
+        &.selected {
+            background: #b1f3ff;
+            cursor: default;
+        }
+
         .text {
-            margin-left: 210px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .codes {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+                float: right;
+                margin-left: 6px;
+
+                .code {
+                    background: #98CED8;
+                }
+            }
+        }
+
+        &.has-image {
+            img {
+                float: left;
+                width: 200px;
+            }
+            .text {
+                margin-left: 210px;
+            }
+        }
+    }
+
+    .code-scheme {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        /* Code group */
+        > li {
+            margin: 10px;
+
+            > .name {
+                font-weight: bold;
+                font-size: 16px;
+            }
+
+            .codes {
+                list-style: none;
+
+                .code {
+                    margin-bottom: 5px;
+
+                    > .name {
+
+                    }
+                }
+            }
         }
     }
 }
