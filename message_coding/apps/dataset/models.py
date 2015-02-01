@@ -36,12 +36,9 @@ class Selection(models.Model):
     selection = models.BinaryField()
 
     def get_messages(self):
-        if self.type == 'json':
-            selection = json.loads(self.selection)
-            
-            return self.dataset.messages.filter(**selection)
-        else:
-            return self.dataset.messages.all()
+        from apps.dataset.filters import Selector
+        selector = Selector(type=self.type, data=self.selection)
+        return selector.filter(self.dataset.messages.all)
 
     def size(self):
         return self.get_messages().count()

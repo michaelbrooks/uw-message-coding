@@ -55,12 +55,13 @@
 
             <p ng-bind="task.description">{{ task.description }}</p>
 
-            <div class="messages col-md-8" ng-repeat="msg in pager.messages">
-                <div class="message">
-                    @<span class="sender" ng-bind="msg.sender"></span>:
-                    <span class="text" ng-bind="msg.text"></span>
+            <div class="col-md-8">
+                <div class="messages" ng-repeat="msg in pager.messages">
+                    <div class="message">
+                        @<span class="sender" ng-bind="msg.sender"></span>:
+                        <span class="text" ng-bind="msg.text"></span>
+                    </div>
                 </div>
-
                 <p>
                     <button class="btn btn-default btn-sm"
                             ng-disabled="!pager.hasPrevious"
@@ -79,7 +80,7 @@
                     </button>
                 </p>
             </div>
-            
+
             <div class="code-scheme col-md-4"></div>
         </div>
     </div>

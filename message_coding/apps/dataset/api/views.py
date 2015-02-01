@@ -25,17 +25,17 @@ class MessageViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
     filter_class = SelectionFilter
     
-    def get_queryset(self):
-        
-        selection_id = self.request.query_params.get('selection_id', None)
-        if selection_id is not None:
-            selection = models.Selection.objects.get(pk=selection_id)
-            return selection.get_messages()
-
-        queryset = models.Message.objects.all()
-
-        dataset_id = self.request.query_params.get('dataset_id', None)
-        if dataset_id is not None:
-            return queryset.filter(dataset_id=dataset_id)
-
-        return queryset
+    # def get_queryset(self):
+    #
+    #     selection_id = self.request.query_params.get('selection_id', None)
+    #     if selection_id is not None:
+    #         selection = models.Selection.objects.get(pk=selection_id)
+    #         return selection.get_messages()
+    #
+    #     queryset = models.Message.objects.all()
+    #
+    #     dataset_id = self.request.query_params.get('dataset_id', None)
+    #     if dataset_id is not None:
+    #         return queryset.filter(dataset_id=dataset_id)
+    #
+    #     return queryset
