@@ -5,6 +5,7 @@ from base.models import NameDescriptionMixin, CreatedAtField
 from django.core.exceptions import ValidationError
 import json
 from django.db.models import Min, Max
+from apps.dataset.filters import MessageFilter
 
 # These strings cannot be dataset slugs
 illegal_dataset_slugs = (
@@ -48,11 +49,9 @@ class Selection(models.Model):
     selection = models.BinaryField()
 
     def get_messages(self):
-        if self.type == 'json':
-            selection = json.loads(self.selection)
-            return self.dataset.messages.filter(**selection)
-        else:
-            return self.dataset.messages.all()
+        selection = json.loads(self.selection)
+        filter_fn = MessageFilter(type=self.type, data=selection)
+        return filter_fn(self.dataset.messages.all())
 
     def size(self):
         return self.get_messages().count()

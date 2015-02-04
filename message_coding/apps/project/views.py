@@ -9,6 +9,7 @@ from django.core.exceptions import PermissionDenied
 from apps.project import models, forms
 from apps.project import api as project_api
 from apps.dataset.api import serializers as dataset_serializers
+from apps.coding import api as coding_api
 from apps.coding import models as coding_models
 from base.api import UserSerializer
 from base.views import ProjectViewMixin, LoginRequiredMixin
@@ -134,8 +135,8 @@ class CodingView(LoginRequiredMixin, ProjectViewMixin, DetailView):
         task = self.object
         kwargs['project_json'] = renderer.render(project_api.ProjectSerializer(self.get_project()).data)
         kwargs['task_json'] = renderer.render(project_api.TaskSerializer(self.object).data)
-        kwargs['selection_json'] = renderer.render(dataset_serializers.SelectionSerializer(task.selection).data)
         kwargs['user_json'] = renderer.render(UserSerializer(self.request.user).data)
+        kwargs['code_scheme_json'] = renderer.render(coding_api.SchemeSerializer(task.scheme).data)
 
         return super(CodingView, self).get_context_data(**kwargs)
 

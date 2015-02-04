@@ -33,6 +33,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'description',
                   'slug', 'created_at', 'owner', 'members',
                   'tasks', 'schemes', 'datasets')
+        read_only_fields = ('created_at', 'owner',)
 
 
 class CodeInstanceSerializer(serializers.ModelSerializer):
@@ -41,7 +42,7 @@ class CodeInstanceSerializer(serializers.ModelSerializer):
         fields = ('id', 'created_at',
                   'owner', 'task',
                   'message', 'code',)
-        read_only_fields = ('created_at',)
+        read_only_fields = ('created_at', 'owner',)
 
 # ViewSets define the view behavior.
 class ProjectViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
