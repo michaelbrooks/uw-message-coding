@@ -18,6 +18,8 @@ build
 .pydevproject
 .settings
 
+__linktest_target 
+
 # Linux Editors
 *~
 \#*\#

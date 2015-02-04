@@ -65,6 +65,6 @@ class CodeInstance(models.Model):
     created_at = CreatedAtField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="code_instances")
     task = models.ForeignKey(Task, related_name='code_instances')
-
     message = models.ForeignKey('dataset.Message', related_name='code_instances')
     code = models.ForeignKey('coding.Code', related_name='instances')
+    
