@@ -26,7 +26,42 @@
 
     module.service('message_coding.base.services.Message',
         ['$resource', function ($resource) {
-            return $resource('/api/messages/:id/');
+            var Message = $resource('/api/messages/:id/');
+
+            Message.prototype.findRelatedInstanceForCode = function (id) {
+                if (this.hasOwnProperty('_codeInstances')) {
+                    var ci;
+                    for (var i = 0; i < this._codeInstances.length; i++) {
+                        ci = this._codeInstances[i];
+                        if (ci.code == id) {
+                            return ci;
+                        }
+                    }
+                }
+
+                return false;
+            };
+
+            Message.prototype.relateCodeInstance = function (codeInstance) {
+                if (!this.hasOwnProperty('_codeInstances')) {
+                    this._codeInstances = [];
+                }
+                this._codeInstances.push(codeInstance);
+
+                codeInstance._message = this;
+            };
+
+            Message.prototype.unrelateCodeInstance = function (codeInstance) {
+                if (this.hasOwnProperty('_codeInstances')) {
+                    var index = this._codeInstances.indexOf(codeInstance);
+                    if (index >= 0) {
+                        this._codeInstances.splice(index, 1);
+                        delete codeInstance._message
+                    }
+                }
+            };
+
+            return Message;
         }]);
 
     module.service('message_coding.base.services.Selection',
@@ -48,6 +83,16 @@
 
     module.service('message_coding.base.services.CodeScheme',
         ['$resource', function ($resource) {
-            return $resource('/api/schemes/:id/');
+            var CodeScheme = $resource('/api/schemes/:id/');
+
+            //Iterate through all codes
+            CodeScheme.prototype.forEachCode = function (callback) {
+                this.code_groups.forEach(function (grp, grp_idx) {
+                    grp.codes.forEach(function (code, code_idx) {
+                        callback(code, code_idx, grp, grp_idx);
+                    });
+                });
+            };
+            return CodeScheme;
         }]);
 })();

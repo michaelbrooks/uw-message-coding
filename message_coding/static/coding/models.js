@@ -2,85 +2,110 @@
     'use strict';
 
     var module = angular.module('message_coding.coding.models', [
-        'message_coding.base.models',
-        'selectionModel'
+        'message_coding.base.models'
     ]);
 
-    module.factory('message_coding.coding.models.CodingModel',
-        [function () {
+    /**
+     * The CodingRelationModel joins together
+     * messages, code instances, and codes.
+     *
+     * It maintains internal collections of these three entities,
+     * and they may be added and removed from outside using the public methods.
+     * 
+     * The items added to this model will have connections created between
+     * them. For example:
+     *  - a message would have a _codeInstances array added.
+     *  - a codeInstance would have _message and _code properties added.
+     *  - a code is not augmented currently
+     *  
+     *  Additionally, reverse relations are created for these. Objects
+     *  are unlinked when they are removed from the model.
+     */
+    module.factory('message_coding.coding.models.CodingRelationModel', [
+        'message_coding.base.models.IndexedCollection',
+        function (IndexedCollection) {
 
-            // Default page model state
-            var default_init = {
-                selected_index: -1
-            };
+            var default_init = {};
 
             // Model constructor
-            var CodingModel = function (options) {
-
+            var CodingRelationModel = function (options) {
                 options = angular.extend({}, default_init, options);
 
-                this.selected_index = options.selected_index;
-
-                //These are returned by the server
-                this.messages = [];
-                this.hasNext = false;
-                this.hasPrevious = false;
-                this.totalCount = 0;
-                this.pageCount = 0;
-
-                loadMessages.call(this);
+                this.messageIndex = new IndexedCollection();
+                this.codeIndex = new IndexedCollection();
+                this.codeInstanceIndex = new IndexedCollection();
             };
 
+
             //Public methods
-            angular.extend(MessagePageModel.prototype, {
-                nextPage: function () {
-                    if (this.hasNext) {
-                        loadMessages.call(this, this.page + 1);
+            angular.extend(CodingRelationModel.prototype, {
+                
+                updateCodeScheme: function(codeScheme) {
+                    console && console.log && console.log("Updating code scheme", codeScheme);
+                    
+                    var self = this;
+                    
+                    //Replace the codes index with the new codes
+                    self.codeIndex.clear();
+                    codeScheme.forEachCode(function(code) {
+                        self.codeIndex.add(code);
+                    });
+
+                    //Replace all references to codes in the code instances
+                    this.codeInstanceIndex.forEach(function(codeInstance) {
+                        codeInstance._code = self.codeIndex.get(codeInstance.code);
+                        
+                        //We don't need to connect codes to code instances, I think
+                    });
+                },
+                
+                addMessages: function(messages) {
+                    console && console.log && console.log("Adding " + messages.length + " messages", messages);
+                    
+                    var self = this;
+                    
+                    //Add the new messages to the index
+                    this.messageIndex.addAll(messages);
+                    
+                    //Hook up existing code instances to messages
+                    this.codeInstanceIndex.forEach(function(codeInstance) {
+                        var message = self.messageIndex.get(codeInstance.message);
+                        if (message) {
+                            message.relateCodeInstance(codeInstance);
+                        }
+                    });
+                },
+                
+                addCodeInstance: function(codeInstance) {
+                    console && console.log && console.log("Adding code instance", codeInstance);
+                    
+                    //Add the code instance to our index
+                    if (this.codeInstanceIndex.add(codeInstance)) {
+                        //Point the code instance at its message
+                        var message = this.messageIndex.get(codeInstance.message);
+                        if (message) {
+                            //Add the code instance to the message
+                            message.relateCodeInstance(codeInstance);
+                        }
+
+                        //Point the code instance at its code
+                        codeInstance._code = this.codeIndex.get(codeInstance.code);
+                        //We don't add code instances to codes
                     }
                 },
-
-                previousPage: function () {
-                    if (this.hasPrevious) {
-                        loadMessages.call(this, this.page - 1);
+                
+                removeCodeInstance: function(codeInstance) {
+                    console && console.log && console.log("Removing code instance", codeInstance);
+                    
+                    //Remove the code instance from our index
+                    if (this.codeInstanceIndex.remove(codeInstance)) {
+                        codeInstance._message.unrelateCodeInstance(codeInstance);
+                        
+                        //We don't currently have any reference from code to code instance
                     }
-                },
-
-                setFilters: function (filters) {
-                    this.filters = filters;
-                    loadMessages.call(this, this.page);
                 }
             });
 
-            //Privde data loading method
-            var loadMessages = function (page, filters) {
-                if (page instanceof Object) {
-                    filters = page;
-                    page = undefined;
-                }
-
-                filters = filters || this.filters;
-                page = page || this.page;
-
-                var query = angular.extend({
-                    dataset_id: this.dataset_id,
-                    page: page
-                }, filters);
-
-                var self = this;
-                return Message.get(query).$promise.then(function (result) {
-                    //Save the server data
-                    self.messages = result.results;
-                    self.hasNext = Boolean(result.next);
-                    self.hasPrevious = Boolean(result.previous);
-                    self.totalCount = result.count;
-                    self.pageCount = result.page_count;
-
-                    //Update the state
-                    self.page = page;
-                    self.filters = filters;
-                });
-            };
-
-            return MessagePageModel;
+            return CodingRelationModel;
         }]);
 })();
