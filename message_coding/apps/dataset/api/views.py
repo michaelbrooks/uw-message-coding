@@ -3,7 +3,7 @@ from base.views import OwnedViewSetMixin
 from apps.dataset.api import serializers
 from apps.dataset import models
 from apps.dataset.filters import MessageFilterBackend
-
+from apps.project import models as project_models
 
 # ViewSets define the view behavior.
 class DatasetViewSet(viewsets.ModelViewSet):
@@ -23,18 +23,10 @@ class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.MessageSerializer
     paginate_by = 10
     filter_backends = (MessageFilterBackend,)
-
-    # def get_queryset(self):
-    #
-    # selection_id = self.request.query_params.get('selection_id', None)
-    #     if selection_id is not None:
-    #         selection = models.Selection.objects.get(pk=selection_id)
-    #         return selection.get_messages()
-    #
-    #     queryset = models.Message.objects.all()
-    #
-    #     dataset_id = self.request.query_params.get('dataset_id', None)
-    #     if dataset_id is not None:
-    #         return queryset.filter(dataset_id=dataset_id)
-    #
-    #     return queryset
+    
+    def get_queryset(self):
+        task_id = self.request.query_params.get('task', None)
+        if task_id is not None:
+            return project_models.Task.objects.get(pk=task_id).selection.get_messages()
+        else:
+            return super(MessageViewSet, self).get_queryset()
