@@ -56,9 +56,12 @@ class TaskDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     template_name = 'project/task_detail.html'
 
     pk_url_kwarg = 'task_pk'
+    
     def get_context_data(self, **kwargs):
         context = super(TaskDetailView, self).get_context_data(**kwargs)
         context['msgs'] = context['task'].selection.get_messages()
+        task = context['task']
+        context['examples_by_code'] =  task.get_examples()
         return context
     
 
