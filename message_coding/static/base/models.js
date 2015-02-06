@@ -1,12 +1,75 @@
-(function() {
+(function () {
     'use strict';
 
     var module = angular.module('message_coding.base.models', [
         'message_coding.base.services'
     ]);
 
+    //This will be an object that pages through a paginated collection
+    module.factory('message_coding.base.models.Pager',
+        [function () {
+            var Pager = function (request) {
+
+            };
+
+            Pager.prototype.forEach = function (callback) {
+
+            };
+
+            return Pager;
+        }]);
+
+    module.factory('message_coding.base.models.IndexedCollection',
+        [function () {
+            // Default page model state
+            var default_init = {
+                id: 'id',
+                items: []
+            };
+
+            var IndexedCollection = function (options) {
+                options = angular.extend({}, default_init, options);
+
+                this._index = {};
+                this._size = 0;
+                this._id_property = options.id;
+
+                for (var i = 0; i < options.items.length; i++) {
+                    this.add(options.items[i]);
+                }
+            };
+
+            angular.extend(IndexedCollection.prototype, {
+                get: function (id) {
+                    if (this.contains(id)) {
+                        return this._index[id];
+                    }
+                },
+                add: function (obj) {
+                    var id = obj[this._id_property];
+                    if (!this.contains(id)) {
+                        this._index[id] = obj;
+                        this._size += 1;
+                    }
+                },
+                contains: function (id) {
+                    return this._index.hasOwnProperty(id);
+                },
+                remove: function (id) {
+                    if (this.contains(id)) {
+                        delete this._index[id];
+                    }
+                },
+                size: function () {
+                    return this._size;
+                }
+            });
+
+            return IndexedCollection;
+        }]);
+
     module.factory('message_coding.base.models.MessagePageModel',
-        ['message_coding.base.services.Message', function(Message) {
+        ['message_coding.base.services.Message', function (Message) {
 
             // Default page model state
             var default_init = {
@@ -15,7 +78,7 @@
             };
 
             // Model constructor
-            var MessagePageModel = function(options) {
+            var MessagePageModel = function (options) {
                 if (typeof(options.dataset_id) == 'undefined') {
                     throw("You must provide a dataset_id");
                 }
@@ -56,6 +119,10 @@
                 setFilters: function (filters) {
                     this.filters = filters;
                     loadMessages.call(this, this.page);
+                },
+                
+                applyFilter: function(){
+                    loadMessages.call(this);
                 }
             });
 
