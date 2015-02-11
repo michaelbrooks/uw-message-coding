@@ -13,6 +13,7 @@
     <script src="{% static 'bower/angular-cookies/angular-cookies.js' %}"></script>
     <script src="{% static 'djangular/js/django-angular.js' %}"></script>
     <script src="{% static 'bower/angular-selection-model/dist/selection-model.js' %}"></script>
+    <script src="{% static 'bower/ngInfiniteScroll/build/ng-infinite-scroll.js' %}"></script>
 
     <script src="{% static 'base/services.js' %}"></script>
     <script src="{% static 'base/models.js' %}"></script>
@@ -58,42 +59,35 @@
 
             <div class="row">
                 <div class="col-md-8">
-                    <div class="messages">
-                        <div class="message"
-                             ng-repeat="msg in pager.messages"
-                             selection-model
-                             selection-model-selected-class="selected"
-                             selection-model-selected-items="selectedMessages">
+                    <div class="messages-scroll-container">
+                        <div class="messages"
+                             infinite-scroll="infiniteScroll()"
+                             infinite-scroll-parent="true">
+                            <div class="message"
+                                 ng-repeat="msg in messages"
+                                 selection-model
+                                 selection-model-selected-class="selected"
+                                 selection-model-selected-items="selectedMessages">
 
-                            @<span class="sender" ng-bind="msg.sender"></span>:
-                            <span class="text" ng-bind="msg.text"></span>
-                            <ul class="codes clearfix">
-                                <li ng-repeat="ci in msg._codeInstances">
-                                    <span class="name label label-default" ng-bind="ci._code.name"></span>
-                                </li>
-                            </ul>
+                                <span class="time" ng-bind="msg.time"></span>
+
+                                <span class="sender" ng-bind="msg.sender"></span>:
+                                <span class="text" ng-bind="msg.text"></span>
+
+                                <ul class="codes clearfix">
+                                    <li ng-repeat="ci in msg._codeInstances">
+                                        <span class="name label label-default" ng-bind="ci._code.name"></span>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <p>
-                        <button class="btn btn-default btn-sm"
-                                ng-disabled="!pager.hasPrevious"
-                                ng-click="pager.previousPage()">
-                            <span class="glyphicon glyphicon-chevron-left"></span>
-                            Previous
-                        </button>
-
-                        Page <span ng-bind="pager.page"></span> of <span ng-bind="pager.pageCount"></span>
-
-                        <button class="btn btn-default btn-sm"
-                                ng-disabled="!pager.hasNext"
-                                ng-click="pager.nextPage()">
-                            Next
-                            <span class="glyphicon glyphicon-chevron-right"></span>
-                        </button>
+                        Loaded page <span ng-bind="pager.page"></span> of <span ng-bind="pager.totalCount"></span>
                     </p>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4 code-scheme-bucket">
                     <div class="well">
                         <ul class="code-scheme">
                             <li ng-repeat="grp in code_scheme.code_groups">
@@ -103,7 +97,8 @@
                                 <ul class="codes">
                                     <li ng-repeat="code in grp.codes">
                                         <div class="code btn btn-default" ng-click="codeClicked(code)"
-                                                ng-class="appliedToSelection(code) ? 'active' : ''">
+                                             ng-class="appliedToSelection(code) ? 'active' : ''"
+                                             ng-disabled="selectedMessages.length == 0">
                                             <span class="name" ng-bind="code.name"></span>
                                         </div>
                                     </li>

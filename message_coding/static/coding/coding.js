@@ -4,6 +4,14 @@
 (function () {
     'use strict';
 
+    /*
+     Tracking selected messages with this:
+     https://github.com/jtrussell/angular-selection-model
+     
+     Also using angular infinite scroll:
+     https://github.com/sroze/ngInfiniteScroll
+     */
+    
     //An empty module for bootstrapping initial data
     angular.module('message_coding.coding.bootstrap', []);
 
@@ -11,7 +19,9 @@
     var app = angular
         .module('message_coding.coding', [
             'message_coding.coding.controllers',
-            'ngCookies'
+            'ngCookies',
+            'selectionModel',
+            'infinite-scroll'
         ]);
 
     //Use XMLHttpRequest header

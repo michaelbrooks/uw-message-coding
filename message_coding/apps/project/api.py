@@ -61,7 +61,19 @@ class CodeInstanceViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
     queryset = project_models.CodeInstance.objects.all()
     serializer_class = CodeInstanceSerializer
     paginate_by = 100
+    
+    def get_queryset(self):
+        queryset = super(CodeInstanceViewSet, self).get_queryset()
 
+        owner = self.request.query_params.get('owner', None)
+        if owner is not None:
+            queryset = queryset.filter(owner=owner)
+            
+        task = self.request.query_params.get('task', None)
+        if task is not None:
+            queryset = queryset.filter(task=task)
+
+        return queryset
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.SimpleRouter()
