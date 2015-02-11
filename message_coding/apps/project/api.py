@@ -33,6 +33,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'description',
                   'slug', 'created_at', 'owner', 'members',
                   'tasks', 'schemes', 'datasets')
+        read_only_fields = ('created_at', 'owner',)
 
 
 class CodeInstanceSerializer(serializers.ModelSerializer):
@@ -41,7 +42,7 @@ class CodeInstanceSerializer(serializers.ModelSerializer):
         fields = ('id', 'created_at',
                   'owner', 'task',
                   'message', 'code',)
-        read_only_fields = ('created_at',)
+        read_only_fields = ('created_at', 'owner',)
 
 # ViewSets define the view behavior.
 class ProjectViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
@@ -60,7 +61,19 @@ class CodeInstanceViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
     queryset = project_models.CodeInstance.objects.all()
     serializer_class = CodeInstanceSerializer
     paginate_by = 100
+    
+    def get_queryset(self):
+        queryset = super(CodeInstanceViewSet, self).get_queryset()
 
+        owner = self.request.query_params.get('owner', None)
+        if owner is not None:
+            queryset = queryset.filter(owner=owner)
+            
+        task = self.request.query_params.get('task', None)
+        if task is not None:
+            queryset = queryset.filter(task=task)
+
+        return queryset
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.SimpleRouter()

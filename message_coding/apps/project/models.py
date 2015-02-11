@@ -58,6 +58,16 @@ class Task(NameDescriptionMixin):
 
     def is_assigned_to(self, user):
         return self.assigned_coders.filter(pk=user.pk)
+        
+    def get_examples(self,max_examples=5):
+        applied_codes = {}
+        for code_instance in self.code_instances.all():
+            if code_instance not in applied_codes:
+                applied_codes[code_instance.code] = []
+            if len(applied_codes[code_instance.code]) < max_examples:
+                applied_codes[code_instance.code].append(code_instance.message)   
+				
+	return applied_codes
 
 
 class CodeInstance(models.Model):
@@ -67,4 +77,3 @@ class CodeInstance(models.Model):
     task = models.ForeignKey(Task, related_name='code_instances')
     message = models.ForeignKey('dataset.Message', related_name='code_instances')
     code = models.ForeignKey('coding.Code', related_name='instances')
-    

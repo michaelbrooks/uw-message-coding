@@ -1,23 +1,100 @@
 @import '../theme/mixins.less';
 
 .project-coding-view {
-
+    .messages-scroll-container {
+        overflow: auto;
+        max-height: 500px;
+    }
+    
     .message {
-        margin-bottom: 20px;
-    }
-
-    .text {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .message.has-image {
-        img {
-            float: left;
-            width: 200px;
+        margin-bottom: 10px;
+        padding: 20px 10px;
+        cursor: pointer;
+        position: relative;
+        
+        &:hover {
+            background: #ecf8ff;
         }
+
+        &.selected {
+            background: #b1f3ff;
+            cursor: default;
+        }
+        
+        .sender {
+            font-weight: bold;
+            
+            &:before {
+                content: '@';
+            }
+        }
+
         .text {
-            margin-left: 210px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .time {
+            position: absolute;
+            font-size: 10px;
+            color: #666;
+            top: 10px;
+            right: 10px;
+        }
+
+        .codes {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            min-height: 20px; /* for debugging */
+
+            li {
+                float: right;
+                margin-left: 6px;
+
+                .code {
+                    background: #98CED8;
+                }
+            }
+        }
+
+        &.has-image {
+            img {
+                float: left;
+                width: 200px;
+            }
+            .text {
+                margin-left: 210px;
+            }
+        }
+    }
+    
+    .code-scheme {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        /* Code group */
+        > li {
+            margin: 10px;
+
+            > .name {
+                font-weight: bold;
+                font-size: 16px;
+            }
+
+            .codes {
+                list-style: none;
+                padding: 0;
+
+                .code {
+                    margin-bottom: 5px;
+
+                    > .name {
+
+                    }
+                }
+            }
         }
     }
 }

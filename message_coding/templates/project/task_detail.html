@@ -27,9 +27,10 @@
         {% endfor %}
     </ul>
     {% endfor %}
-
+    
+    
     <h3> Coding Task Page</h3>
-    <p><a class="btn btn-primary btn-lg" role="button" href="{% url 'coding' project_slug=project.slug task_pk=task.pk %}">"Begin Coding »</a></p>
+    <p><a class="btn btn-primary btn-lg" role="button" href="{% url 'coding' project_slug=project.slug task_pk=task.pk %}">Begin Coding »</a></p>
     
     <h3>Assigned Coders ({{ task.assigned_coders.count }})</h3>
     <ul>
@@ -38,5 +39,18 @@
     {% endfor %}
     </ul>
 
+	<h3> Codes applied to the task </h3>
+    <ul>
+    	{% for code,examples in examples_by_code.items %}
+        	<li>{{code}}
+        	<ul>
+        		{% for example in examples %}
+        		<li>{{example.text}}</li>
+        		{% endfor %}	
+        	</ul>
+        	</li>
+        {% endfor %}
+    </ul>
+    
     </div>
 {% endblock %}
