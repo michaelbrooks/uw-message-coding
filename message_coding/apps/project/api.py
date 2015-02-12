@@ -1,5 +1,6 @@
 from rest_framework import serializers, viewsets, routers
 from base.views import OwnedViewSetMixin
+from base.permissions import IsProjectMember, IsProjectOwnerOrReadOnly, IsTaskAssigner, IsTaskOwnerOrReadOnly
 
 from apps.project import models as project_models
 from apps.dataset import models as dataset_models
@@ -46,12 +47,14 @@ class CodeInstanceSerializer(serializers.ModelSerializer):
 
 # ViewSets define the view behavior.
 class ProjectViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
+    permission_classes = (IsProjectMember, IsProjectOwnerOrReadOnly,)
     queryset = project_models.Project.objects.all()
     serializer_class = ProjectSerializer
     paginate_by = 10
 
 
 class TaskViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
+    permission_classes = (IsTaskAssigner, IsTaskOwnerOrReadOnly,)
     queryset = project_models.Task.objects.all()
     serializer_class = TaskSerializer
     paginate_by = 10

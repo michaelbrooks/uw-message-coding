@@ -6,6 +6,7 @@ from apps.project import api as project_api
 from apps.dataset.api import urls as dataset_urls
 from apps.coding import api as coding_api
 
+from permissions import IsAdminUserOrReadOnly
 
 User = get_user_model()
 
@@ -20,6 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 # ViewSets define the view behavior.
 class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAdminUserOrReadOnly, )
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
