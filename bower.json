@@ -14,7 +14,8 @@
     "angular-resource": "~1.3.9",
     "angular-cookies": "~1.3.9",
     "angular-bootstrap-datetimepicker": "latest",
-    "angular-selection-model": "~0.8.4"
+    "angular-selection-model": "~0.8.4",
+    "ngInfiniteScroll": "~1.2.0"
   },
   "private": true
 }

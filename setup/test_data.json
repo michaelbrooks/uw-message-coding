@@ -95,6 +95,106 @@
 },
 {
   "fields": {
+    "text": "Why thank you for asking I am fine",
+    "time": "2014-12-13T02:56:30Z",
+    "sender": "Mark",
+    "dataset": 2
+  },
+  "model": "dataset.message",
+  "pk": 5
+},
+{
+  "fields": {
+    "text": "Oh hi, Mark",
+    "time": "2014-12-13T02:57:30Z",
+    "sender": "Johnny",
+    "dataset": 2
+  },
+  "model": "dataset.message",
+  "pk": 6
+},
+{
+  "fields": {
+    "text": "Oh, hey Johnny, what's up?",
+    "time": "2014-12-13T02:58:30Z",
+    "sender": "Mark",
+    "dataset": 2
+  },
+  "model": "dataset.message",
+  "pk": 7
+},
+{
+  "fields": {
+    "text": "Whatever, I don't care",
+    "time": "2014-12-13T02:59:30Z",
+    "sender": "Johnny",
+    "dataset": 2
+  },
+  "model": "dataset.message",
+  "pk": 8
+},
+{
+  "fields": {
+    "text": "Why not?",
+    "time": "2014-12-13T03:00:30Z",
+    "sender": "Mark",
+    "dataset": 2
+  },
+  "model": "dataset.message",
+  "pk": 9
+},
+{
+  "fields": {
+    "text": "Oh hi, Johnny. I didn't know it was you.",
+    "time": "2014-12-13T03:01:30Z",
+    "sender": "bert",
+    "dataset": 2
+  },
+  "model": "dataset.message",
+  "pk": 10
+},
+{
+  "fields": {
+    "text": "One fish",
+    "time": "2014-12-13T03:02:30Z",
+    "sender": "bert",
+    "dataset": 2
+  },
+  "model": "dataset.message",
+  "pk": 11
+},
+{
+  "fields": {
+    "text": "Two fish",
+    "time": "2014-12-13T03:03:30Z",
+    "sender": "bert",
+    "dataset": 2
+  },
+  "model": "dataset.message",
+  "pk": 12
+},
+{
+  "fields": {
+    "text": "Red fish",
+    "time": "2014-12-13T03:04:30Z",
+    "sender": "bert",
+    "dataset": 2
+  },
+  "model": "dataset.message",
+  "pk": 13
+},
+{
+  "fields": {
+    "text": "Blue fish",
+    "time": "2014-12-13T03:05:30Z",
+    "sender": "bert",
+    "dataset": 2
+  },
+  "model": "dataset.message",
+  "pk": 14
+},
+{
+  "fields": {
     "username": "admin",
     "first_name": "",
     "last_name": "",
@@ -181,6 +281,23 @@
 },
 {
   "fields": {
+    "selection": 2,
+    "name": "Another task",
+    "created_at": "2014-12-17T02:02:53Z",
+    "assigned_coders": [
+      1,
+      2
+    ],
+    "project": 2,
+    "owner": 2,
+    "scheme": 1,
+    "description": "Another coding task"
+  },
+  "model": "project.task",
+  "pk": 2
+},
+{
+  "fields": {
     "name": "Test Project",
     "created_at": "2014-12-27T19:36:21Z",
     "members": [
@@ -219,6 +336,17 @@
   },
   "model": "dataset.selection",
   "pk": 1
+},
+{
+  "fields": {
+    "owner": 2,
+    "created_at": "2015-02-05T05:43:14Z",
+    "selection": "e30=",
+    "type": "json",
+    "dataset": 2
+  },
+  "model": "dataset.selection",
+  "pk": 2
 },
 {
   "fields": {
