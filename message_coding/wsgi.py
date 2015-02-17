@@ -17,25 +17,18 @@ import os
 import sys
 from path import path
 
-PROJECT_ROOT = path(__file__).abspath().realpath().dirname().parent.parent
+# Make sure the project root is on the path
+from path import path
+PROJECT_ROOT = path(__file__).abspath().realpath().dirname().parent
 sys.path.append(PROJECT_ROOT)
 
-# We defer to a DJANGO_SETTINGS_MODULE already in the environment. This breaks
-# if running multiple sites in the same mod_wsgi process. To fix this, use
-# mod_wsgi daemon mode with each site in its own daemon process, or use
-# os.environ["DJANGO_SETTINGS_MODULE"] = "jajaja.settings"
-os.environ['CELERY_LOADER'] = 'django'
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "message_coding.settings.production")
-
-import env_file
+# Load the .env file
+sys.path.append(PROJECT_ROOT / 'setup')
+from fabutils import env_file
 env_file.load(PROJECT_ROOT / '.env')
 
-# This application object is used by any WSGI server configured to use this
-# file. This includes Django's development server, if the WSGI_APPLICATION
-# setting points here.
+# Just in case that didn't do it...
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "message_coding.settings.prod")
+
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
-
-# Apply WSGI middleware here.
-# from helloworld.wsgi import HelloWorldApplication
-# application = HelloWorldApplication(application)

@@ -1,11 +1,11 @@
 from django.db import models
 from django.conf import settings
 
-from base.models import NameDescriptionMixin, CreatedAtField
+from message_coding.apps.base.models import NameDescriptionMixin, CreatedAtField
 from django.core.exceptions import ValidationError
 import json
 from django.db.models import Min, Max
-from apps.dataset.filters import MessageFilter
+from message_coding.apps.dataset.filters import MessageFilter
 
 # These strings cannot be dataset slugs
 illegal_dataset_slugs = (

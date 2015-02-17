@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import apps.project.models
+from message_coding.apps.project.models import slug_validator
 
 class Migration(migrations.Migration):
     dependencies = [
@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='project',
             name='slug',
-            field=models.SlugField(default=None, unique=True, validators=[apps.project.models.slug_validator]),
+            field=models.SlugField(default=None, unique=True, validators=[slug_validator]),
             preserve_default=False,
         ),
     ]

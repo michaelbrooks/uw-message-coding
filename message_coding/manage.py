@@ -4,13 +4,19 @@ import sys
 
 if __name__ == "__main__":
 
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "message_coding.settings.local")
-
-    from message_coding import env_file
+    # Make sure the project root is on the path
     from path import path
-
     PROJECT_ROOT = path(__file__).abspath().realpath().dirname().parent
+    print PROJECT_ROOT
+    sys.path.append(PROJECT_ROOT)
+
+    # Load the .env file
+    sys.path.append(PROJECT_ROOT / 'setup')
+    from fabutils import env_file
     env_file.load(PROJECT_ROOT / '.env')
+
+    # If that didn't set the settings module...
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "message_coding.settings.prod")
 
     from django.core.management import execute_from_command_line
 

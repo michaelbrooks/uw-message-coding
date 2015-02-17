@@ -6,13 +6,13 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect
 from django.core.exceptions import PermissionDenied
 
-from apps.project import models, forms
-from apps.project import api as project_api
-from apps.dataset.api import serializers as dataset_serializers
-from apps.coding import api as coding_api
-from apps.coding import models as coding_models
-from base.api import UserSerializer
-from base.views import ProjectViewMixin, LoginRequiredMixin
+from message_coding.apps.project import models, forms
+from message_coding.apps.project import api as project_api
+from message_coding.apps.dataset.api import serializers as dataset_serializers
+from message_coding.apps.coding import api as coding_api
+from message_coding.apps.coding import models as coding_models
+from message_coding.apps.base.api import UserSerializer
+from message_coding.apps.base.views import ProjectViewMixin, LoginRequiredMixin
 from rest_framework.renderers import JSONRenderer
 
 class CreateProjectView(LoginRequiredMixin, CreateView):

@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from apps.project import models
+from message_coding.apps.project import models
 
 
 class ProjectForm(forms.ModelForm):

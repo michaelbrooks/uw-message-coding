@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 
-from base.models import NameDescriptionMixin, CreatedAtField
+from message_coding.apps.base.models import NameDescriptionMixin, CreatedAtField
 
 
 # These strings cannot be project slugs

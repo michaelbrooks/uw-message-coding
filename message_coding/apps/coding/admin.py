@@ -1,5 +1,5 @@
 from django.contrib import admin
-import apps.coding.models as coding
+import message_coding.apps.coding.models as coding
 
 admin.site.register(coding.Scheme)
 admin.site.register(coding.CodeGroup)

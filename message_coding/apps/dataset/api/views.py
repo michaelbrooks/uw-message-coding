@@ -1,9 +1,9 @@
 from rest_framework import viewsets
-from base.views import OwnedViewSetMixin
-from apps.dataset.api import serializers
-from apps.dataset import models
-from apps.dataset.filters import MessageFilterBackend
-from apps.project import models as project_models
+from message_coding.apps.base.views import OwnedViewSetMixin
+from message_coding.apps.dataset.api import serializers
+from message_coding.apps.dataset import models
+from message_coding.apps.dataset.filters import MessageFilterBackend
+from message_coding.apps.project import models as project_models
 
 # ViewSets define the view behavior.
 class DatasetViewSet(viewsets.ModelViewSet):
