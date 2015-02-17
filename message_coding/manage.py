@@ -7,7 +7,6 @@ if __name__ == "__main__":
     # Make sure the project root is on the path
     from path import path
     PROJECT_ROOT = path(__file__).abspath().realpath().dirname().parent
-    print PROJECT_ROOT
     sys.path.append(PROJECT_ROOT)
 
     # Load the .env file
