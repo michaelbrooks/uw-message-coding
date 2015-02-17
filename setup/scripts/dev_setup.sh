@@ -186,8 +186,6 @@ loggy "PYTHON VIRTUAL ENVIRONMENT SETUP"
 
 echo "Configuring Python virtualenv '$VENV_NAME'..."
 
-export PIP_DOWNLOAD_CACHE=${PIP_DOWNLOAD_CACHE:-$HOME/.pip_download_cache}
-
 if exists 'virtualenvwrapper.sh'; then
     
     echo "Using virtualenvwrapper..."
@@ -230,7 +228,7 @@ SECRET_KEY=$(generateRandomString)
 GOOGLE_ANALYTICS_ID=
 SERVER_HOST=0.0.0.0
 PORT=8000
-SETTINGS_MODULE=msgvis.settings.dev
+SETTINGS_MODULE=message_coding.settings.local
 export DATABASE_HOST DATABASE_PORT DATABASE_NAME DATABASE_USER DATABASE_PASS
 export SECRET_KEY GOOGLE_ANALYTICS_ID
 export SERVER_HOST PORT SETTINGS_MODULE
