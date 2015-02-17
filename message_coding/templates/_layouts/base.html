@@ -198,8 +198,23 @@
                 bottom: 0px;
             }
 
+            /* graph stuff */
+            .c3-chart-line { fill: none; stroke-width: 3px;}
+            .c3-axis path { fill: none; stroke: #ccc; stroke-width: 1px;}
+            .c3-axis { fill: #888; stroke-width: 1px;}
+            .c3-axis .tick line { fill: #888; stroke-width: 1px; stroke: #888;}
+
+
+
+            /*
+             *
+             * theme1
+             *
+             */
+
             .test-1 { 
                 font-family: "Raleway";
+                font-size: 16px;
             }
 
             .test-1 .navbar-brand {
@@ -212,6 +227,9 @@
                 font-size: 32px;
             }
 
+            .test-1 a { color: #BA4828;}
+            .test-1 a:hover { color: #F46036;}
+
             .test-1  #navbar-left { background: #17141C; color: #ccc;}
             .test-1 #navbar-left a { color: #F46036;}
             .test-1 #navbar-left a:hover { color: #FFA737;}
@@ -222,6 +240,36 @@
             .test-1 .nav > li > a:hover, .test-1 .nav > li > a:hover { background-color: #322B3D;}
 
             .test-1 .nav-pills > li.active > a { background-color: #322B3D;}
+
+
+            .test-1 #project-panel .panel-heading { 
+                background-color: #4E0250;
+                border-color: #4E0250;
+                color: #fff;
+            }
+
+            .test-1 #assigned-task-panel .panel-heading {
+                background-color: #0FA3B1;
+                border-color: #0FA3B1;
+                color: #fff;                
+            }
+
+            .test-1 .panel-heading .pull-right .badge {
+                background-color: rgba(0,0,0,0.5);
+                font-size: 16px;
+            }
+
+
+            /* graph colors */
+            path.c3-data1 { stroke: #0FA3B1;}
+            .c3-data1 .c3-legend-item-tile { fill: #0FA3B1;}
+
+            path.c3-data2  { stroke: #FFA737;}
+            .c3-data2 .c3-legend-item-tile { fill: #FFA737;}
+
+            path.c3-data3  { stroke: #F46036;}
+            .c3-data3 .c3-legend-item-tile { fill: #F46036;}
+
         </style>
 </body>
 
