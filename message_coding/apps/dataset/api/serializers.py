@@ -1,4 +1,4 @@
-from apps.dataset import models
+from message_coding.apps.dataset import models
 from rest_framework import serializers
 import json
 

@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import base.models
+from message_coding.apps.base.models import CreatedAtField
 from django.conf import settings
 
 
@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             name='CodeInstance',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('created_at', base.models.CreatedAtField(auto_now=True)),
+                ('created_at', CreatedAtField(auto_now=True)),
                 ('code', models.ForeignKey(related_name='instances', to='coding.Code')),
                 ('message', models.ForeignKey(related_name='code_instances', to='dataset.Message')),
                 ('owner', models.ForeignKey(related_name='code_instances', to=settings.AUTH_USER_MODEL)),
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=150)),
                 ('description', models.TextField()),
-                ('created_at', base.models.CreatedAtField(auto_now=True)),
+                ('created_at', CreatedAtField(auto_now=True)),
                 ('members', models.ManyToManyField(related_name='projects', to=settings.AUTH_USER_MODEL)),
                 ('owner', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
@@ -49,7 +49,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=150)),
                 ('description', models.TextField()),
-                ('created_at', base.models.CreatedAtField(auto_now=True)),
+                ('created_at', CreatedAtField(auto_now=True)),
                 ('assigned_coders', models.ManyToManyField(related_name='tasks_assigned', to=settings.AUTH_USER_MODEL)),
                 ('owner', models.ForeignKey(related_name='tasks_owned', to=settings.AUTH_USER_MODEL)),
                 ('project', models.ForeignKey(to='project.Project')),

@@ -1,5 +1,5 @@
 from django.contrib import admin
-import apps.dataset.models as dataset
+import message_coding.apps.dataset.models as dataset
 
 admin.site.register(dataset.Dataset)
 admin.site.register(dataset.Selection)

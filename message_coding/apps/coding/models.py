@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 
-from base.models import NameDescriptionMixin, CreatedAtField
+from message_coding.apps.base.models import NameDescriptionMixin, CreatedAtField
 
 
 class Scheme(NameDescriptionMixin):

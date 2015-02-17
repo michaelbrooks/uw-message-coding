@@ -2,7 +2,7 @@
 
 from django.conf.urls import url, patterns, include
 
-from base import views
+from message_coding.apps.base import views
 
 urlpatterns = patterns('',
                        url(r'^$', views.home, name='home'),
@@ -10,7 +10,7 @@ urlpatterns = patterns('',
                        url(r'^accounts/', include('django.contrib.auth.urls')),
 
                        # REST Api urls
-                       url(r'^api/', include('base.api')),
+                       url(r'^api/', include('apps.base.api')),
 
                        # Project urls
                        url(r'^', include('apps.project.urls')),
