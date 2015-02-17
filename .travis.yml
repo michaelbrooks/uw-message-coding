@@ -16,5 +16,5 @@ script:
   - "fab test_coverage"
   - "fab docs"
 
-after_success:
-  - coveralls
+# after_success:
+#   - coveralls
