@@ -23,6 +23,7 @@ function script_dir {
 SCRIPTS_DIR=$(script_dir)
 source $SCRIPTS_DIR/functions.sh
 
+set -e
 
 if ! ([ $# -eq 0 ] || [ $# -eq 1 ] || [ $# -eq 5 ] || [ $# -eq 6 ]); then
 
@@ -194,7 +195,9 @@ if exists 'virtualenvwrapper.sh'; then
     # Set up virtualenv and virtualenvwrapper
     source $(which virtualenvwrapper.sh)
 
-    mkvirtualenv --python="${PYTHON_EXE}" -a "$PROJECT_ROOT" "$VENV_NAME"
+    # Create it
+    rmvirtualenv $VENV_NAME
+    mkvirtualenv --python="${PYTHON_EXE}" -a "$PROJECT_ROOT" "$VENV_NAME" || echo "mkvirtualenv returns weird exit statuses"
 
     failif "ERROR: Could not create virtualenv"
 
@@ -215,22 +218,27 @@ else
 fi
 
 
-loggy "Installing Python dependencies..."
-PIP_CMD="pip install -r ${PROJECT_ROOT}/requirements/local.txt"
+loggy "Installing Fabric..."
+PIP_CMD="pip install Fabric path.py"
 buffer_fail "$PIP_CMD" "ERROR: Error running $PIP_CMD... aborting."
 
-echo "Python requirements installed:"
-pip freeze
+loggy "Installing dependencies..."
+buffer_fail "fab dependencies"
 
 loggy "Creating new .env file..."
 SECRET_KEY=$(generateRandomString)
 GOOGLE_ANALYTICS_ID=
-export DATABASE_HOST DATABASE_PORT DATABASE_NAME DATABASE_USER DATABASE_PASS SECRET_KEY GOOGLE_ANALYTICS_ID
+SERVER_HOST=0.0.0.0
+PORT=8000
+SETTINGS_MODULE=msgvis.settings.dev
+export DATABASE_HOST DATABASE_PORT DATABASE_NAME DATABASE_USER DATABASE_PASS
+export SECRET_KEY GOOGLE_ANALYTICS_ID
+export SERVER_HOST PORT SETTINGS_MODULE
 fab interpolate_env
 
 loggy "Installing additional dependencies and migrating database..."
 
-# Bring everything up to date
-fab dependencies migrate
+# Bring up the database
+fab migrate
 
 loggy "Development setup complete."
