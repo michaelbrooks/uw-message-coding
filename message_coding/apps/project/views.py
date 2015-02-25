@@ -65,7 +65,19 @@ class TaskDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
         context['examples_by_code'] =  task.get_examples()
         return context
     
+class TaskReviewView(LoginRequiredMixin, ProjectViewMixin, DetailView):
+    """View for viewing tasks"""
+    model = models.Task
+    template_name = 'project/task_review.html'
+    
+    pk_url_kwarg = 'task_pk'
 
+    def get_context_data(self, **kwargs):
+        context = super(TaskReviewView, self).get_context_data(**kwargs)
+        context['msgs'] = context['task'].selection.get_messages()
+        task = context['task']
+        context['examples_by_code'] =  task.get_examples()
+        return context
 
 class EditTaskView(LoginRequiredMixin, ProjectViewMixin, UpdateView):
     """View for editing new tasks"""
