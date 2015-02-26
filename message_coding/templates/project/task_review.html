@@ -15,19 +15,18 @@
         {% endfor %}
     </ul>
     {% endfor %}
-    
+
 	<h3> Code Counts</h3>
     <ul>
-    	{% for code,examples in examples_by_code.items %}
-        	<li>{{code}}
+    	{% for code,info in code_info.items %}
+        	<li>{{code}} - {{info.count}}
         	<ul>
-        		{% for example in examples %}
+        		{% for example in info.examples %}
         		<li>{{example.text}}</li>
-        		{% endfor %}	
+        		{% endfor %}
         	</ul>
         	</li>
         {% endfor %}
     </ul>
-    
     </div>
 {% endblock %}
