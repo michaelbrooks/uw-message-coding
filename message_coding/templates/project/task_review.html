@@ -1,0 +1,32 @@
+{% extends "_layouts/base.html" %}
+
+{% block page_title %}Task Review{% endblock %}
+{% block body_class %}project-task-view{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+    {% for code_group in task.scheme.code_groups.all %}
+    <h4>{{ code_group.name }} ({{ code_group.codes.count }})</h4>
+    <ul>
+        {% for code in code_group.codes.all %}
+        <li>{{ code.name }}</li>
+        {% endfor %}
+    </ul>
+    {% endfor %}
+
+	<h3> Code Counts</h3>
+    <ul>
+    	{% for code,info in code_info.items %}
+        	<li>{{code}} - {{info.count}}
+        	<ul>
+        		{% for example in info.examples %}
+        		<li>{{example.text}}</li>
+        		{% endfor %}
+        	</ul>
+        	</li>
+        {% endfor %}
+    </ul>
+    </div>
+{% endblock %}

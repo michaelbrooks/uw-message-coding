@@ -57,15 +57,34 @@ class TaskDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     template_name = 'project/task_detail.html'
 
     pk_url_kwarg = 'task_pk'
-    
+
     def get_context_data(self, **kwargs):
         context = super(TaskDetailView, self).get_context_data(**kwargs)
         context['msgs'] = context['task'].selection.get_messages()
         task = context['task']
-        context['examples_by_code'] =  task.get_examples()
         return context
-    
 
+class TaskReviewView(LoginRequiredMixin, ProjectViewMixin, DetailView):
+    """View for viewing tasks"""
+    model = models.Task
+    template_name = 'project/task_review.html'
+
+    pk_url_kwarg = 'task_pk'
+
+    def get_context_data(self, **kwargs):
+        context = super(TaskReviewView, self).get_context_data(**kwargs)
+        context['msgs'] = context['task'].selection.get_messages()
+        task = context['task']
+        examples = task.get_examples()
+        frequency = task.get_frequency()
+        code_info = {}
+        for code,count in frequency.iteritems():
+            code_info[code] = {
+                'count':count,
+                'examples':examples[code]
+            }
+        context['code_info'] =  code_info
+        return context
 
 class EditTaskView(LoginRequiredMixin, ProjectViewMixin, UpdateView):
     """View for editing new tasks"""
