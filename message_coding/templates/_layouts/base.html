@@ -70,23 +70,10 @@
                         </ul>
 
                         {% if user.is_anonymous %}
-                            <!--
-          <form class="navbar-form navbar-right" method="post" action="{% url 'django.contrib.auth.views.login' %}" >
-            {% csrf_token %}
-            <div class="form-group">
-              <input type="text" placeholder="Username" class="form-control" name="username">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control" name="password">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
-          -->
                             <div id='sign-in-wrap'>
                                 <a id='sign-in-btn' class="btn btn-success" role="button" href="{% url 'user_dash' %}">Sign
                                     in</a>
                             </div>
-
                         {% else %}
                             <ul class="nav navbar-nav navbar-right">
                                 <li><p class="navbar-text">Welcome {{ user.username }}!</p></li>
