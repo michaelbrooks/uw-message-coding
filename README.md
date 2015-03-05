@@ -1,6 +1,8 @@
 UW Message Coding
 =========
 
+[![Build Status](https://travis-ci.org/michaelbrooks/uw-message-coding.svg)](https://travis-ci.org/michaelbrooks/uw-message-coding)
+
 Currently in very early development!
 
 

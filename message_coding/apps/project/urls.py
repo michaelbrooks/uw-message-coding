@@ -12,6 +12,10 @@ task_urls = patterns('',
                         url(r'edit/$',
                             views.EditTaskView.as_view(),
                             name='task_edit'),
+                            
+                        url(r'review/$',
+                            views.TaskReviewView.as_view(),
+                            name='task_review'),
 
                         url(r'^code/$',
                             views.CodingView.as_view(),

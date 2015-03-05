@@ -4,7 +4,7 @@ Use this settings file when running tests.
 These settings overrides what's in settings/base.py
 """
 
-from .base import *
+from .common import *
 
 ########## IN-MEMORY TEST DATABASE
 DATABASES = {
