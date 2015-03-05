@@ -1,4 +1,4 @@
-/* Some styles? */
+@import 'theme/variables';
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
@@ -6,19 +6,28 @@ body {
     padding-bottom: 20px;
 }
 
-#sign-in-area {
-    position: relative;
-
-}
-
-#sign-in-btn {
-    position: absolute;
-    top: 8px;
-    right: 100px;
-}
-
 // Prevent Angular garbage from showing by applying this class
 // http://stackoverflow.com/questions/12866447
 .ng-cloak {
     display: none;
 }
+
+.panel {
+    .panel-heading {
+        .badge {
+
+        }
+    }
+}
+.panel-heading {
+    background-color: #0FA3B1;
+    border-color: #0FA3B1;
+    color: #fff;
+}
+
+.panel-heading .badge {
+    background-color: rgba(0,0,0,0.5);
+    font-size: 16px;
+}
+
+@import 'navbar.less';

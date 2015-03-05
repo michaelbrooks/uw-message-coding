@@ -1,0 +1,376 @@
+/*
+ *
+ * test theme colors
+ *
+ */
+ 
+@import url(http://fonts.googleapis.com/css?family=Raleway:400|Source+Sans+Pro|Lato);
+
+
+
+html, body { min-height: 100%;}
+body { padding-top: 10px;}
+
+
+#navbar-left { 
+    min-height: 100%; 
+    height: 100%; 
+    position: fixed; 
+    left: 0;
+    top: 0;
+    width: 240px;
+}
+#navbar-container { 
+    position: relative;
+    height: 100%;
+}
+
+#main {
+    width: 100%;
+    padding-left: 240px;
+}
+
+#help-panel {
+    position: absolute;
+    bottom: 0px;
+}
+
+/* graph stuff */
+.c3-chart-line { fill: none; stroke-width: 3px;}
+.c3-axis path { fill: none; stroke: #ccc; stroke-width: 1px;}
+.c3-axis { fill: #888; stroke-width: 1px;}
+.c3-axis .tick line { fill: #888; stroke-width: 1px; stroke: #888;}
+
+
+
+@border-radius-base: 0px;
+@border-radius-small: 0px;
+@border-radius-large: 0px;
+
+/*
+ *
+ * theme1
+ *
+ */
+
+.theme (@num) when (@num = 1) {
+
+    .test-theme { 
+        font-family: "Raleway";
+        font-size: 16px;
+
+        .navbar-brand {
+            font-size: 24px;
+        }
+
+        h1 {
+            font-family: "Raleway";
+            font-size: 32px;
+        }
+
+        a { color: #BA4828;}
+        a:hover { color: #F46036;}
+
+         #navbar-left { background: #17141C; color: #ccc;}
+        #navbar-left a { color: #F46036;}
+        #navbar-left a:hover { color: #FFA737;}
+        .navbar-context { background: #211E28;}
+        .navbar-brand { color: #BFADEA;}
+        .navbar-brand:hover { color: #fff;}
+
+        .nav > li > a:hover, .nav > li > a:hover { background-color: #322B3D;}
+
+        .nav-pills > li.active > a { background-color: #322B3D;}
+
+
+        #project-panel .panel-heading { 
+            background-color: #4E0250;
+            border-color: #4E0250;
+            color: #fff;
+        }
+
+        #assigned-task-panel .panel-heading {
+            background-color: #0FA3B1;
+            border-color: #0FA3B1;
+            color: #fff;                
+        }
+
+        .panel-heading .pull-right .badge {
+            background-color: rgba(0,0,0,0.5);
+            font-size: 16px;
+        }
+
+
+        /* graph colors */
+        path.c3-data1 { stroke: #0FA3B1;}
+        .c3-data1 .c3-legend-item-tile { fill: #0FA3B1;}
+
+        path.c3-data2  { stroke: #FFA737;}
+        .c3-data2 .c3-legend-item-tile { fill: #FFA737;}
+
+        path.c3-data3  { stroke: #F46036;}
+        .c3-data3 .c3-legend-item-tile { fill: #F46036;}
+
+
+    }
+}
+
+/*
+ *
+ * theme2
+ *
+ */
+
+
+
+.theme (@num) when (@num = 2) {
+    @THEME_DARK: #01172F;
+    @THEME_ACCENT1: #6BBF59;
+    @THEME_ACCENT2: #FFCC26;
+    @THEME_ACCENT3: #08A045;
+    @THEME_ACCENT4: #0B6E4F;
+    @THEME_ACCENT5: #EEEEEE;
+
+
+    @LEFT_PANEL_BKG: desaturate(@THEME_DARK, 80%);
+    @LEFT_PANEL_ACCORDIAN_BKG: lighten(@LEFT_PANEL_BKG, 5%);
+    @LEFT_PANEL_ACCORDIAN_HILIGHT: lighten(@LEFT_PANEL_BKG, 15%);
+    @LEFT_PANEL_TEXT: @THEME_ACCENT5;
+    @LEFT_PANEL_LINK: @THEME_ACCENT1;
+    @LEFT_PANEL_LINK_HOVER: @THEME_ACCENT2;
+
+    .test-theme {
+        
+        font-family: "Raleway";
+        font-size: 16px;
+        letter-spacing: 1.5px;
+
+        .navbar-brand {
+            font-size: 24px;
+        }
+
+        h1 {
+            font-family: "Raleway";
+            font-size: 32px;
+        }
+
+        a { color: lighten(@THEME_DARK,15%);}
+        a:hover { color: lighten(@THEME_ACCENT4, 5%);}
+
+         #navbar-left { background: @LEFT_PANEL_BKG; color: @LEFT_PANEL_TEXT;}
+        #navbar-left a { color: @LEFT_PANEL_LINK;}
+        #navbar-left a:hover { color: @LEFT_PANEL_LINK_HOVER;}
+        .navbar-context { background: @LEFT_PANEL_ACCORDIAN_BKG;}
+        .navbar-brand { color: @LEFT_PANEL_LINK;}
+        .navbar-brand:hover { color: @LEFT_PANEL_LINK_HOVER;}
+
+        .nav > li > a:hover, .nav > li > a:hover { background-color: @LEFT_PANEL_ACCORDIAN_HILIGHT;}
+
+        .nav-pills > li.active > a { background-color: @LEFT_PANEL_ACCORDIAN_HILIGHT;}
+
+
+        #project-panel .panel-heading { 
+            background-color: @THEME_ACCENT3;
+            border-color: #4E0250;
+            color: #fff;
+        }
+
+        #assigned-task-panel .panel-heading {
+            background-color: @THEME_ACCENT4;
+            border-color: #0FA3B1;
+            color: #fff;                
+        }
+
+        .panel-heading .pull-right .badge {
+            background-color: rgba(0,0,0,0.5);
+            font-size: 16px;
+        }
+
+
+        path.c3-data1 { stroke: @THEME_ACCENT1;}
+        .c3-data1 .c3-legend-item-tile { fill: @THEME_ACCENT1;}
+
+        path.c3-data2  { stroke: @THEME_ACCENT2;}
+        .c3-data2 .c3-legend-item-tile { fill: @THEME_ACCENT2;}
+
+        path.c3-data3  { stroke: @THEME_ACCENT3;}
+        .c3-data3 .c3-legend-item-tile { fill: @THEME_ACCENT3;}
+
+    }
+}
+
+
+/*
+ *
+ * theme3
+ *
+ */
+
+.theme (@num) when (@num = 3) {
+    @THEME_DARK: #200021;
+    @THEME_ACCENT1: #F46036;
+    @THEME_ACCENT2: #FFA737;
+    @THEME_ACCENT3: #0FA3B1;
+    @THEME_ACCENT4: #7DFC46;
+    @THEME_ACCENT5: #EEEEEE;
+
+
+    @LEFT_PANEL_BKG: desaturate(@THEME_DARK, 80%);
+    @LEFT_PANEL_ACCORDIAN_BKG: lighten(@LEFT_PANEL_BKG, 5%);
+    @LEFT_PANEL_ACCORDIAN_HILIGHT: lighten(@LEFT_PANEL_BKG, 15%);
+    @LEFT_PANEL_TEXT: @THEME_ACCENT5;
+    @LEFT_PANEL_LINK: @THEME_ACCENT1;
+    @LEFT_PANEL_LINK_HOVER: @THEME_ACCENT2;
+
+    .test-theme {
+        
+        font-size: 16px;
+
+        .navbar-brand {
+            font-size: 24px;
+        }
+
+        h1 {
+            font-size: 32px;
+        }
+
+        a { color: lighten(@THEME_DARK,15%);}
+        a:hover { color: lighten(@THEME_ACCENT4, 5%);}
+
+         #navbar-left { background: @LEFT_PANEL_BKG; color: @LEFT_PANEL_TEXT;}
+        #navbar-left a { color: @LEFT_PANEL_LINK;}
+        #navbar-left a:hover { color: @LEFT_PANEL_LINK_HOVER;}
+        .navbar-context { background: @LEFT_PANEL_ACCORDIAN_BKG;}
+        .navbar-brand { color: @LEFT_PANEL_LINK;}
+        .navbar-brand:hover { color: @LEFT_PANEL_LINK_HOVER;}
+
+        .nav > li > a:hover, .nav > li > a:hover { background-color: @LEFT_PANEL_ACCORDIAN_HILIGHT;}
+
+        .nav-pills > li.active > a { background-color: @LEFT_PANEL_ACCORDIAN_HILIGHT;}
+
+
+        #project-panel .panel-heading { 
+            background-color: @THEME_ACCENT3;
+            border-color: #4E0250;
+            color: #fff;
+        }
+
+        #assigned-task-panel .panel-heading {
+            background-color: @THEME_ACCENT1;
+            border-color: #0FA3B1;
+            color: #fff;                
+        }
+
+        .panel-heading .pull-right .badge {
+            background-color: rgba(0,0,0,0.5);
+            font-size: 16px;
+        }
+
+
+        path.c3-data1 { stroke: @THEME_ACCENT1;}
+        .c3-data1 .c3-legend-item-tile { fill: @THEME_ACCENT1;}
+
+        path.c3-data2  { stroke: @THEME_ACCENT2;}
+        .c3-data2 .c3-legend-item-tile { fill: @THEME_ACCENT2;}
+
+        path.c3-data3  { stroke: @THEME_ACCENT3;}
+        .c3-data3 .c3-legend-item-tile { fill: @THEME_ACCENT3;}
+
+    }
+}
+
+
+/*
+ *
+ * theme4
+ *
+ */
+
+
+.theme (@num) when (@num = 4) {
+    @THEME_DARK: #17191E;
+    @THEME_ACCENT1: #721D59;
+    @THEME_ACCENT2: #AB538B;
+    @THEME_ACCENT3: #F64740;
+    @THEME_ACCENT4: #BF2D3A;
+    @THEME_ACCENT5: #EEEEEE;
+
+
+    @LEFT_PANEL_BKG: desaturate(@THEME_DARK, 80%);
+    @LEFT_PANEL_ACCORDIAN_BKG: lighten(@LEFT_PANEL_BKG, 5%);
+    @LEFT_PANEL_ACCORDIAN_HILIGHT: lighten(@LEFT_PANEL_BKG, 15%);
+    @LEFT_PANEL_TEXT: @THEME_ACCENT5;
+    @LEFT_PANEL_LINK: @THEME_ACCENT3;
+    @LEFT_PANEL_LINK_HOVER: lighten(@THEME_ACCENT3, 10%);
+
+    @btn-default-bg: @THEME_ACCENT4;
+    @btn-primary-bg: @THEME_ACCENT4;
+    @brand-primary: @THEME_ACCENT4;
+    @btn-default-color: #FFF;
+
+
+
+    .test-theme {
+        
+        font-size: 16px;
+        font-family: Lato;
+
+        .navbar-brand {
+            font-size: 24px;
+        }
+
+        h1 {
+            font-size: 32px;
+        }
+
+        a { color: lighten(@THEME_DARK,15%);}
+        a:hover { color: lighten(@THEME_ACCENT4, 5%);}
+
+         #navbar-left { background: @LEFT_PANEL_BKG; color: @LEFT_PANEL_TEXT;}
+        #navbar-left a { color: @LEFT_PANEL_LINK;}
+        #navbar-left a:hover { color: @LEFT_PANEL_LINK_HOVER;}
+        .navbar-context { background: @LEFT_PANEL_ACCORDIAN_BKG;}
+        .navbar-brand { color: @LEFT_PANEL_LINK;}
+        .navbar-brand:hover { color: @LEFT_PANEL_LINK_HOVER;}
+
+        .nav > li > a:hover, .nav > li > a:hover { background-color: @LEFT_PANEL_ACCORDIAN_HILIGHT;}
+
+        .nav-pills > li.active > a { background-color: @LEFT_PANEL_ACCORDIAN_HILIGHT;}
+
+
+        #project-panel .panel-heading { 
+            background-color: @THEME_ACCENT4;
+            border-color: #4E0250;
+            color: #fff;
+        }
+
+        #assigned-task-panel .panel-heading {
+            background-color: @THEME_ACCENT1;
+            border-color: #0FA3B1;
+            color: #fff;                
+        }
+
+        .panel-heading .pull-right .badge {
+            background-color: rgba(0,0,0,0.5);
+            font-size: 16px;
+        }
+
+
+        path.c3-data1 { stroke: @THEME_ACCENT1;}
+        .c3-data1 .c3-legend-item-tile { fill: @THEME_ACCENT1;}
+
+        path.c3-data2  { stroke: @THEME_ACCENT2;}
+        .c3-data2 .c3-legend-item-tile { fill: @THEME_ACCENT2;}
+
+        path.c3-data3  { stroke: @THEME_ACCENT3;}
+        .c3-data3 .c3-legend-item-tile { fill: @THEME_ACCENT3;}
+
+    }
+}
+
+
+
+
+
+
+.theme(4);

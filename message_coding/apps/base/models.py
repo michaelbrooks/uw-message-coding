@@ -13,7 +13,7 @@ class NameDescriptionMixin(models.Model):
     class Meta:
         abstract = True
 
-    name = models.CharField(max_length=150, default='')
+    name = models.CharField(max_length=150, blank=False)
     description = models.TextField(default='')
 
 
