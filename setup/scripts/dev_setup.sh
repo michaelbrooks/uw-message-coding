@@ -221,7 +221,7 @@ PIP_CMD="pip install Fabric path.py"
 buffer_fail "$PIP_CMD" "ERROR: Error running $PIP_CMD... aborting."
 
 loggy "Installing dependencies..."
-buffer_fail "fab dependencies"
+fab dependencies
 
 loggy "Creating new .env file..."
 SECRET_KEY=$(generateRandomString)
