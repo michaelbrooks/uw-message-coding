@@ -17,6 +17,9 @@ loggy "Updating system..."
 buffer_fail "apt-get update" "ERROR: Could not download package info."
 buffer_fail "apt-get upgrade -y" "ERROR: Could not update system."
 
+# We need this thingy
+apt-get install libffi-dev
+
 # Install some global NPM modules we might need
 loggy "Installing global npm packages..."
 ! exists 'bower' && buffer_fail "npm install -g bower" "ERROR: Error installing bower."
