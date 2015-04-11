@@ -61,10 +61,14 @@ class IsStaffOrOwner(permissions.BasePermission):
         return obj.owner == request.user
 
 
-class CustomPaginationSerializer(pagination.BasePaginationSerializer):
+class CustomPagination(pagination.BasePagination):
     """API pagination serializer that adds num_pages and per_page"""
-    count = serializers.ReadOnlyField(source='paginator.count')
-    next = pagination.NextPageField(source='*')
-    previous = pagination.PreviousPageField(source='*')
-    page_count = serializers.ReadOnlyField(source='paginator.num_pages')
-    per_page = serializers.ReadOnlyField(source='paginator.per_page')
+    def get_paginated_response(self, data):
+        return Response({
+            'links': {
+               'next': self.get_next_link(),
+               'previous': self.get_previous_link()
+            },
+            'count': self.page.paginator.count,
+            'results': data
+        })

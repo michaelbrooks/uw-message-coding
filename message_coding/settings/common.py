@@ -369,8 +369,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissions'
     ],
-    'DEFAULT_PAGINATION_SERIALIZER_CLASS':
-        'message_coding.apps.base.api_utils.CustomPaginationSerializer',
+    'DEFAULT_PAGINATION_CLASS':
+        'message_coding.apps.base.api_utils.CustomPagination',
 }
 ######### END REST FRAMEWORK
 
