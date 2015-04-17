@@ -4,27 +4,31 @@
 {% block body_class %}project-view{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>{{ project.name }}</h1>
+    <h1>{{ project.name }}</h1>
 
-        <p>{{ project.description }}</p>
-        <p><a href="{% url 'project_update' project_slug=project.slug %}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</a></p>
+    <p>{{ project.description }}</p>
+    <p><a href="{% url 'project_update' project_slug=project.slug %}" class="btn btn-default btn-sm"><span
+            class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</a></p>
 
-        <h3>Members ({{ project.members.count }})</h3>
+    <h3>Members ({{ project.members.count }})</h3>
     <ul>
         {% for member in project.members.all %}
-        <li>{{ member }}</li>
-    {% endfor %}
+            <li>{{ member }}</li>
+        {% endfor %}
     </ul>
 
     <h3>Datesets ({{ project.datasets.count }})</h3>
-    <a href="{% url 'dataset_import' project_slug=project.slug %}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;Import</a>
+    <a href="{% url 'dataset_import' project_slug=project.slug %}" class="btn btn-default btn-sm"><span
+            class="glyphicon glyphicon-plus-sign"></span>&nbsp;Import</a>
 
     {% if project.datasets %}
         <ul>
             {% for dataset in project.datasets.all %}
-            <li><a href="{% url 'dataset' project_slug=project.slug dataset_slug=dataset.slug %}">{{ dataset.name }}</a> ({{  dataset.messages.count  }} messages)</li>
-        {% endfor %}
+                <li>
+                    <a href="{% url 'dataset' project_slug=project.slug dataset_slug=dataset.slug %}">{{ dataset.name }}</a>
+                    ({{ dataset.messages.count }} messages)
+                </li>
+            {% endfor %}
         </ul>
     {% else %}
         <p>No datasets</p>
@@ -32,17 +36,18 @@
 
     <h3>Schemes ({{ project.schemes.count }})</h3>
     <ul>
-    {% for scheme in project.schemes.all %}
-        <li>{{ scheme.name }}</li>
-    {% endfor %}
+        {% for scheme in project.schemes.all %}
+            <li>{{ scheme.name }}</li>
+        {% endfor %}
     </ul>
 
     <h3>Tasks ({{ project.tasks.count }})</h3>
     <ul>
-    {% for task in project.tasks.all %}
-    <li><a href={% url 'task' project_slug=project.slug task_pk=task.pk %}>{{ task.name }}</a> <a href="{% url 'task_edit' project_slug=project.slug task_pk=task.pk %}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</a></li>
-    {% endfor %}
+        {% for task in project.tasks.all %}
+            <li><a href={% url 'task' project_slug=project.slug task_pk=task.pk %}>{{ task.name }}</a> <a
+                    href="{% url 'task_edit' project_slug=project.slug task_pk=task.pk %}"
+                    class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</a></li>
+        {% endfor %}
     </ul>
 
-    </div>
 {% endblock %}

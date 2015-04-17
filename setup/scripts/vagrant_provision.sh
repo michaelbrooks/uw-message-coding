@@ -14,17 +14,22 @@ VAGRANT_HOME=/home/vagrant
 
 # Make sure the machine is updated
 loggy "Updating system..."
-buffer_fail "apt-get update" "ERROR: Could not update system."
+buffer_fail "apt-get update" "ERROR: Could not download package info."
+buffer_fail "apt-get upgrade -y" "ERROR: Could not update system."
+
+# We need this thingy
+apt-get install libffi-dev
 
 # Install some global NPM modules we might need
 loggy "Installing global npm packages..."
-buffer_fail "npm install -g bower grunt-cli" "ERROR: Error installing NPM packages."
+! exists 'bower' && buffer_fail "npm install -g bower" "ERROR: Error installing bower."
+! exists 'grunt' && buffer_fail "npm install -g grunt-cli" "ERROR: Error installing grunt-cli."
 
 # Make a fake node_modules folder
 mkdir ${VAGRANT_HOME}/node_modules
 chown vagrant:vagrant ${VAGRANT_HOME}/node_modules
 ln -s ${VAGRANT_HOME}/node_modules ${PROJECT_ROOT}/node_modules
-chown vagrang:vagrant ${PROJECT_ROOT}/node_modules
+chown vagrant:vagrant ${PROJECT_ROOT}/node_modules
 
 # Make sure the mysql service is started
 loggy "Configuring MySQL..."
@@ -33,11 +38,11 @@ service mysql start
 echo "Service started"
 # Set a root password
 mysql -u root -p$DBROOTPASS || mysqladmin -u root password $DBROOTPASS
-echo "MySQL root user now has password: $DBROOTPASS"
+echo "MySQL root user has password: $DBROOTPASS"
 
 # Install phpmyadmin for convenience
 loggy "Installing PHP and phpmyadmin..."
-buffer_fail "apt-get install -y php5" "ERROR: Error installing php5."
+! exists 'php5' && buffer_fail "apt-get install -y php5" "ERROR: Error installing php5."
 echo 'phpmyadmin phpmyadmin/dbconfig-install boolean true' | debconf-set-selections
 echo 'phpmyadmin phpmyadmin/mysql/app-pass password $PHPMYADMIN_PW' | debconf-set-selections
 echo 'phpmyadmin phpmyadmin/app-password-confirm password $PHPMYADMIN_PW' | debconf-set-selections
@@ -60,6 +65,7 @@ DBPORT=3306
 DBNAME=codingdb
 DBUSER=dbuser
 DBPASS=dbpass
+TEST_DBNAME=test_$DBNAME
 
 loggy "Creating database..."
 
@@ -67,6 +73,7 @@ loggy "Creating database..."
 cat <<EOF | mysql -u root -p$DBROOTPASS -h $DBHOST
 CREATE DATABASE IF NOT EXISTS \`$DBNAME\` CHARACTER SET utf8 COLLATE utf8_general_ci;
 GRANT ALL PRIVILEGES ON \`$DBNAME\`.* TO '$DBUSER'@'$DBHOST' IDENTIFIED BY '$DBPASS';
+GRANT ALL PRIVILEGES ON \`$TEST_DBNAME\`.* TO '$DBUSER'@'$DBHOST' IDENTIFIED BY '$DBPASS';
 GRANT USAGE ON *.* TO '$DBUSER'@'$DBHOST';
 EOF
 

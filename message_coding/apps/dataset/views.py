@@ -1,15 +1,15 @@
 from django.views.generic import CreateView, DetailView
 from django.core.urlresolvers import reverse
 
-from apps.dataset import models, forms
-from base.views import LoginRequiredMixin, ProjectViewMixin
+from message_coding.apps.dataset import models, forms
+from message_coding.apps.base.views import LoginRequiredMixin, ProjectViewMixin
 
 import csv
 import codecs
 
-from apps.dataset.api import serializers
-from base.api import UserSerializer
-from apps.project import api as project_api
+from message_coding.apps.dataset.api import serializers
+from message_coding.apps.base.api import UserSerializer
+from message_coding.apps.project import api as project_api
 from rest_framework.renderers import JSONRenderer
 
 class DatasetDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):

@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 
-from base.models import NameDescriptionMixin, CreatedAtField
+from message_coding.apps.base.models import NameDescriptionMixin, CreatedAtField
 
 
 # These strings cannot be project slugs
@@ -58,17 +58,24 @@ class Task(NameDescriptionMixin):
 
     def is_assigned_to(self, user):
         return self.assigned_coders.filter(pk=user.pk)
-        
+
     def get_examples(self,max_examples=5):
         applied_codes = {}
         for code_instance in self.code_instances.all():
-            if code_instance not in applied_codes:
+            if code_instance.code not in applied_codes:
                 applied_codes[code_instance.code] = []
             if len(applied_codes[code_instance.code]) < max_examples:
-                applied_codes[code_instance.code].append(code_instance.message)   
-				
-	return applied_codes
+                applied_codes[code_instance.code].append(code_instance.message)
+        return applied_codes
 
+    def get_frequency(self):
+        code_frequency = {}
+        for code_instance in self.code_instances.all():
+            if code_instance.code not in code_frequency:
+                code_frequency[code_instance.code] = 1
+            else:
+                code_frequency[code_instance.code]+= 1
+        return code_frequency
 
 class CodeInstance(models.Model):
     """A code applied to a data point in the context of a task"""

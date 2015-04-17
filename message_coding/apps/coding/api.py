@@ -1,6 +1,6 @@
-from apps.coding import models
+from message_coding.apps.coding import models
 from rest_framework import routers, serializers, viewsets
-from base import api_utils
+from message_coding.apps.base import api_utils
 
 
 class CodeSerializer(api_utils.ExclusiveModelSerializer):

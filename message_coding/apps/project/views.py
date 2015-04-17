@@ -6,13 +6,13 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect
 from django.core.exceptions import PermissionDenied
 
-from apps.project import models, forms
-from apps.project import api as project_api
-from apps.dataset.api import serializers as dataset_serializers
-from apps.coding import api as coding_api
-from apps.coding import models as coding_models
-from base.api import UserSerializer
-from base.views import ProjectViewMixin, LoginRequiredMixin
+from message_coding.apps.project import models, forms
+from message_coding.apps.project import api as project_api
+from message_coding.apps.dataset.api import serializers as dataset_serializers
+from message_coding.apps.coding import api as coding_api
+from message_coding.apps.coding import models as coding_models
+from message_coding.apps.base.api import UserSerializer
+from message_coding.apps.base.views import ProjectViewMixin, LoginRequiredMixin
 from rest_framework.renderers import JSONRenderer
 
 class CreateProjectView(LoginRequiredMixin, CreateView):
@@ -57,15 +57,34 @@ class TaskDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     template_name = 'project/task_detail.html'
 
     pk_url_kwarg = 'task_pk'
-    
+
     def get_context_data(self, **kwargs):
         context = super(TaskDetailView, self).get_context_data(**kwargs)
         context['msgs'] = context['task'].selection.get_messages()
         task = context['task']
-        context['examples_by_code'] =  task.get_examples()
         return context
-    
 
+class TaskReviewView(LoginRequiredMixin, ProjectViewMixin, DetailView):
+    """View for viewing tasks"""
+    model = models.Task
+    template_name = 'project/task_review.html'
+
+    pk_url_kwarg = 'task_pk'
+
+    def get_context_data(self, **kwargs):
+        context = super(TaskReviewView, self).get_context_data(**kwargs)
+        context['msgs'] = context['task'].selection.get_messages()
+        task = context['task']
+        examples = task.get_examples()
+        frequency = task.get_frequency()
+        code_info = {}
+        for code,count in frequency.iteritems():
+            code_info[code] = {
+                'count':count,
+                'examples':examples[code]
+            }
+        context['code_info'] =  code_info
+        return context
 
 class EditTaskView(LoginRequiredMixin, ProjectViewMixin, UpdateView):
     """View for editing new tasks"""

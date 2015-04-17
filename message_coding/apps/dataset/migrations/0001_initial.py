@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import base.models
+from message_coding.apps.base.models import CreatedAtField
 from django.conf import settings
 
 
@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=150)),
                 ('description', models.TextField()),
-                ('created_at', base.models.CreatedAtField(auto_now=True)),
+                ('created_at', CreatedAtField(auto_now=True)),
                 ('owner', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
             name='Selection',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('created_at', base.models.CreatedAtField(auto_now=True)),
+                ('created_at', CreatedAtField(auto_now=True)),
                 ('type', models.CharField(max_length=150)),
                 ('selection', models.BinaryField()),
                 ('dataset', models.ForeignKey(to='dataset.Dataset')),

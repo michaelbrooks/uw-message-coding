@@ -1,10 +1,10 @@
 from rest_framework import serializers, viewsets, routers
 from base.views import OwnedViewSetMixin
 from base.permissions import IsProjectMember, IsProjectOwnerOrReadOnly, IsTaskAssigner, IsTaskOwnerOrReadOnly
-
-from apps.project import models as project_models
-from apps.dataset import models as dataset_models
-from apps.dataset.api import serializers as dataset_serializers
+from message_coding.apps.base.views import OwnedViewSetMixin
+from message_coding.apps.project import models as project_models
+from message_coding.apps.dataset import models as dataset_models
+from message_coding.apps.dataset.api import serializers as dataset_serializers
 
 # Serializers define the API representation.
 class TaskSerializer(serializers.ModelSerializer):

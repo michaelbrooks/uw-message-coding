@@ -13,7 +13,7 @@ urlpatterns = patterns('',
                        # Load the admin urls
                        url(r'^admin/', include(admin.site.urls)),
 
-                       url(r'^', include('base.urls')),
+                       url(r'^', include('apps.base.urls')),
 
 )
 

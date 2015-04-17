@@ -25,24 +25,17 @@ def get_env_setting(setting, default=None):
 
 
 ########## PATH CONFIGURATION
-# Absolute filesystem path to the Django project directory:
-DJANGO_ROOT = path(__file__).abspath().realpath().dirname().parent
-
 # Absolute filesystem path to the django site folder
-SITE_ROOT = DJANGO_ROOT.parent
+SITE_ROOT = path(__file__).abspath().realpath().dirname().parent
 
 # Absolute path to the top-level project folder
 PROJECT_ROOT = SITE_ROOT.parent
 
 # Site name:
-SITE_NAME = DJANGO_ROOT.basename()
+SITE_NAME = SITE_ROOT.basename()
 
 # Id for the Sites framework
 SITE_ID = 1
-
-# Add our project to our pythonpath, this way we don't need to type our project
-# name in our dotted import paths:
-sys.path.append(DJANGO_ROOT)
 
 ########## END PATH CONFIGURATION
 
@@ -111,7 +104,9 @@ MEDIA_URL = '/media/'
 
 ########## STATIC FILE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = (SITE_ROOT / 'assets').normpath()
+STATIC_ROOT = get_env_setting('STATIC_ROOT', (PROJECT_ROOT / 'assets').normpath())
+if not isinstance(STATIC_ROOT, path):
+    STATIC_ROOT = path(STATIC_ROOT)
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
@@ -168,8 +163,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.csrf',
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
-    'base.context_processors.google_analytics',
-    
+    'message_coding.apps.base.context_processors.google_analytics',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
@@ -229,11 +223,10 @@ DJANGO_APPS = (
 # Apps specific for this project go here.
 LOCAL_APPS = (
     # Application base, containing global templates.
-    'apps.lib',
-    'base',
-    'apps.coding',
-    'apps.dataset',
-    'apps.project',
+    'message_coding.apps.base',
+    'message_coding.apps.coding',
+    'message_coding.apps.dataset',
+    'message_coding.apps.project',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -248,6 +241,12 @@ INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+LOGS_ROOT = get_env_setting('LOGS_ROOT', PROJECT_ROOT / 'logs')
+if not isinstance(LOGS_ROOT, path):
+    LOGS_ROOT = path(LOGS_ROOT)
+if not LOGS_ROOT.exists():
+    LOGS_ROOT.mkdir()
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -287,17 +286,13 @@ INSTALLED_APPS += (
     'debug_toolbar',
 )
 
-MIDDLEWARE_CLASSES += (
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-)
-
 # Only show the debug toolbar to users with the superuser flag.
 def custom_show_toolbar(request):
     return request.user.is_superuser
 
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
-    'SHOW_TOOLBAR_CALLBACK': '%s.settings.base.custom_show_toolbar' % SITE_NAME,
+    'SHOW_TOOLBAR_CALLBACK': '%s.settings.common.custom_show_toolbar' % SITE_NAME,
     'HIDE_DJANGO_SQL': True,
     'TAG': 'body',
     'SHOW_TEMPLATE_CONTEXT': True,
@@ -324,7 +319,8 @@ def find_node_bin(package_name='less', bin_name='lessc'):
     p = PROJECT_ROOT / 'node_modules' / package_name / 'bin' / bin_name
     if p.exists():
         return "node %s" % p
-    return bin_name # global install
+    return bin_name  # global install
+
 
 BIN_COFFEE = find_node_bin('coffee-script', 'coffee')
 BIN_COFFEE_COMMAND = '%s --compile --stdio' % BIN_COFFEE
@@ -340,7 +336,7 @@ COMPRESS_PRECOMPILERS = (
     ('text/less', BIN_LESSC_COMMAND),
 )
 
-COMPRESS_ROOT = (SITE_ROOT / 'static').normpath()
+COMPRESS_ROOT = STATIC_ROOT
 COMPRESS_OUTPUT_DIR = 'CACHE'
 ########## END SOUTH CONFIGURATION
 
@@ -374,8 +370,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
         'rest_framework.permissions.DjangoModelPermissions',
     ],
-    'DEFAULT_PAGINATION_SERIALIZER_CLASS':
-        'base.api_utils.CustomPaginationSerializer',
+    'DEFAULT_PAGINATION_CLASS':
+        'message_coding.apps.base.api_utils.CustomPagination',
 }
 ######### END REST FRAMEWORK
 
