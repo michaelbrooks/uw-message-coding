@@ -1,4 +1,5 @@
 from rest_framework import routers, serializers, permissions, pagination
+from rest_framework.response import Response
 
 class SuperRouterMixin(object):
 
@@ -61,14 +62,14 @@ class IsStaffOrOwner(permissions.BasePermission):
         return obj.owner == request.user
 
 
-class CustomPagination(pagination.BasePagination):
+class CustomPagination(pagination.PageNumberPagination):
     """API pagination serializer that adds num_pages and per_page"""
     def get_paginated_response(self, data):
         return Response({
-            'links': {
-               'next': self.get_next_link(),
-               'previous': self.get_previous_link()
-            },
+            'next': self.get_next_link(),
+            'previous': self.get_previous_link(),
+            'page_count': self.page.paginator.num_pages,
+            'per_page': self.page.paginator.per_page,
             'count': self.page.paginator.count,
             'results': data
         })
