@@ -1,16 +1,21 @@
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, View
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse, StreamingHttpResponse
 
 from message_coding.apps.dataset import models, forms
+from message_coding.apps.coding import models as coding_models
+from message_coding.apps.project import models as project_models
 from message_coding.apps.base.views import LoginRequiredMixin, ProjectViewMixin
-
-import csv
-import codecs
-
 from message_coding.apps.dataset.api import serializers
 from message_coding.apps.base.api import UserSerializer
 from message_coding.apps.project import api as project_api
 from rest_framework.renderers import JSONRenderer
+
+import csv
+import codecs
+from cStringIO import StringIO
+
+
 
 class DatasetDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     """View for viewing datasets"""
@@ -74,3 +79,44 @@ class DatasetImportView(LoginRequiredMixin, ProjectViewMixin, CreateView):
             print "Exception occurred", e
 
         return super(DatasetImportView, self).form_valid(form)
+
+
+
+class DatasetExportView(LoginRequiredMixin, ProjectViewMixin, View):
+    """ Simple Export View """
+
+    def get(self, request, project_slug, dataset_slug, **kwargs):
+        #models.Message
+
+        # find our dataset & messages
+        dataset = models.Dataset.objects.filter(slug=dataset_slug)
+        messages = models.Message.objects.filter(dataset=dataset)
+
+        # begin a streaming response
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="%s-%s.csv"'%(project_slug, dataset_slug)
+
+        # attach a csv writer to that
+        csvwriter = csv.writer(response)
+        csvwriter.writerow(["id", "time", "sender", "text", "codes_str"])
+
+        # create a utf-8 encoder
+        encoder = codecs.getencoder("utf-8")
+
+        #step through messages
+        for m in messages:
+
+            # grab all instances attacahed to this 
+            codes = project_models.CodeInstance.objects.filter(message=m)
+            codes_str =  u"|".join([unicode(c.code.name) for c in codes]) if codes is not None and codes.count() > 0 else ""
+
+            # create the column values for our row
+            cols = [unicode(m.id), unicode(m.time), unicode(m.sender),  unicode(m.text), codes_str]
+
+            # encode and write them
+            encoded_cols = [encoder(c)[0] for c in cols]
+            csvwriter.writerow(encoded_cols)
+
+        # return the full response
+        return response
+
