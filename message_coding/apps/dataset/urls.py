@@ -14,6 +14,10 @@ urlpatterns = patterns('',
                            views.DatasetDetailView.as_view(),
                            name='dataset'),
 
+                       url(r'^export/(?P<dataset_slug>[\w-]+)/$',
+                       		views.DatasetExportSelectionView.as_view(),
+                       		name='dataset-export'),
+
                        url(r'^download/(?P<dataset_slug>[\w-]+)/$',
                        		views.DatasetExportView.as_view(),
                        		name='dataset-download'),

@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, DetailView, View
+from django.views.generic import CreateView, DetailView, TemplateView, FormView, View
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, StreamingHttpResponse
 
@@ -13,7 +13,6 @@ from rest_framework.renderers import JSONRenderer
 
 import csv
 import codecs
-from cStringIO import StringIO
 
 
 
@@ -77,8 +76,31 @@ class DatasetImportView(LoginRequiredMixin, ProjectViewMixin, CreateView):
         except Exception, e:
             print "!!!!\n"*4
             print "Exception occurred", e
+            raise e
 
         return super(DatasetImportView, self).form_valid(form)
+
+
+class DatasetExportSelectionView(LoginRequiredMixin, ProjectViewMixin, FormView):
+    """ View to let user select which tasks to download """
+
+    template_name = "dataset/dataset_export.html"
+    form_class = forms.DatasetExportForm
+
+
+    def get_form_kwargs(self):
+        kwargs = super(DatasetExportSelectionView, self).get_form_kwargs()
+
+        # grab the dataset_slug and find relevant tasks
+        dataset_slug = self.kwargs["dataset_slug"]
+        tasks = project_models.Task.objects.filter(selection__dataset__slug=dataset_slug)
+
+        # add tasks to our form kwargs
+        kwargs.update({
+            "tasks": tasks
+        })
+
+        return kwargs
 
 
 
