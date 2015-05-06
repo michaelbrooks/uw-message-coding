@@ -77,6 +77,24 @@ class Task(NameDescriptionMixin):
                 code_frequency[code_instance.code]+= 1
         return code_frequency
 
+    def get_coding_summary(self):
+        msgs = self.selection.get_messages()
+        code_groups = self.selection.code_groups
+
+        msg_dict = {}
+        for msg in msgs:
+            msg_dict[msg.id] = {}
+
+            msg_dict[msg.id]["codes"] = []
+
+        code_frequency = {}
+        for code_instance in self.code_instances.all():
+            if code_instance.code not in code_frequency:
+                code_frequency[code_instance.code] = 1
+            else:
+                code_frequency[code_instance.code]+= 1
+        return code_frequency
+
 class CodeInstance(models.Model):
     """A code applied to a data point in the context of a task"""
     created_at = CreatedAtField()
