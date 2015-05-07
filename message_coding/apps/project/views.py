@@ -77,6 +77,8 @@ class TaskReviewView(LoginRequiredMixin, ProjectViewMixin, DetailView):
         task = context['task']
         examples = task.get_examples()
         frequency = task.get_frequency()
+        context['summary'] = task.get_coding_summary()
+        context['diff_summary'] = task.get_diff_summary()
         code_info = {}
         for code,count in frequency.iteritems():
             code_info[code] = {

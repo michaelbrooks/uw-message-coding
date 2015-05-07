@@ -78,22 +78,76 @@ class Task(NameDescriptionMixin):
         return code_frequency
 
     def get_coding_summary(self):
-        msgs = self.selection.get_messages()
-        code_groups = self.selection.code_groups
-
-        msg_dict = {}
-        for msg in msgs:
-            msg_dict[msg.id] = {}
-
-            msg_dict[msg.id]["codes"] = []
-
+        code_groups = self.scheme.code_groups.all()
         code_frequency = {}
+        for code_group in code_groups:
+            for code in code_group.codes.all():
+                code_frequency[code] = {}
+
+        coders = self.assigned_coders.all()
+        for coder in coders:
+            for code in code_frequency:
+                code_frequency[code][coder] = 0
+
         for code_instance in self.code_instances.all():
-            if code_instance.code not in code_frequency:
-                code_frequency[code_instance.code] = 1
-            else:
-                code_frequency[code_instance.code]+= 1
+            code_frequency[code_instance.code][code_instance.owner] += 1
         return code_frequency
+
+    def get_diff_summary(self):
+        """
+        code A
+        Y\N    | coder1 | coder 2 | coder 3
+        coder1 |   x    |   10    |   2
+        coder2 |   3*   |   x     |   3
+        coder3 |   9    |   0     |   x
+
+        * means there are 3 messages that coder2 label coder A but coder1 does not
+
+        :param:
+        :return:
+        """
+
+        code_groups = self.scheme.code_groups.all()
+        code_diff_matrix = {}
+        for code_group in code_groups:
+            for code in code_group.codes.all():
+                diff_matrix = {}
+                coders = self.assigned_coders.all()
+                for coder1 in coders:
+                    diff_matrix[coder1] = {}
+                    for coder2 in coders:
+                        diff_matrix[coder1][coder2] = 0
+
+                msgs = self.selection.get_messages()
+                code_table = {}
+                for msg in msgs:
+                    code_table[msg.pk] = {}
+                    for coder in coders:
+                        code_table[msg.pk][coder] = 0
+
+                for code_instance in self.code_instances.filter(code=code).all():
+                    try:
+                        code_table[code_instance.message.pk][code_instance.owner] += 1
+                    except:
+                        continue
+
+
+                for msg in msgs:
+                    for coder1 in coders:
+                        for coder2 in coders:
+                            if coder1 == coder2:
+                                continue
+
+                            if code_table[msg.pk][coder1] and not code_table[msg.pk][coder2]:
+                                diff_matrix[coder1][coder2] += 1
+
+                            if code_table[msg.pk][coder2] and not code_table[msg.pk][coder1]:
+                                diff_matrix[coder2][coder1] += 1
+
+                code_diff_matrix[code] = diff_matrix
+
+
+        return code_diff_matrix
 
 class CodeInstance(models.Model):
     """A code applied to a data point in the context of a task"""
