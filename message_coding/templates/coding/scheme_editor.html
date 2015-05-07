@@ -1,0 +1,72 @@
+{% extends "_layouts/base.html" %}
+{% load staticfiles djangular_tags %}
+
+{% block page_title %}Dataset view{% endblock %}
+{% block body_class %}dataset-view{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'bower/angular/angular.js' %}"></script>
+    <script src="{% static 'bower/angular-route/angular-route.js' %}"></script>
+    <script src="{% static 'bower/angular-resource/angular-resource.js' %}"></script>
+    <script src="{% static 'bower/angular-cookies/angular-cookies.js' %}"></script>
+    <script src="{% static 'djangular/js/django-angular.js' %}"></script>
+
+    <script src="{% static 'base/services.js' %}"></script>
+    <script src="{% static 'base/models.js' %}"></script>
+    <script src="{% static 'scheme_editor/scheme_editor.js' %}"></script>
+    <script src="{% static 'scheme_editor/controllers.js' %}"></script>
+    <script src="{% static 'scheme_editor/services.js' %}"></script>
+    <script src="{% static 'scheme_editor/models.js' %}"></script>
+
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/less" href="{% static 'css/project/scheme_editor.less' %}">
+{% endblock %}
+
+{% block bootstrapping %}
+    {{ block.super }}
+    <script>
+        angular.module('ng.django.urls')
+                .constant('patterns', {% load_djng_urls %});
+
+        angular.module('message_coding.schemeEditor')
+                .constant('django_config', {
+                    'STATIC_URL': '{% static '' %}'
+                });
+
+        angular.module('message_coding.schemeEditor.bootstrap')
+                .constant('message_coding.schemeEditor.bootstrap.initial_data', {
+                    project: {{ project_json|safe }},
+                    scheme: {{ scheme_json|safe }},
+                    user: {{ user_json|safe }}
+                });
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+<div ng-app="message_coding.schemeEditor">
+
+    <div ng-controller="message_coding.schemeEditor.controllers.EditorController" class="scheme-editor">
+        <h1 ng-bind="scheme.name">{{ scheme.name }}</h1>
+        <p ng-bind="scheme.description">{{ scheme.description }}</p>
+
+        <ul class="code-groups">
+            <li class="code-group" ng-repeat="group in scheme.code_groups">
+                <div class="name" ng-bind="group.name"></div>
+                <div class="description" ng-bind="group.description"></div>
+                <ul class="codes">
+                    <li class="code" ng-repeat="code in group.codes">
+                        <div class="name" ng-bind="code.name"></div>
+                        <div class="description" ng-bind="code.description"></div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

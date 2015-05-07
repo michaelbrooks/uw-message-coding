@@ -1,4 +1,4 @@
-"""urlconf for the projects application"""
+"""urlconf for the dataset application"""
 
 from django.conf.urls import url, patterns
 
