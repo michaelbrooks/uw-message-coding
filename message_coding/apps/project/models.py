@@ -141,8 +141,6 @@ class Task(NameDescriptionMixin):
                             if code_table[msg.pk][coder1] and not code_table[msg.pk][coder2]:
                                 diff_matrix[coder1][coder2] += 1
 
-                            if code_table[msg.pk][coder2] and not code_table[msg.pk][coder1]:
-                                diff_matrix[coder2][coder1] += 1
 
                 code_diff_matrix[code] = diff_matrix
 
