@@ -15,10 +15,14 @@
     var EditorController = function ($scope, djangoUrl,
                                       Project, CodeScheme,
                                       initial_data) {
-                                      
+
         $scope.user = initial_data.user;
         $scope.project = new Project(initial_data.project);
         $scope.scheme = new CodeScheme(initial_data.scheme);
+
+        $scope.test = {
+            name: ''
+        };
     };
 
     EditorController.$inject = requires;

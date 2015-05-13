@@ -11,6 +11,7 @@
     <script src="{% static 'bower/angular-resource/angular-resource.js' %}"></script>
     <script src="{% static 'bower/angular-cookies/angular-cookies.js' %}"></script>
     <script src="{% static 'djangular/js/django-angular.js' %}"></script>
+    <script src="{% static 'bower/angular-xeditable/dist/js/xeditable.js' %}"></script>
 
     <script src="{% static 'base/services.js' %}"></script>
     <script src="{% static 'base/models.js' %}"></script>
@@ -23,6 +24,7 @@
 
 {% block css %}
     {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'bower/angular-xeditable/dist/css/xeditable.css' %}">
     <link rel="stylesheet" type="text/less" href="{% static 'css/project/scheme_editor.less' %}">
 {% endblock %}
 
@@ -57,12 +59,24 @@
 
         <ul class="code-groups">
             <li class="code-group" ng-repeat="group in scheme.code_groups">
-                <div class="name" ng-bind="group.name"></div>
-                <div class="description" ng-bind="group.description"></div>
-                <ul class="codes">
-                    <li class="code" ng-repeat="code in group.codes">
-                        <div class="name" ng-bind="code.name"></div>
-                        <div class="description" ng-bind="code.description"></div>
+                <div class="code-group-header clearfix">
+                    <div class="name">
+                        <div class="editable" ng-bind="group.name" editable-text="group.name"></div>
+                    </div>
+                    <div class="description">
+                        <div class="editable" ng-bind="group.description" editable-text="group.description"></div>
+                    </div>
+                </div>
+                <ul class="codes clearfix">
+                    <li class="code clearfix" ng-repeat="code in group.codes">
+                        <div class="name">
+                            <div class="editable" ng-bind="code.name" editable-text="code.name"></div>
+                        </div>
+                        <div class="description">
+                            <div class="editable"
+                                 ng-bind="code.description || 'description'"
+                                 editable-text="code.description"></div>
+                        </div>
                     </li>
                 </ul>
             </li>

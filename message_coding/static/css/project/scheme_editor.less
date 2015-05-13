@@ -1,13 +1,41 @@
+@import '../theme/variables';
+
 .scheme-editor {
 
     .name {
         font-weight: bold;
+
+        float: left;
+        width: 20%;
+        max-width: 150px;
+
+        .editable {
+            //margin: 7px 13px 6px 13px;
+        }
     }
+
     .description {
         font-style: italic;
         color: #888;
-        font-size: 0.9em;
-        margin-bottom: 10px;
+
+        float: left;
+        width: 80%;
+        padding-left: 15px;
+
+        .editable {
+            //margin: 8px 13px 7px 13px;
+        }
+
+        .editable-text {
+            input[type=text] {
+                font-size: 14px;
+
+                //width: 300px;
+                @media (min-width: @screen-md-min) {
+                    //width: 600px;
+                }
+            }
+        }
     }
 
     ul, ol, li {
@@ -15,15 +43,86 @@
         padding: 0;
     }
 
+    .draggable {
+        border: 1px solid transparent;
+        cursor: pointer;
+
+        &:hover {
+            border-color: rgba(0, 0, 0, 0.1);
+            .box-shadow(inset -2px -2px 6px rgba(0, 0, 0, 0.1));
+        }
+    }
+
     .code-group {
         margin-bottom: 20px;
+        padding: 15px;
+
+        .code-group-header {
+            margin-bottom: 15px;
+
+            .name {
+                font-size: 18px;
+            }
+
+            .description {
+                padding-left: 30px;
+            }
+        }
+
+        .draggable();
 
         .codes {
-            padding-left: 20px;
 
             .code {
+                margin-bottom: 10px;
+                padding: 15px;
 
+                .name {
+                    left: 15px;
+                }
+                .description {
+                    font-size: 14px;
+                }
+
+                .draggable();
             }
         }
     }
+
+    .editable {
+        display: inline-block;
+        cursor: text;
+    }
+
+    .editable-hide {
+        display: none !important;
+    }
+
+    .editable-click,
+    a.editable-click {
+        text-decoration: none;
+        color: @text-color;
+        border-bottom: dashed 1px rgb(219, 237, 247);
+    }
+
+    .editable-click:hover,
+    a.editable-click:hover {
+        text-decoration: none;
+        color: #2a6496;
+        border-bottom: dashed 1px #2a6496;
+    }
+
+    /* editable-empty */
+    .editable-empty,
+    .editable-empty:hover,
+    .editable-empty:focus,
+    a.editable-empty,
+    a.editable-empty:hover,
+    a.editable-empty:focus {
+        font-style: italic;
+        color: #DD1144;
+        text-decoration: none;
+    }
+
+
 }
