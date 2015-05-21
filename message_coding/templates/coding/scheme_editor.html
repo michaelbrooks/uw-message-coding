@@ -66,6 +66,7 @@
                     <div class="description">
                         <div class="editable" ng-bind="group.description" editable-text="group.description"></div>
                     </div>
+                    <span class="group-label">group</span>
                 </div>
                 <ul class="codes clearfix">
                     <li class="code clearfix" ng-repeat="code in group.codes">
@@ -77,6 +78,7 @@
                                  ng-bind="code.description || 'description'"
                                  editable-text="code.description"></div>
                         </div>
+                        <span class="code-label">code</span>
                     </li>
                 </ul>
             </li>
