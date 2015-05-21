@@ -17,22 +17,30 @@
         }
     }
 
+    @name-max-width: 250px;
+    @code-indent: 15px;
 
     .name {
         font-weight: bold;
-
-        float: left;
-        width: 30%;
-        max-width: 250px;
     }
 
     .description {
         font-style: italic;
         color: #888;
+    }
 
-        float: left;
-        width: 70%;
-        padding-left: 15px;
+    @media (min-width: @screen-sm-min) {
+        .name {
+            float: left;
+            width: 30%;
+            max-width: @name-max-width;
+        }
+
+        .description {
+            float: left;
+            width: 70%;
+            padding-left: 15px;
+        }
     }
 
     .group-label, .code-label {
@@ -76,7 +84,6 @@
             }
 
             .description {
-                padding-left: 30px;
                 font-size: 16px;
                 line-height: 27px;
 
@@ -91,7 +98,8 @@
                     width: 100%;
                 }
             }
-            
+
+
             &:hover {
                 .group-label {
                     display: block;
@@ -106,17 +114,16 @@
 
             .code {
                 margin-bottom: 3px;
-                padding: 8px 15px;
+                padding: 8px 0;
                 position: relative;
 
                 .name {
-                    left: 15px;
-
                     .editable {
                         margin: 4px 10px 3px 10px;
                         padding: 3px;
                     }
                 }
+
                 .description {
                     font-size: 14px;
 
@@ -138,6 +145,13 @@
                 &:hover {
                     .code-label {
                         display: block;
+                    }
+                }
+
+                @media (min-width: @screen-sm-min) {
+                    .name {
+                        position: relative;
+                        left: @code-indent;
                     }
                 }
             }
