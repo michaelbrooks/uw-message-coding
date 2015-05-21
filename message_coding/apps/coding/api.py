@@ -22,9 +22,18 @@ class SchemeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Scheme
         fields = ('id', 'name', 'description',
-                  'created_at', 'owner', 'project', 'code_groups')
+                  'created_at', 'owner', 'project', 'code_groups', )
+        read_only_fields = ('id', 'created_at', 'owner', 'project', )
 
     code_groups = CodeGroupSerializer(many=True, exclude=('scheme',))
+
+    def create(self, validated_data):
+        code_group_data = validated_data.pop('code_groups')
+        code_groups = CodeGroupSerializer(data=code_group_data, many=True)
+        return models.Scheme.objects.create(code_groups=code_groups, **validated_data)
+
+    #def update(self, instance, validated_data):
+
 
 
 # ViewSets define the view behavior.

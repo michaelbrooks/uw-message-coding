@@ -19,6 +19,7 @@
 
     @name-max-width: 250px;
     @code-indent: 15px;
+    @editable-controls-width: 94px;
 
     .name {
         font-weight: bold;
@@ -167,7 +168,7 @@
         position: relative;
         width: 100%;
         max-width: 600px;
-        padding-right: 94px; /* space for the controls */
+        padding-right: @editable-controls-width; /* space for the controls */
     }
 
     .editable-hide {

@@ -20,8 +20,9 @@
         $scope.project = new Project(initial_data.project);
         $scope.scheme = new CodeScheme(initial_data.scheme);
 
-        $scope.test = {
-            name: ''
+        $scope.saveScheme = function() {
+            console.log($scope.scheme);
+            debugger;
         };
     };
 
