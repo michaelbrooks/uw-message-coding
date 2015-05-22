@@ -78,12 +78,37 @@
         ['$resource', function ($resource) {
             return $resource('/api/code_instances/:id/', {
                 id: '@id'
+            }, {
+                'update': { method: 'PUT' }
+            });
+        }]);
+
+    module.service('message_coding.base.services.Code',
+        ['$resource', function($resource) {
+            return $resource('/api/codes/:id/', {
+                id: '@id'
+            }, {
+                'update': { method: 'PUT' }
+            });
+        }]);
+
+    module.service('message_coding.base.services.CodeGroup',
+        ['$resource', function($resource) {
+            return $resource('/api/code_groups/:id/', {
+                id: '@id'
+            }, {
+                'update': { method: 'PUT' }
             });
         }]);
 
     module.service('message_coding.base.services.CodeScheme',
-        ['$resource', function ($resource) {
-            var CodeScheme = $resource('/api/schemes/:id/');
+        ['$resource', '$http', function ($resource, $http) {
+
+            var CodeScheme = $resource('/api/schemes/:id/', {
+                id: '@id'
+            }, {
+                'update': { method: 'PUT' }
+            });
 
             //Iterate through all codes
             CodeScheme.prototype.forEachCode = function (callback) {

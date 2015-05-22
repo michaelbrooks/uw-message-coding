@@ -17,9 +17,13 @@
 
     //Fix CSRF
     //http://django-angular.readthedocs.org/en/latest/csrf-protection.html
-    app.run(['$http', '$cookies', 'editableOptions',
-        function ($http, $cookies, editableOptions) {
-            $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
+    app.config(function($httpProvider) {
+        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+    });
+
+    app.run(['editableOptions',
+        function (editableOptions) {
             editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
         }
     ]);

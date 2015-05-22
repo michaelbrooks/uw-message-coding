@@ -24,8 +24,18 @@ class IsProjectMember(permissions.IsAuthenticated):
     """
 
     def has_object_permission(self, request, view, obj):
-        # Instance must be in the project member.
-        return (request.user and request.user.is_staff) or request.user in obj.members.all()
+        # staff always have permission
+        if request.user and request.user.is_staff:
+            return True
+
+        # get the project for the object
+        if hasattr(obj, 'project'):
+            obj = obj.project
+
+        if hasattr(obj, 'members'):
+            return request.user in obj.members.all()
+
+        raise Exception("Object %s has no project or members")
 
 class IsProjectOwnerOrReadOnly(permissions.IsAuthenticated):
     """

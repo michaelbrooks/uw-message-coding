@@ -10,19 +10,19 @@
 
     var requires = ['$scope', 'djangoUrl',
         'message_coding.base.services.Project',
-        'message_coding.base.services.CodeScheme',
+        'message_coding.schemeEditor.services.SchemeModel',
         'message_coding.schemeEditor.bootstrap.initial_data'];
     var EditorController = function ($scope, djangoUrl,
-                                      Project, CodeScheme,
+                                      Project, SchemeModel,
                                       initial_data) {
 
         $scope.user = initial_data.user;
         $scope.project = new Project(initial_data.project);
-        $scope.scheme = new CodeScheme(initial_data.scheme);
+        $scope.schemeModel = new SchemeModel(initial_data.scheme);
 
+        window.s = $scope.schemeModel;
         $scope.saveScheme = function() {
-            console.log($scope.scheme);
-            debugger;
+            console.log($scope.schemeModel);
         };
     };
 

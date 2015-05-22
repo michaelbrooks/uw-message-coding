@@ -54,11 +54,11 @@
 <div ng-app="message_coding.schemeEditor">
 
     <div ng-controller="message_coding.schemeEditor.controllers.EditorController" class="scheme-editor">
-        <h1 ng-bind="scheme.name">{{ scheme.name }}</h1>
-        <p ng-bind="scheme.description">{{ scheme.description }}</p>
+        <h1 ng-bind="schemeModel.scheme.name">{{ scheme.name }}</h1>
+        <p ng-bind="schemeModel.scheme.description">{{ scheme.description }}</p>
         <p><button class="btn btn-primary btn-lg" type="button" ng-click="saveScheme()">Save</button></p>
         <ul class="code-groups">
-            <li class="code-group" ng-repeat="group in scheme.code_groups">
+            <li class="code-group" ng-repeat="group in schemeModel.scheme.code_groups">
                 <div class="code-group-header clearfix">
                     <div class="name">
                         <div class="editable" ng-bind="group.name" editable-text="group.name"></div>
