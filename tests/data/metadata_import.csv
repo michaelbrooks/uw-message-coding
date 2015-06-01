@@ -1,0 +1,4 @@
+id,field1,field2,time,sender,text
+0,"a","field2-test1","2014-12-13 02:55:30+0000","Jeff","This is the first string"
+1,"b","field2-test2","2014-12-13 02:56:30+0000","Kate","This is the second string"
+2,"c","field2-test3","2014-12-13 02:57:30+0000","Ann","This is the third string"
