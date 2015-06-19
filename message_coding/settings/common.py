@@ -371,7 +371,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissions',
     ],
     'DEFAULT_PAGINATION_CLASS':
-        'message_coding.apps.base.api_utils.CustomPagination',
+        'message_coding.apps.api.api_utils.CustomPagination',
 }
 ######### END REST FRAMEWORK
 

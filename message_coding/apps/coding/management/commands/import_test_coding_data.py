@@ -1,20 +1,21 @@
-from django.core.management.base import BaseCommand, CommandError
 from optparse import make_option
+import traceback
+import sys
+from time import time
+import json
+import datetime
+
+from django.core.management.base import BaseCommand, CommandError
+from django.contrib.auth import get_user_model
+from django.db import transaction
+from django.contrib.auth.hashers import make_password
+import path
+import re
 
 import message_coding.apps.coding.models as coding_models
 import message_coding.apps.dataset.models as dataset_models
 import message_coding.apps.project.models as project_models
-from django.contrib.auth import get_user_model
-from django.db import transaction
-from django.contrib.auth.hashers import make_password
-import traceback
-import sys
-import path
-from time import time
-from django.conf import settings
-import json
-import datetime
-import re
+
 
 User = get_user_model()
 

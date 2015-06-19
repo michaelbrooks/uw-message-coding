@@ -1,19 +1,16 @@
-import json
-
 from django.views.generic import CreateView, DetailView, UpdateView
 from django import http
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect
 from django.core.exceptions import PermissionDenied
 
-from message_coding.apps.project import models, forms
-from message_coding.apps.project import api as project_api
-from message_coding.apps.dataset.api import serializers as dataset_serializers
-from message_coding.apps.coding import api as coding_api
-from message_coding.apps.coding import models as coding_models
-from message_coding.apps.base.api import UserSerializer
-from message_coding.apps.base.views import ProjectViewMixin, LoginRequiredMixin
 from rest_framework.renderers import JSONRenderer
+
+from message_coding.apps.api import serializers
+from message_coding.apps.project import models, forms
+from message_coding.apps.coding import models as coding_models
+from message_coding.apps.base.views import ProjectViewMixin, LoginRequiredMixin
+
 
 class CreateProjectView(LoginRequiredMixin, CreateView):
     """View for creating new projects"""
@@ -157,10 +154,10 @@ class CodingView(LoginRequiredMixin, ProjectViewMixin, DetailView):
         renderer = JSONRenderer()
 
         task = self.object
-        kwargs['project_json'] = renderer.render(project_api.ProjectSerializer(self.get_project()).data)
-        kwargs['task_json'] = renderer.render(project_api.TaskSerializer(self.object).data)
-        kwargs['user_json'] = renderer.render(UserSerializer(self.request.user).data)
-        kwargs['code_scheme_json'] = renderer.render(coding_api.SchemeSerializer(task.scheme).data)
+        kwargs['project_json'] = renderer.render(serializers.ProjectSerializer(self.get_project()).data)
+        kwargs['task_json'] = renderer.render(serializers.TaskSerializer(self.object).data)
+        kwargs['user_json'] = renderer.render(serializers.UserSerializer(self.request.user).data)
+        kwargs['code_scheme_json'] = renderer.render(serializers.SchemeSerializer(task.scheme).data)
 
         return super(CodingView, self).get_context_data(**kwargs)
 

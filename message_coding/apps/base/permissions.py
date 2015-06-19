@@ -76,3 +76,20 @@ class IsTaskOwnerOrReadOnly(permissions.IsAuthenticated):
 
         # Instance must be in the project owner.
         return (request.user and request.user.is_staff) or request.user == obj.owner
+
+class IsStaffOrOwner(permissions.BasePermission):
+    """
+    Object-level permission to only allow owners of an object to edit it.
+    Assumes the model instance has an `owner` attribute.
+    """
+    def has_permission(self, request, view):
+        return True
+
+    def has_object_permission(self, request, view, obj):
+        # Instance must have an attribute named `owner`.
+
+        # User may be staff
+        if request.user.is_staff:
+            return True
+
+        return obj.owner == request.user

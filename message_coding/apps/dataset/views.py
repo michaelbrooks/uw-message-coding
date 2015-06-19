@@ -1,14 +1,14 @@
-from django.views.generic import CreateView, DetailView, TemplateView, FormView, View
+from django.views.generic import CreateView, DetailView, FormView, View
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, StreamingHttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 
 from message_coding.apps.dataset import models, forms
 from message_coding.apps.coding import models as coding_models
 from message_coding.apps.project import models as project_models
 from message_coding.apps.base.views import LoginRequiredMixin, ProjectViewMixin
-from message_coding.apps.dataset.api import serializers
-from message_coding.apps.base.api import UserSerializer
-from message_coding.apps.project import api as project_api
+
+from message_coding.apps.api import serializers
+
 from rest_framework.renderers import JSONRenderer
 
 import csv
@@ -30,9 +30,9 @@ class DatasetDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     def get_context_data(self, **kwargs):
         # Add some serialized json for bootstrapping the client-side app
         renderer = JSONRenderer()
-        kwargs['project_json'] = renderer.render(project_api.ProjectSerializer(self.get_project()).data)
+        kwargs['project_json'] = renderer.render(serializers.ProjectSerializer(self.get_project()).data)
         kwargs['dataset_json'] = renderer.render(serializers.DatasetSerializer(self.object).data)
-        kwargs['user_json'] = renderer.render(UserSerializer(self.request.user).data)
+        kwargs['user_json'] = renderer.render(serializers.UserSerializer(self.request.user).data)
 
         return super(DatasetDetailView, self).get_context_data(**kwargs)
 

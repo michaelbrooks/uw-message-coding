@@ -96,8 +96,3 @@ class UserDashboard(LoginRequiredMixin, DetailView):
         # add any additional data we need -- none for now
         return context
 
-
-class OwnedViewSetMixin(object):
-    """An api view mixin that should attach the current user on create"""
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
