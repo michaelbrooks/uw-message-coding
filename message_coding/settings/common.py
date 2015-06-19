@@ -367,7 +367,8 @@ INSTALLED_APPS += (
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissions'
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.DjangoModelPermissions',
     ],
     'DEFAULT_PAGINATION_CLASS':
         'message_coding.apps.base.api_utils.CustomPagination',

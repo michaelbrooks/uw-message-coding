@@ -33,6 +33,9 @@ project_slug_urls = patterns('',
                              url(r'^datasets/',
                                  include('apps.dataset.urls')),
 
+                             url(r'^schemes/',
+                                 include('apps.coding.urls')),
+
                              url(r'^$',
                                  views.ProjectDetailView.as_view(),
                                  name='project'),
