@@ -87,3 +87,6 @@ class Message(models.Model):
             text = text[0:start] + text[start+len(src):]
 
         return text
+
+    def __unicode__(self):
+        return str(self.pk) + self.text

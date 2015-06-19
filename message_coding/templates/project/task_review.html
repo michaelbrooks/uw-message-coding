@@ -5,6 +5,7 @@
 
 {% block content %}
 
+
     {% for code_group in task.scheme.code_groups.all %}
     <h4>{{ code_group.name }} ({{ code_group.codes.count }})</h4>
     <ul>
@@ -14,7 +15,7 @@
     </ul>
     {% endfor %}
 
-	<h3> Code Counts</h3>
+	<h3>Code Counts</h3>
     <ul>
     	{% for code,info in code_info.items %}
         	<li>{{code}} - {{info.count}}
@@ -26,4 +27,30 @@
         	</li>
         {% endfor %}
     </ul>
+
+    <h3>Code Diff</h3>
+    {% for code, inst in diff_summary.items %}
+        <div>
+        {{ code }}
+            <div>
+            <table border="1">
+                <tr>
+                <th>Y\N</th>
+                {% for coder1, coder2 in inst.items %}
+                    <th>{{ coder1 }}</th>
+                {% endfor %}
+                </tr>
+                {% for coder1, coder2 in inst.items %}
+                    <tr>
+                        <th>{{ coder1 }}</th>
+                        {% for coder, value in coder2.items %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+            </div>
+
+        </div>
+    {% endfor %}
 {% endblock %}
