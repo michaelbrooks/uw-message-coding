@@ -343,12 +343,7 @@ COMPRESS_OUTPUT_DIR = 'CACHE'
 
 
 ########## CELERY CONFIGURATION
-# See: http://celery.readthedocs.org/en/latest/django/first-steps-with-django.html
-INSTALLED_APPS += (
-    # Database migration helpers:
-    'djcelery',
-)
-
+# See: http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html
 # Uncomment these to activate and customize Celery:
 # CELERY_ALWAYS_EAGER = False  # required to activate celeryd
 # BROKER_HOST = 'localhost'
