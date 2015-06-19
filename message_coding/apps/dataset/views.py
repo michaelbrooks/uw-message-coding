@@ -70,14 +70,31 @@ class DatasetImportView(LoginRequiredMixin, ProjectViewMixin, CreateView):
         # do import
         try:
             reader = csv.DictReader(cf)
+
+            # grab our fields
+            standard_fieldnames = set(['text', 'sender', 'time'])
+            fieldnames = set(reader.fieldnames)
+
+            fieldnames -= standard_fieldnames
+
+
             for row in reader:
                 #print row
                 text = row['text'] if 'text' in row else None
                 sender = row['sender'] if 'sender' in row else None
                 time = row['time'] if 'time' in row else None
 
+                print "import time - (%s)"%(time)
+
+                if len(fieldnames) > 0:
+                    metadata = {}
+                    for fieldname in fieldnames:
+                        metadata[fieldname] = row[fieldname]
+                else:
+                    metadata = None
+
                 if text is not None:
-                    msg = models.Message.objects.create(dataset=form.instance, text=text, sender=sender, time=time)
+                    msg = models.Message.objects.create(dataset=form.instance, text=text, sender=sender, time=time, metadata=metadata)
                     msg.save()
 
         except Exception, e:
