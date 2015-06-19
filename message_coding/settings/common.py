@@ -382,4 +382,7 @@ INSTALLED_APPS += (
     'djangular',
 )
 
+MIDDLEWARE_CLASSES = (
+    'djangular.middleware.DjangularUrlMiddleware',
+) + MIDDLEWARE_CLASSES
 ######### END ANGULAR CONFIG

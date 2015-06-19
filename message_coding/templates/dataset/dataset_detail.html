@@ -26,9 +26,6 @@
 {% block bootstrapping %}
     {{ block.super }}
     <script>
-        angular.module('ng.django.urls')
-                .constant('patterns', {% load_djng_urls %});
-
         angular.module('message_coding.dataBrowser')
                 .constant('django_config', {
                     'STATIC_URL': '{% static '' %}'
@@ -66,6 +63,13 @@
         <span ng-bind="dataset.min_time | date: 'yyyy-MM-dd hh:mm:ss' : 'UTC'"> </span> ~ <span ng-bind="dataset.min_time | date: 'yyyy-MM-dd hh:mm:ss' : 'UTC'"> </span>
 
         <p ng-bind="dataset.description">{{ dataset.description }}</p>
+
+        <p>
+            <button class="btn btn-primary"
+                    ng-click="createTask()">
+                Create Task
+            </button>
+        </p>
 
         <div class="ng-cloak">
             <h3>Messages</h3>
@@ -129,12 +133,6 @@
                         ng-click="model.nextPage()">
                     Next
                     <span class="glyphicon glyphicon-chevron-right"></span>
-                </button>
-            </p>
-            <p>
-                <button class="btn btn-primary"
-                        ng-click="createTask()">
-                    Create Task from Selection
                 </button>
             </p>
         </div>

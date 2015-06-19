@@ -166,7 +166,7 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = project_models.Task
         fields = ('id', 'name', 'description',
-                  'created_at', 'owner', 'project', 'scheme',)
+                  'created_at', 'owner', 'project', 'scheme', 'dataset', )
         read_only_fields = ('created_at', 'owner',)
 
 

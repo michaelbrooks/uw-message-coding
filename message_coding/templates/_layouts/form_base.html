@@ -1,7 +1,10 @@
 {% load widget_tweaks %}
 
         {# borrowed from http://wisercoder.com/django-forms-bootstrap/ #}
-        <form class="form" action="{{ form.action|default:"." }}" method="{{ form.method|default:"POST" }}" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+        <form class="form"
+              action="{{ form.action }}"
+              method="{{ form.method|default:"POST" }}"
+              {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
             {% csrf_token %}
             {{ form.media }}
             {% if form.errors %}
