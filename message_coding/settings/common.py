@@ -227,6 +227,7 @@ LOCAL_APPS = (
     'message_coding.apps.coding',
     'message_coding.apps.dataset',
     'message_coding.apps.project',
+    'message_coding.apps.api',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
