@@ -1,46 +1,43 @@
 
 # Database Adapter
-MySQL-python
+MySQL-python >= 1.2, < 1.3
 
 
 # Django stuff
-Django>=1.7.2
+Django >= 1.8, < 1.9
 
 # Templates
-django_compressor
+django_compressor >= 1.5, < 1.6
 
 # Celery: Message queue
-celery
-django-celery
+celery >= 3.1, < 3.2
 
 # L10n/i18n
 #Babel
 #-e git://github.com/clouserw/tower.git#egg=tower
 
 # Caching
-python-memcached
+python-memcached >= 1.54, < 2.0
 
 # Logging
-logutils
-
-# Mixins
-django-braces
-django-model-utils
-bpython
+logutils >= 0.3, < 0.4
 
 # Admin
-django-debug-toolbar
+django-debug-toolbar >= 1.3, <1.4
 
 # utils
-path.py
-dj-database-url
-django-extensions
-django-widget-tweaks
+ipython >= 3.1, < 3.2
+path.py >= 7.3, < 7.4
+django-braces >= 1.8, < 1.9
+django-model-utils >= 2.2, < 2.3
+dj-database-url >= 0.3, < 0.4
+django-extensions >= 1.5, < 1.6
+django-widget-tweaks >= 1.3, < 1.4
 
 # rest api
-djangorestframework
-markdown
-django-filter
+djangorestframework >= 3.1, < 3.2
+markdown >= 2.6, < 2.7
+django-filter >= 0.9, < 1.0
 
 # angular
-django-angular
+django-angular >= 0.7, < 0.8
