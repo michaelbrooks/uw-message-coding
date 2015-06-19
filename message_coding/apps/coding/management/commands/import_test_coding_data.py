@@ -159,8 +159,6 @@ class Importer(object):
             task = project_models.Task(name="task" + str(scheme_id),
                                        owner=self.admin, project=self.project, scheme=scheme)
             task.save()
-            task.assigned_coders.add(self.admin)
-            task.save()
 
             self.scheme_tasks[scheme.id] = task
         #import pdb
@@ -266,12 +264,10 @@ class Importer(object):
 
 
         code = self.code_mapping[code_instance.code_id]
-        #import pdb
-        #pdb.set_trace()
+
         tweet = dataset_models.Message.objects.get(id=code_instance.tweet_id)
         task = self.scheme_tasks[code.code_group.scheme.id]
-        task.assigned_coders.add(task_assigner)
-        task.save()
+
         self.project.members.add(task_assigner)
         self.project.save()
 

@@ -70,14 +70,14 @@ class ProjectViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
 
 
 class TaskViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
-    permission_classes = (permissions.IsTaskAssigner, permissions.IsTaskOwnerOrReadOnly,)
+    permission_classes = (permissions.IsTaskOwnerOrReadOnly,)
     queryset = project_models.Task.objects.all()
     serializer_class = serializers.TaskSerializer
     paginate_by = 10
 
 
 class CodeInstanceViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
-    permission_classes = (permissions.IsTaskAssigner, permissions.IsTaskOwnerOrReadOnly,)
+    permission_classes = (permissions.IsTaskOwnerOrReadOnly,)
     queryset = project_models.CodeInstance.objects.all()
     serializer_class = serializers.CodeInstanceSerializer
     paginate_by = 100

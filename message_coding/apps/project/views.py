@@ -92,7 +92,7 @@ class EditTaskView(LoginRequiredMixin, ProjectViewMixin, UpdateView):
     pk_url_kwarg = 'task_pk'
 
     # Let Django autogenerate the form for now
-    fields = ['name', 'description', 'scheme', 'assigned_coders']
+    fields = ['name', 'description', 'scheme', ]
 
     template_name = "project/task_edit.html"
 

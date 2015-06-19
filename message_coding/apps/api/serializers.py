@@ -42,7 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ('id', 'username', 'email', 'is_staff', 'projects',
-                  'projects_owned', 'tasks_owned', 'tasks_assigned')
+                  'projects_owned', 'tasks_owned')
 
 class OrderedListSerializer(serializers.ListSerializer):
 
@@ -166,7 +166,7 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = project_models.Task
         fields = ('id', 'name', 'description',
-                  'created_at', 'owner', 'project', 'scheme', 'assigned_coders')
+                  'created_at', 'owner', 'project', 'scheme',)
         read_only_fields = ('created_at', 'owner',)
 
 

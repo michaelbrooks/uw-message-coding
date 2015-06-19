@@ -210,8 +210,9 @@ class DatasetTasksExportView(LoginRequiredMixin, ProjectViewMixin, View):
 
     def get(self, request, project_slug, dataset_slug, **kwargs):
 
+        project = project_models.Project.get(slug=project_slug)
         message_set = set()
-        user_set = set()
+        user_set = set(project.members.all())
         code_set = set()
 
         # grab the task ids from the get
@@ -224,9 +225,6 @@ class DatasetTasksExportView(LoginRequiredMixin, ProjectViewMixin, View):
             #print "task: ", task.id
             message_ids = set(task.get_messages().values_list("id", flat=True))
             message_set |= message_ids
-
-            user_ids = set([ac.id for ac in task.assigned_coders.all()])
-            user_set |= user_ids
 
             print "scheme"
 
