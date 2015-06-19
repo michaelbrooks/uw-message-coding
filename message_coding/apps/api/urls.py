@@ -14,7 +14,6 @@ router.extend(project)
 
 dataset = routers.SimpleRouter()
 dataset.register(r'datasets', views.DatasetViewSet)
-dataset.register(r'selections', views.SelectionViewSet)
 dataset.register(r'messages', views.MessageViewSet)
 router.extend(dataset)
 

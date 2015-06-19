@@ -155,15 +155,6 @@ class TypedBlobField(serializers.Field):
         return super(TypedBlobField, self).get_attribute(instance)
 
 
-class SelectionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = dataset_models.Selection
-        fields = ('id', 'created_at', 'owner', 'dataset', 'type', 'selection', 'size')
-        read_only_fields = ('created_at', 'owner', 'size',)
-
-    selection = TypedBlobField(type_field='type', default_type='json')
-
-
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = dataset_models.Message
@@ -171,24 +162,12 @@ class MessageSerializer(serializers.ModelSerializer):
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    selection = SelectionSerializer()
 
     class Meta:
         model = project_models.Task
-        fields = ('id', 'name', 'description', 'selection',
+        fields = ('id', 'name', 'description',
                   'created_at', 'owner', 'project', 'scheme', 'assigned_coders')
         read_only_fields = ('created_at', 'owner',)
-
-
-    def create(self, validated_data):
-        # Create the nested selection
-        selection_data = validated_data.pop('selection')
-        if 'owner' not in selection_data:
-            selection_data['owner'] = validated_data['owner']
-
-        selection = dataset_models.Selection.objects.create(**selection_data)
-        validated_data['selection'] = selection
-        return super(TaskSerializer, self).create(validated_data)
 
 
 class ProjectSerializer(serializers.ModelSerializer):

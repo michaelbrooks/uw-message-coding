@@ -49,12 +49,6 @@ class DatasetViewSet(viewsets.ModelViewSet):
     paginate_by = 10
 
 
-class SelectionViewSet(OwnedViewSetMixin, viewsets.ModelViewSet):
-    queryset = dataset_models.Selection.objects.all()
-    serializer_class = serializers.SelectionSerializer
-    paginate_by = 10
-
-
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = dataset_models.Message.objects.all()
     serializer_class = serializers.MessageSerializer
@@ -64,7 +58,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         task_id = self.request.query_params.get('task', None)
         if task_id is not None:
-            return project_models.Task.objects.get(pk=task_id).selection.get_messages()
+            return project_models.Task.objects.get(pk=task_id).get_messages()
         else:
             return super(MessageViewSet, self).get_queryset()
 

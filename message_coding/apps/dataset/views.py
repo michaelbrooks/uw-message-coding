@@ -119,7 +119,8 @@ class DatasetExportSelectionView(LoginRequiredMixin, ProjectViewMixin, FormView)
 
         # grab the dataset_slug and find relevant tasks
         dataset_slug = self.kwargs["dataset_slug"]
-        tasks = project_models.Task.objects.filter(selection__dataset__slug=dataset_slug)
+        dataset = models.Dataset.objects.get(slug=dataset_slug)
+        tasks = project_models.Task.objects.filter(dataset=dataset)
 
         # add tasks to our form kwargs
         kwargs.update({
@@ -221,7 +222,7 @@ class DatasetTasksExportView(LoginRequiredMixin, ProjectViewMixin, View):
         # step through each task and find the messages, users, and codes
         for task in tasks:
             #print "task: ", task.id
-            message_ids = set(task.selection.get_messages().values_list("id", flat=True))
+            message_ids = set(task.get_messages().values_list("id", flat=True))
             message_set |= message_ids
 
             user_ids = set([ac.id for ac in task.assigned_coders.all()])

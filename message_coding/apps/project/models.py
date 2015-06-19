@@ -40,12 +40,12 @@ class Project(NameDescriptionMixin):
 
 
 class Task(NameDescriptionMixin):
-    """Defines a coding task: a group of coders, a selection of data, and a coding scheme"""
+    """Defines a coding task: a dataset and a coding scheme"""
     created_at = CreatedAtField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="tasks_owned")
 
     project = models.ForeignKey('project.Project', related_name="tasks")
-    selection = models.ForeignKey('dataset.Selection')
+    dataset = models.ForeignKey('dataset.Dataset', related_name="tasks")
     scheme = models.ForeignKey('coding.Scheme', default=None, null=True)
     assigned_coders = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tasks_assigned', default=None)
 
@@ -55,6 +55,9 @@ class Task(NameDescriptionMixin):
             'task_pk': self.pk,
             'project_slug': self.project.slug,
         })
+
+    def get_messages(self):
+        return self.dataset.messages.all()
 
     def is_assigned_to(self, user):
         return self.assigned_coders.filter(pk=user.pk)
@@ -118,7 +121,7 @@ class Task(NameDescriptionMixin):
                     for coder2 in coders:
                         diff_matrix[coder1][coder2] = 0
 
-                msgs = self.selection.get_messages()
+                msgs = self.get_messages()
                 code_table = {}
                 for msg in msgs:
                     code_table[msg.pk] = {}

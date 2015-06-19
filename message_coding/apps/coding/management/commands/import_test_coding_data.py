@@ -156,10 +156,8 @@ class Importer(object):
             code_group.save()
 
             self.scheme_code_groups[scheme.id] = code_group
-            selection = dataset_models.Selection(type='json', selection="{}", dataset=self.dataset, owner=self.admin)
-            selection.save()
             task = project_models.Task(name="task" + str(scheme_id),
-                                       owner=self.admin, project=self.project, scheme=scheme, selection=selection)
+                                       owner=self.admin, project=self.project, scheme=scheme)
             task.save()
             task.assigned_coders.add(self.admin)
             task.save()

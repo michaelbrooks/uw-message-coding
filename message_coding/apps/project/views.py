@@ -57,7 +57,7 @@ class TaskDetailView(LoginRequiredMixin, ProjectViewMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(TaskDetailView, self).get_context_data(**kwargs)
-        context['msgs'] = context['task'].selection.get_messages()
+        context['msgs'] = context['task'].get_messages()
         task = context['task']
         return context
 
@@ -70,7 +70,7 @@ class TaskReviewView(LoginRequiredMixin, ProjectViewMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(TaskReviewView, self).get_context_data(**kwargs)
-        context['msgs'] = context['task'].selection.get_messages()
+        context['msgs'] = context['task'].get_messages()
         task = context['task']
         examples = task.get_examples()
         frequency = task.get_frequency()
@@ -133,7 +133,7 @@ class CodingView(LoginRequiredMixin, ProjectViewMixin, DetailView):
             self.page = 1
 
         # Get the messages to code
-        self.paginator = Paginator(task.selection.get_messages(), CODING_BATCH_SIZE)
+        self.paginator = Paginator(task.get_messages(), CODING_BATCH_SIZE)
 
         try:
             self.page = self.paginator.validate_number(self.page)
