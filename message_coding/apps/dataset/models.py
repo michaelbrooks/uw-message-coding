@@ -65,6 +65,7 @@ class Message(models.Model):
     sender = models.CharField(max_length=250)
     time = models.DateTimeField()
     text = models.TextField()
+    metadata = models.TextField(blank=True, null=True)
 
     def has_image(self):
         return self.image_src() is not None

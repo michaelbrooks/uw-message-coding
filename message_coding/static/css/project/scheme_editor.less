@@ -1,0 +1,209 @@
+@import '../theme/variables';
+
+.scheme-editor {
+
+    ul, ol, li {
+        list-style: none;
+        padding: 0;
+    }
+
+    .draggable {
+        border: 1px solid transparent;
+        cursor: pointer;
+
+        &:hover {
+            border-color: rgba(0, 0, 0, 0.1);
+            .box-shadow(2px 2px 6px rgba(0, 0, 0, 0.1));
+        }
+    }
+
+    @name-max-width: 250px;
+    @code-indent: 15px;
+    @editable-controls-width: 94px;
+
+    .name {
+        font-weight: bold;
+    }
+
+    .description {
+        font-style: italic;
+        color: #888;
+    }
+
+    @media (min-width: @screen-sm-min) {
+        .name {
+            float: left;
+            width: 30%;
+            max-width: @name-max-width;
+        }
+
+        .description {
+            float: left;
+            width: 70%;
+            padding-left: 15px;
+        }
+    }
+
+    .group-label, .code-label {
+        position: absolute;
+        top: 2px;
+        right: 6px;
+        font-size: 13px;
+        font-variant: small-caps;
+        color: #999;
+        display: none;
+    }
+
+    .code-group {
+        margin-bottom: 20px;
+        padding: 15px;
+        position: relative;
+
+        .code-group-header {
+            margin-bottom: 10px;
+
+            .name, .description {
+                height: 41px;
+            }
+
+            .name {
+                font-size: 18px;
+                line-height: 27px;
+
+                .editable {
+                    margin: 5px 10px 4px 10px;
+                    padding: 3px;
+                }
+
+                .editable-text {
+                    margin-top: 3px;
+
+                    input[type=text] {
+                        font-size: 18px;
+                    }
+                }
+            }
+
+            .description {
+                font-size: 16px;
+                line-height: 27px;
+
+                .editable {
+                    margin: 4px 10px 3px 10px;
+                    padding: 3px;
+                }
+
+                .editable-text {
+                    font-size: 16px;
+                    margin-top: 3px;
+                    width: 100%;
+                }
+            }
+
+
+            &:hover {
+                .group-label {
+                    display: block;
+                }
+            }
+        }
+
+
+        .draggable();
+
+        .codes {
+
+            .code {
+                margin-bottom: 3px;
+                padding: 8px 0;
+                position: relative;
+
+                .name {
+                    .editable {
+                        margin: 4px 10px 3px 10px;
+                        padding: 3px;
+                    }
+                }
+
+                .description {
+                    font-size: 14px;
+
+                    .editable {
+                        margin: 5px 10px 4px 10px;
+                        padding: 3px;
+                    }
+
+                    .editable-text {
+                        input[type=text] {
+                            font-size: 14px;
+                            width: 100%;
+                        }
+                    }
+                }
+
+                .draggable();
+
+                &:hover {
+                    .code-label {
+                        display: block;
+                    }
+                }
+
+                @media (min-width: @screen-sm-min) {
+                    .name {
+                        position: relative;
+                        left: @code-indent;
+                    }
+                }
+            }
+        }
+    }
+
+    .editable {
+        display: inline-block;
+        cursor: text;
+    }
+
+    .editable-wrap {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        padding-right: @editable-controls-width; /* space for the controls */
+    }
+
+    .editable-hide {
+        display: none !important;
+    }
+
+    .editable-click,
+    a.editable-click {
+        text-decoration: none;
+        color: @text-color;
+        border-bottom: dashed 1px rgb(219, 237, 247);
+    }
+
+    .editable-click:hover,
+    a.editable-click:hover {
+        text-decoration: none;
+        color: #2a6496;
+        border-bottom: dashed 1px #2a6496;
+    }
+
+    /* editable-empty */
+    .editable-empty,
+    .editable-empty:hover,
+    .editable-empty:focus,
+    a.editable-empty,
+    a.editable-empty:hover,
+    a.editable-empty:focus {
+        font-style: italic;
+        color: #DD1144;
+        text-decoration: none;
+    }
+
+    .editable-wrap .editable-controls,
+    .editable-wrap .editable-error {
+        width: 100%;
+    }
+
+}

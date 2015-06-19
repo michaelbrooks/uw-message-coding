@@ -29,4 +29,5 @@ class CreatedAtField(models.DateTimeField):
 
     def __init__(self, *args, **kwargs):
         kwargs['auto_now'] = True
+        kwargs['editable'] = False
         super(CreatedAtField, self).__init__(*args, **kwargs)

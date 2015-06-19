@@ -27,6 +27,7 @@
                 <li>
                     <a href="{% url 'dataset' project_slug=project.slug dataset_slug=dataset.slug %}">{{ dataset.name }}</a>
                     ({{ dataset.messages.count }} messages)
+                    <a href="{% url 'dataset-download' project_slug=project.slug dataset_slug=dataset.slug %}" class="btn btn-default btn-sm">Download Data as CSV</a>
                 </li>
             {% endfor %}
         </ul>
@@ -49,5 +50,8 @@
                     class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</a></li>
         {% endfor %}
     </ul>
+
+
+    <h3>
 
 {% endblock %}

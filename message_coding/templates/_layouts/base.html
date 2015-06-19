@@ -67,7 +67,7 @@
                         <ul class="nav navbar-nav navbar-projectinfo">
                             {% url 'project' project_slug=project.slug as url_project %}
                             <li class="{% active request url_project %}"><a
-                                    href="{{ url_user_dash }}">{{ project.name }}</a></li>
+                                    href="{{ url_project }}">{{ project.name }}</a></li>
                         </ul>
                     {% endif %}
                     <ul class="nav navbar-nav navbar-help">
