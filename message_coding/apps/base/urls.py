@@ -10,7 +10,7 @@ urlpatterns = patterns('',
                        url(r'^accounts/', include('django.contrib.auth.urls')),
 
                        # REST Api urls
-                       url(r'^api/', include('apps.base.api')),
+                       url(r'^api/', include('apps.api.urls')),
 
                        # Project urls
                        url(r'^', include('apps.project.urls')),

@@ -2,4 +2,4 @@
 -r base.txt
 
 # Testing
-coverage
+coverage >= 3.7, < 3.8

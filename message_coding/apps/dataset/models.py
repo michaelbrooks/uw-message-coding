@@ -35,26 +35,6 @@ class Dataset(NameDescriptionMixin):
         result = self.messages.all().aggregate(Max('time'))
         if result:
             return result['time__max']        
-        
-
-
-class Selection(models.Model):
-    """Defines a subset of a dataset"""
-    created_at = CreatedAtField()
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL)
-
-    dataset = models.ForeignKey(Dataset)
-
-    type = models.CharField(max_length=150)
-    selection = models.BinaryField()
-
-    def get_messages(self):
-        selection = json.loads(self.selection)
-        filter_fn = MessageFilter(type=self.type, data=selection)
-        return filter_fn(self.dataset.messages.all())
-
-    def size(self):
-        return self.get_messages().count()
 
 
 class Message(models.Model):

@@ -52,15 +52,6 @@ class IsProjectOwnerOrReadOnly(permissions.IsAuthenticated):
         # Instance must be in the project owner.
         return (request.user and request.user.is_staff) or request.user == obj.owner
 
-class IsTaskAssigner(permissions.IsAuthenticated):
-    """
-    Object-level permission to only allow task assigners to access a task
-    """
-
-    def has_object_permission(self, request, view, obj):
-        # Instance must be in the project member.
-        return (request.user and request.user.is_staff) or request.user in obj.assigned_coders.all()
-
 class IsTaskOwnerOrReadOnly(permissions.IsAuthenticated):
     """
     Object-level permission to only allow task owner to modify a task, otherwise members are read-only
@@ -76,3 +67,20 @@ class IsTaskOwnerOrReadOnly(permissions.IsAuthenticated):
 
         # Instance must be in the project owner.
         return (request.user and request.user.is_staff) or request.user == obj.owner
+
+class IsStaffOrOwner(permissions.BasePermission):
+    """
+    Object-level permission to only allow owners of an object to edit it.
+    Assumes the model instance has an `owner` attribute.
+    """
+    def has_permission(self, request, view):
+        return True
+
+    def has_object_permission(self, request, view, obj):
+        # Instance must have an attribute named `owner`.
+
+        # User may be staff
+        if request.user.is_staff:
+            return True
+
+        return obj.owner == request.user

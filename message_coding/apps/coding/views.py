@@ -1,13 +1,9 @@
-from django.views.generic import CreateView, DetailView
-from django.core.urlresolvers import reverse
+from django.views.generic import DetailView
+from rest_framework.renderers import JSONRenderer
 
 from message_coding.apps.coding import models
 from message_coding.apps.base.views import LoginRequiredMixin, ProjectViewMixin
-
-from message_coding.apps.coding.api import SchemeSerializer
-from message_coding.apps.base.api import UserSerializer
-from message_coding.apps.project import api as project_api
-from rest_framework.renderers import JSONRenderer
+from message_coding.apps.api import serializers
 
 
 class SchemeEditorView(LoginRequiredMixin, ProjectViewMixin, DetailView):
@@ -19,8 +15,8 @@ class SchemeEditorView(LoginRequiredMixin, ProjectViewMixin, DetailView):
     def get_context_data(self, **kwargs):
         # Add some serialized json for bootstrapping the client-side app
         renderer = JSONRenderer()
-        kwargs['project_json'] = renderer.render(project_api.ProjectSerializer(self.get_project()).data)
-        kwargs['scheme_json'] = renderer.render(SchemeSerializer(self.object).data)
-        kwargs['user_json'] = renderer.render(UserSerializer(self.request.user).data)
+        kwargs['project_json'] = renderer.render(serializers.ProjectSerializer(self.get_project()).data)
+        kwargs['scheme_json'] = renderer.render(serializers.SchemeSerializer(self.object).data)
+        kwargs['user_json'] = renderer.render(serializers.UserSerializer(self.request.user).data)
 
         return super(SchemeEditorView, self).get_context_data(**kwargs)

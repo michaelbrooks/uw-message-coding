@@ -28,12 +28,12 @@
         <div class="col-md-6">
             <div id="assigned-task-panel" class="panel panel-default">
                 <div class="panel-heading">
-                    <div class="pull-right"><span class="badge">{{ user.tasks_assigned.count}}</span></div>
+                    <div class="pull-right"><span class="badge">{{ open_tasks.count}}</span></div>
                     <h3 class="panel-title">Assigned task-list</h3>
                 </div>
                 <div class="panel-body">
                     <ul>
-                        {% for task in user.tasks_assigned.all %}
+                        {% for task in open_tasks %}
                         <li><a href='{% url 'coding' project_slug=task.project.slug task_pk=task.pk %}'>{{ task.name }}</a></li>
                         {% endfor %}
                     </ul>

@@ -1,20 +1,21 @@
-from django.core.management.base import BaseCommand, CommandError
 from optparse import make_option
+import traceback
+import sys
+from time import time
+import json
+import datetime
+
+from django.core.management.base import BaseCommand, CommandError
+from django.contrib.auth import get_user_model
+from django.db import transaction
+from django.contrib.auth.hashers import make_password
+import path
+import re
 
 import message_coding.apps.coding.models as coding_models
 import message_coding.apps.dataset.models as dataset_models
 import message_coding.apps.project.models as project_models
-from django.contrib.auth import get_user_model
-from django.db import transaction
-from django.contrib.auth.hashers import make_password
-import traceback
-import sys
-import path
-from time import time
-from django.conf import settings
-import json
-import datetime
-import re
+
 
 User = get_user_model()
 
@@ -155,12 +156,8 @@ class Importer(object):
             code_group.save()
 
             self.scheme_code_groups[scheme.id] = code_group
-            selection = dataset_models.Selection(type='json', selection="{}", dataset=self.dataset, owner=self.admin)
-            selection.save()
             task = project_models.Task(name="task" + str(scheme_id),
-                                       owner=self.admin, project=self.project, scheme=scheme, selection=selection)
-            task.save()
-            task.assigned_coders.add(self.admin)
+                                       owner=self.admin, project=self.project, scheme=scheme)
             task.save()
 
             self.scheme_tasks[scheme.id] = task
@@ -267,12 +264,10 @@ class Importer(object):
 
 
         code = self.code_mapping[code_instance.code_id]
-        #import pdb
-        #pdb.set_trace()
+
         tweet = dataset_models.Message.objects.get(id=code_instance.tweet_id)
         task = self.scheme_tasks[code.code_group.scheme.id]
-        task.assigned_coders.add(task_assigner)
-        task.save()
+
         self.project.members.add(task_assigner)
         self.project.save()
 

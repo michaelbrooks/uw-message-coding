@@ -93,11 +93,13 @@ class UserDashboard(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(UserDashboard, self).get_context_data(**kwargs)
-        # add any additional data we need -- none for now
+
+        # todo: filter to just open tasks
+        user = self.object
+        open_tasks = []
+        for project in user.projects.all():
+            open_tasks.extend(project.tasks.all())
+        context['open_tasks'] = open_tasks
+
         return context
 
-
-class OwnedViewSetMixin(object):
-    """An api view mixin that should attach the current user on create"""
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)

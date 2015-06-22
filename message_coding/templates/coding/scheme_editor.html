@@ -31,9 +31,6 @@
 {% block bootstrapping %}
     {{ block.super }}
     <script>
-        angular.module('ng.django.urls')
-                .constant('patterns', {% load_djng_urls %});
-
         angular.module('message_coding.schemeEditor')
                 .constant('django_config', {
                     'STATIC_URL': '{% static '' %}'

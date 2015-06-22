@@ -227,6 +227,7 @@ LOCAL_APPS = (
     'message_coding.apps.coding',
     'message_coding.apps.dataset',
     'message_coding.apps.project',
+    'message_coding.apps.api',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -342,12 +343,7 @@ COMPRESS_OUTPUT_DIR = 'CACHE'
 
 
 ########## CELERY CONFIGURATION
-# See: http://celery.readthedocs.org/en/latest/django/first-steps-with-django.html
-INSTALLED_APPS += (
-    # Database migration helpers:
-    'djcelery',
-)
-
+# See: http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html
 # Uncomment these to activate and customize Celery:
 # CELERY_ALWAYS_EAGER = False  # required to activate celeryd
 # BROKER_HOST = 'localhost'
@@ -371,7 +367,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissions',
     ],
     'DEFAULT_PAGINATION_CLASS':
-        'message_coding.apps.base.api_utils.CustomPagination',
+        'message_coding.apps.api.api_utils.CustomPagination',
 }
 ######### END REST FRAMEWORK
 
@@ -381,4 +377,7 @@ INSTALLED_APPS += (
     'djangular',
 )
 
+MIDDLEWARE_CLASSES = (
+    'djangular.middleware.DjangularUrlMiddleware',
+) + MIDDLEWARE_CLASSES
 ######### END ANGULAR CONFIG

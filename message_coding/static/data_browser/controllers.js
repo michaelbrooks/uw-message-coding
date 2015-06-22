@@ -42,16 +42,11 @@
             //Create a new task
             var task = new Task({
                 project: $scope.project.id,
-                selection: {
-                    dataset: $scope.dataset.id,
-                    type: 'json',
-                    selection: $scope.model.filters
-                }
+                dataset: $scope.dataset.id
             });
 
             task.$save()
                 .then(function () {
-
                     //Then go edit it
                     document.location.href = djangoUrl.reverse('task_edit', {
                         project_slug: $scope.project.slug,
