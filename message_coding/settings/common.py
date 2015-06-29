@@ -11,18 +11,7 @@ import dj_database_url
 # Normally you should not import ANYTHING from Django directly
 # into your settings, but ImproperlyConfigured is an exception.
 from django.core.exceptions import ImproperlyConfigured
-
-def get_env_setting(setting, default=None):
-    """ Get the environment setting or return exception """
-    if default is not None:
-        return os.environ.get(setting, default)
-    else:
-        try:
-            return os.environ[setting]
-        except KeyError:
-            error_msg = "Set the %s env variable" % setting
-            raise ImproperlyConfigured(error_msg)
-
+from mbcore import get_env_setting
 
 ########## PATH CONFIGURATION
 # Absolute filesystem path to the django site folder
@@ -42,7 +31,7 @@ SITE_ID = 1
 
 ########## DEBUG CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = False
+DEBUG = get_env_setting('DEBUG', False, type=bool)
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
 TEMPLATE_DEBUG = DEBUG
@@ -50,6 +39,8 @@ TEMPLATE_DEBUG = DEBUG
 # Is this a development instance? Set this to True on development/master
 # instances and False on stage/prod.
 DEV = False
+
+DEBUG_DB = get_env_setting('DEBUG_DB', False, type=bool)
 ########## END DEBUG CONFIGURATION
 
 
