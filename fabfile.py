@@ -3,32 +3,31 @@ Define common admin and maintenance tasks here.
 For more info: http://docs.fabfile.org/en/latest/
 """
 
-import sys
-
 from path import path
 from fabric.api import run, env, prefix, quiet
 
+from mbcore import conf
+from mbcore.fabutils import factories, utils as _utils
+from mbcore.fabutils.tasks import *
+
 
 PROJECT_ROOT = path(__file__).abspath().realpath().dirname()
-sys.path.append(PROJECT_ROOT / 'setup')
-
-from fabutils import conf
-
 conf.configure(PROJECT_ROOT, 'message_coding')
 
-from fabutils import factories
-from fabutils.tasks import *
-
-
 # A dependencies management task
-dependencies = factories.dependencies_task(
-    {
-        'dev': ('-r requirements/local.txt',),
-        'prod': ('-r requirements/prod.txt',),
-        'test': ('-r requirements/test.txt',),
-    },
-    default_env='dev'
-)
+pip_requirements = {
+    'dev': ('-r requirements/local.txt',),
+    'prod': ('-r requirements/prod.txt',),
+    'test': ('-r requirements/test.txt',),
+}
+
+pip_install = factories.pip_install_task(pip_requirements, default_env='dev')
+
+def dependencies(default_env='dev'):
+    """Install requirements for pip, npm, and bower all at once."""
+    pip_install(default_env)
+    npm_install()
+    bower_install()
 
 test = factories.test_task(default_settings='message_coding.settings.test')
 test_coverage = factories.coverage_task(default_settings='message_coding.settings.test')
@@ -78,7 +77,7 @@ def deploy():
     Furthermore, the app must use a
     """
 
-    denv = fabutils.dot_env()
+    denv = _utils.dot_env()
 
     host = denv.get('DEPLOY_HOST', None)
     virtualenv = denv.get('DEPLOY_VIRTUALENV', None)
